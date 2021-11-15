@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static './././node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static './././node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
+    <link rel="stylesheet" href="{% static './CSS/styles.css' %}">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <title>Strateigfy</title>
+</head>
+
+<body>
+
+    <header class="page-head">
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top">
+            <a href="#" class="navbar-brand brand">Strateigfy</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link active">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'contactus' %}" class="nav-link">Contact Us</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <div class="dropdown-menu text-left" aria-labelledby="navbarDropdown">
+                            <a href="index.html" class="dropdown-item text-dark">Logout</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#"  data-toggle="modal" data-target="#LoginModal"  class="nav-link">Log In</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <img src="{% static 'IMAGES/img_avatar.png' %}" class="avatar dropdown-toggle" role="button" data-toggle="dropdown" id="navbarDropdown"  aria-expanded="false">
+                        <div class="dropdown-menu text-left" aria-labelledby="navbarDropdown">
+                            <a href="{% url 'profilepage' %}" class="dropdown-item text-dark">Profile</a>
+                            <div class="dropdown-divider text-dark"></div>
+                            <a href="#" class="dropdown-item text-dark">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-color" id="exampleModalLongTitle">Login</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group row p-1">
+                                <div class="col-12">
+                                    <input type="email" name="email" placeholder="Email Id" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row p-1">
+                                <div class="col-12">
+                                    <input type="password" name="password" placeholder="Password" class="form-control">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="{% url 'registrationpage' %}" class="btn btn-primary">Register</a>
+                        <input type="submit" name="" class="btn btn-primary" value="Login">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="back-video">
+            <video autoplay muted loop>
+                <source class="embed-responsive" src="{% static 'VIDEOS/2.mp4' %}" type="video/mp4">
+            </video>
+            <div class="mid-content text-center">
+                <h2 class="text-light h2 font-weight-bold">Trading Made Easy</h2>
+                <p class="text-light mx-auto">Create yout Strategy, deploy it and earn.</p>
+                <a href="#" role="button" type="button" class="btn">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid">
+        <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
+            <div class="shell">
+                <div class="range">
+                    <div class="row rows">
+                        <div class="text col-12 col-lg-6 col-md-6 w-50 pt-2">
+                            <h3>Strategify</h3>
+                            <p>Unlimited testing and deployment of strategy. Variety of indicators.</p>
+                            <a href="#" class="btn">Learn More</a>
+                        </div>
+                        <div class="img col-12 col-lg-6 col-md-6 w-50 d-none d-lg-block d-xl-none d-none d-xl-block">
+                            <img class="img-fluid" src="{% static 'IMAGES/1secondrow.png' %}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
+            <div class="shell">
+                <div class="range">
+                    <div class="rows align-items-center scroll">
+                        <div class="horizo-scroll">
+                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card" data-aos="zoom-in">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top img-fluid " src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title font-weight-bold">Strategy1</h4>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card" data-aos="zoom-in">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top img-fluid " src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title font-weight-bold">Strategy2</h4>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card" data-aos="zoom-in">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top img-fluid " src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title font-weight-bold">Strategy4</h4>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card" data-aos="zoom-in">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top img-fluid " src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body text-center">
+                                        <h4 class="card-title font-weight-bold">Strategy5</h4>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card" data-aos="zoom-in">
+                                    <img class="card-img-top img-fluid m-auto" src="{% static 'IMAGES/plusIcon.png' %}" alt="Card image cap">
+                                    <div class="card-body text-center new-strategy">
+                                        <h4 class="card-title font-weight-bold">NEW STRATEGY</h4>
+                                        <a href="{% url 'createstrategy' %}" class="btn btn-primary">CREATE</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="row p-2">
+            <div class="col-12 text-center p-2 m-auto">
+                <h3>&copy Copyright: Strategify.</h3>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="{% static '././JS/script.js' %}"></script>
+    <script type="text/javascript">
+        AOS.init();
+    </script>
+</body>
+</html>

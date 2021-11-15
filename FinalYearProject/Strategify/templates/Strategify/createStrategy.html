@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static './././node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static './././node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
+    <link rel="stylesheet" href="{% static './CSS/styles.css' %}">
+	<title>Strateigfy</title>
+</head>
+<body>
+	<header class="page-head">
+        <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
+            <a href="#" class="navbar-brand brand">Strateigfy</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="{% url 'home' %}" class="nav-link">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'contactus' %}" class="nav-link">Contact Us</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <img src="{% static 'IMAGES/img_avatar.png' %}" class="avatar dropdown-toggle" role="button" data-toggle="dropdown" id="navbarDropdown"  aria-expanded="false">
+                        <div class="dropdown-menu text-left" aria-labelledby="navbarDropdown"> 
+                            <a href="{% url 'home' %}" class="dropdown-item text-dark">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+
+
+
+
+
+
+
+
+    <div class="container createStrategy">
+        <div class="row">
+            <div class="col-md-12">
+                <form id="form" action="{% url 'createsStrategyForm' %}" method="post">
+                    {% csrf_token %}
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Create Strategy</h4>
+                            <div id="content">
+                                <ul class="timeline">
+                                    <li class="event" value="Strategy Name">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <input type="text" name="strategyname" placeholder="Strategy Name" class="form-control">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="event" value="Position">
+                                        <div class="row mt-5">
+                                            <div class="col-6">
+                                                <select class="form-select form-control" name="buyorsell" aria-label="Default select example" id="positionDropBtnBuy">
+                                                        <option selected value="0">Buy</option>
+                                                        <option value="1">Sell</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number" name="quantityLots" placeholder="Enter Quantity in lots" class="form-control">
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="event" value="Scrip">
+                                        <div class="row mt-5">
+                                            <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="wrapper">
+                                                    <div class="search-input">
+                                                        <!--<input type="text" name="scrip" class="form-control" placeholder="Add Scrip. E.g SBIN">
+                                                        <ul class="autocom-box" id="autocom-box">
+                                                            <a class="btn" name="Reliance" value="Reliance">Reliance<span class="removeAddedScripName" onclick="cancel('Reliance')">×</span></a>
+                                                        </ul>-->
+                                                        <select class="form-select form-control" name="scripList" aria-label="Default select example" id="scripNameFrameDropBtn">
+                                                            <option selected>Scrip</option>
+                                                            <option value="RELIANCE">Reliance</option>
+                                                            <option value="ITC">ITC</option>
+                                                            <option value="TCS">TCS</option>
+                                                            <option value="ADANIENT">Adani Enterprise</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
+                                                <select class="form-select form-control" name="timeframe" aria-label="Default select example" id="scripTimeFrameDropBtn">
+                                                        <option selected>Time Frame</option>
+                                                        <option value="3600">1 Day</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
+                                                <div class="addedscripList" id="addedscripList">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="event" value="Entry Condition">
+                                        <div class="row mt-5">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">
+                                                        <input type="text" name="indicator1" placeholder="Indicator" class="form-control">
+                                                    </div>
+                                                    <div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">
+                                                        <select class="form-select form-control" name="comparator" aria-label="Default select example">
+                                                            <option selected value="0">Crosses Below</option>
+                                                            <option value="1">Equal To</option>
+                                                            <option selected value="2">Lower than</option>
+                                                            <option value="3">Higher Than</option>
+                                                            <option value="4">Crosses Above</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">
+                                                        <input type="text" name="indicator2" placeholder="Indicator" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="entryConditionRow">
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="#" class="addEntryRow">Add Another Field</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="event" value="Exit Condition">
+                                        
+                                        <div class="row mt-4">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-xl-6 col-sm-12 col-xs-12 col-md-12">
+                                                        <input type="text" name="stoploss" placeholder="Stop loss %" class="form-control stoploss">
+                                                    </div>
+                                                    <div class="col-lg-6 col-xl-6 col-sm-12 col-xs-12 col-md-12">
+                                                        <input type="text" name="targetper" placeholder="Target %" class="form-control targetper">
+                                                    </div>
+                                                </div>
+                                                <div class="exitConditionRow mt-3">
+                                                    
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <a href="#" class="addExitRow">Add Exit Condition(Optional)</a>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-5">
+                                            <div class="col-12">
+                                                <a class="" data-toggle="collapse" href="#advanceExitCondition" role="button" aria-expanded="false" aria-controls="advanceExitCondition">Show Advanced</a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="collapse" id="advanceExitCondition">
+                                                    <div class="row mt-4">
+                                                        <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
+                                                            <input type="text" onfocus="(this.type='date')" name="startDate" placeholder="Start Date" class="form-control">
+                                                        </div>
+                                                        <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
+                                                            <input type="text" name="stopDate" onfocus="(this.type='date')" placeholder="Stop Date" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            </div>   
+                                        </div>
+                                    </li>
+                                    <li class="event" value="Finish">
+                                        <div class="row mt-5">
+                                            <div class="col-12">
+                                                <div class="row">
+                                                    <hr class="dashed">
+                                                    <div class="offset-lg-2 offset-xl-2">
+                                                        
+                                                    </div>
+                                                    <div class="col-12 text-center">
+                                                        <input type="submit" class="btn backTestBtn" name="backTestBtn"/>
+                                                    </div>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>  
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="container-fluid mt-5">
+        <div class="row p-2">
+            <div class="col-12 text-center p-2 m-auto">
+                <h3>&copy Copyright: Strategify.</h3>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="{% static './JS/script.js' %}"></script>
+    <script>
+
+        <!--$('#form').on('submit', function(e){
+        var scripName = [];
+        var $val = $('#addedscripList');
+        $('#addedscripList').children().each(function(index) {
+            console.log($(this).attr("value"));
+            scripName.push($(this).attr("value"));
+        });
+
+        console.log(scripName);
+
+        e.preventDefault();
+        var $val = $('#addedscripList').html();
+
+        var data = $('#form').serialize();
+        $.ajax({
+                type : "POST",
+                url: "{% url 'createsStrategyForm' %}",
+                data: {
+                data: data,
+                array: scripName,
+                 csrfmiddlewaretoken: '{{ csrf_token }}',
+                 scripName: scripName,
+                },
+                success: function(data){
+                   console.log("Sucess");
+                },
+                failure: function() {
+                    console.log("Error");
+                }
+        });
+    });-->
+    </script>
+</body>
+</html>

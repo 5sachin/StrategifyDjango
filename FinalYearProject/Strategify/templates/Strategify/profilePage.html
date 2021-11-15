@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static './././node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static './././node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
+    <link rel="stylesheet" href="{% static './CSS/styles.css' %}">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+	<title>Strateigfy</title>
+</head>
+<body>
+	<header>
+        <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
+            <a href="#" class="navbar-brand brand">Strateigfy</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="{% url 'home' %}" class="nav-link">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'contactus' %}" class="nav-link">Contact Us</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <img src="{% static 'IMAGES/img_avatar.png' %}" class="avatar dropdown-toggle" role="button" data-toggle="dropdown" id="navbarDropdown"  aria-expanded="false">
+                        <div class="dropdown-menu text-left" aria-labelledby="navbarDropdown"> 
+                            <a href="{% url 'home' %}" class="dropdown-item text-dark">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="jumbotron">
+        <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
+            <div class="shell">
+                <div class="range">
+                    <div class="row p-3">
+                        <div class="col-12 col-md-4 p-5 bg-light">
+                            <img src="{% static 'IMAGES/img_avatar.png' %}" class="img-thumbnail">
+                            <p class="font-weight-bold h3 text-color">Sachin Mishra</p>
+                        </div>
+                        <div class="col-md-8 padding">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Full Name</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                          <h3>Sachin Mishra</h3>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Email</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                          sachinmishra10072000@gmail.com
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Phone</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            8692028365
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Mobile</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            8692028365
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <h6 class="mb-0">Address</h6>
+                                        </div>
+                                        <div class="col-sm-9 text-secondary">
+                                            aaa, Kalyan, Thane.
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <a class="btn btn-info " target="__blank" href="#">Edit</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="range">
+                    <div class="row mt-5">
+                        <div class="col-12 col-md-6">
+                            <p class="font-weight-bold h5 text-color"><h3>Your Deployed Strategies</h3></p>
+                        </div>
+                        <div class="col-12 col-md-6 text-right justify-content-between">
+                            <a href="{% url 'createstrategy' %}" class="font-weight-bold h5 text-color">View All</a>
+                        </div>
+                    </div>
+                    <div class="rows align-items-center scroll mt-3">
+                        <div class="horizo-scroll">
+                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top" src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body mx-auto text-center">
+                                        <h5 class="card-title text-color">Strategy1</h5>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top" src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body mx-auto text-center">
+                                        <h5 class="card-title text-color">Strategy2</h5>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top" src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body mx-auto text-center">
+                                        <h5 class="card-title text-color">Strategy3</h5>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top" src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body mx-auto text-center">
+                                        <h5 class="card-title text-color">Strategy4</h5>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                 <hr class="mt-5">
+                 <div class="range">
+                    <div class="row mt-5">
+                        <div class="col-12 col-md-6">
+                            <p class="font-weight-bold h5 text-color"><h3>Your Created Strategies</h3></p>
+                        </div>
+                        <div class="col-12 col-md-6 text-right justify-content-between">
+                            <a href="{% url 'createstrategy' %}" class="font-weight-bold h5 text-color">View All</a>
+                        </div>
+                    </div>
+                    <div class="rows align-items-center scroll mt-3">
+                        <div class="horizo-scroll">
+                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card">
+                                    <a href="{% url 'home' %}" class="cardBtn"></a>
+                                    <img class="card-img-top" src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body mx-auto text-center">
+                                        <h5 class="card-title text-color">Strategy1</h5>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top" src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body mx-auto text-center">
+                                        <h5 class="card-title text-color">Strategy2</h5>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top" src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body mx-auto text-center">
+                                        <h5 class="card-title text-color">Strategy3</h5>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cardDiv col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
+                                <div class="card">
+                                    <a href="viewStrategy.html" class="cardBtn"></a>
+                                    <img class="card-img-top" src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
+                                    <div class="card-body mx-auto text-center">
+                                        <h5 class="card-title text-color">Strategy4</h5>
+                                        <a href="#" class="btn btn-primary">Run</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid">
+        <div class="row p-2">
+            <div class="col-12 text-center p-2 m-auto">
+                <h3>&copy Copyright: Strategify.</h3>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '././JS/script.js' %}"></script>
+</body>
+</html>

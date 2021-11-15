@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %}
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static './././node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static './././node_modules/font-awesome/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
+    <link rel="stylesheet" href="{% static './CSS/styles.css' %}">
+	<title>BackTestResult</title>
+</head>
+<body>
+
+	<header class="page-head">
+        <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
+            <a href="#" class="navbar-brand brand">Strateigfy</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a href="{% url 'home' %}" class="nav-link">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'contactus' %}" class="nav-link">Contact Us</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <img src="{% static 'IMAGES/img_avatar.png' %}" class="avatar dropdown-toggle" role="button" data-toggle="dropdown" id="navbarDropdown"  aria-expanded="false">
+                        <div class="dropdown-menu text-left" aria-labelledby="navbarDropdown"> 
+                            <a href="{% url 'home' %}" class="dropdown-item text-dark">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid backtestHistory">
+        <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
+            <div class="shell">
+                <div class="range">
+                    <div class="row">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead class="table">
+                                        <tr>
+                                            <th scope="col">Instrument</th>
+                                            <th scope="col">LTP</th>
+                                            <th scope="col">Backtest P&L</th>
+                                            <th scope="col">Wins&Losses</th>
+                                            <th scope="col">Signals</th>
+                                            <th scope="col">Wins</th>
+                                            <th scope="col">Losses</th>
+                                            <th scope="col">WS</th>
+                                            <th scope="col">LS</th>
+                                            <th scope="col">Max DD</th>
+                                            <th scope="col"></th>
+                                            <th scope="col">CheckBox</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr data-toggle="collapse" data-target="#demo1" class="accordion-toggle">
+                                            <td data-label="Account">{{data.ScripName}}</td>
+                                            <td data-label="Due Date">--(--%)</td>
+                                            {% if data.Status == 0 %}
+                                                <td data-label="Amount"><span class="text-danger">{{data.PL}}</span></td>
+                                            {% else %}
+                                                <td data-label="Amount"><span class="text-success">+{{data.PL}}</span></td>
+                                            {% endif %}
+                                            <td data-label="Period">
+                                                <div class="progress bg-danger">
+                                                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{data.PercentBar}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td data-label="Account">{{data.Signal}}</td>
+                                            <td data-label="Due Date">{{data.Wins}}</td>
+                                            <td data-label="Amount">{{data.Loss}}</td>
+                                            <td data-label="Period">--</td>
+                                            <td data-label="Account">--</td>
+                                            <td data-label="Due Date">--</td>
+                                            <td data-label="Amount"><span><i class="fa fa-download"><a href=""></a></i></span></td>
+                                            <td data-label="Period"><input type="checkbox" name="check"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="12" class="hiddenRow">
+                                                <div class="accordian-body collapse" id="demo1"> 
+                                                    <div class="container-fluid">
+                                                        <div class="row">
+                                                            <div class="col-6">
+                                                                <img src="data:image/png;base64,{{data.Uri}}" style="width:100%">
+                                                            </div>
+                                                            <div class="col-3 backtestHistorySecondC">
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">Total no of Signal</span>
+                                                                    <span class="backtestHistorySecondCF2">{{data.Signal}}</span>
+                                                                </div>
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">No of Wins</span>
+                                                                    <span class="backtestHistorySecondCF2">{{data.Wins}}</span>
+                                                                </div>
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">No of Losses</span>
+                                                                    <span class="backtestHistorySecondCF2">{{data.Loss}}</span>
+                                                                </div>
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">Winning Streak</span>
+                                                                    <span class="backtestHistorySecondCF2">--</span>
+                                                                </div>
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">Lossing Streak</span>
+                                                                    <span class="backtestHistorySecondCF2">--</span>
+                                                                </div>
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">Max Gain</span>
+                                                                    <span class="backtestHistorySecondCF2">{{data.MaxGain}}</span>
+                                                                </div>
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">Max Loss</span>
+                                                                    <span class="backtestHistorySecondCF2">-{{data.MaxLoss}}</span>
+                                                                </div>
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">Average gain</span>
+                                                                    <span class="backtestHistorySecondCF2">{{data.AvgGain}}</span>
+                                                                </div>
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">Average Loss</span>
+                                                                    <span class="backtestHistorySecondCF2">-{{data.AvgLoss}}</span>
+                                                                </div>
+                                                                <div class="backtestHistorySecondCF">
+                                                                    <span class="backtestHistorySecondCF1">Max Drawdown</span>
+                                                                    <span class="backtestHistorySecondCF2">--</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-3 backtestHistoryThirdC">
+                                                                <div class="backtestHistoryThirdCF">
+                                                                    <span class="backtestHistoryThirdCF1">Period High</span>
+                                                                    <span class="backtestHistoryThirdCF2">{{data.PeriodHigh}}</span>
+                                                                </div>
+                                                                <div class="backtestHistoryThirdCF">
+                                                                    <span class="backtestHistoryThirdCF1">Period Low</span>
+                                                                    <span class="backtestHistoryThirdCF2">{{data.PeriodLow}}</span>
+                                                                </div>
+                                                                <div class="backtestHistoryThirdCF">
+                                                                    <span class="backtestHistoryThirdCF1">Period Return</span>
+                                                                    <span class="backtestHistoryThirdCF2">--%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container-fluid mt-5 fixed-bottom">
+        <div class="row p-2">
+            <div class="col-12 text-center p-2 m-auto">
+                <h3>&copy Copyright: Strategify.</h3>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="{% static 'JS/script.js' %}"></script>
+</body>
+</html>
