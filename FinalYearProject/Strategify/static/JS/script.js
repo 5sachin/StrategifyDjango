@@ -122,3 +122,5 @@ function cancel(val){
     console.log(child);
     child.remove(parent);
 }
+
+
