@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Arsenal:ital@1&family=Cormorant+Garamond:ital@1&family=Cormorant+Upright:wght@500&family=Tourney:ital,wght@1,700&display=swap');
 
 
-
 /*------------------ GLOBAL --------------------*/
 
 html {
@@ -675,7 +674,6 @@ body > div.contact-us.container.p-5 > div{
 }
 
 
-
 .search-input .autocom-box li:hover{
   background: #efefef;
 }
@@ -691,6 +689,70 @@ body > div.contact-us.container.p-5 > div{
   color: black;
   display: block;
 }
+
+
+
+
+
+
+.indicator-search .indicatorsuggest-box{
+  padding: 10px 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 8px 30px 0 rgb(0 0 0 / 15%);
+  border-radius: 2px;
+  z-index: 2001;
+  color: black;
+}
+
+.indicator-search .indicatorsuggest-box li{
+  list-style: none;
+  padding: 8px 12px;
+  width: 100%;
+  cursor: default;
+  border-radius: 3px;
+  display: none;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.indicator-search .indicatorsuggest-box li .indicatorsuggestionHead{
+  color: black;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.indicator-search .indicatorsuggest-box li .indicatorsuggestionDesc{
+  color: black;
+  font-size: 1.2rem;
+}
+
+.indicator-search .indicatorsuggest-box li:hover{
+  background: #efefef;
+}
+
+.indicator-search.active .indicatorsuggest-box{
+  padding-top: 10px 8px;
+  opacity: 1;
+  pointer-events: auto;
+  padding-bottom: 10px;
+  color: black;
+}
+
+.indicator-search.active .indicatorsuggest-box li{
+  color: black;
+  display: block;
+}
+
+
+
+
+
+
+
+
+
 
 .addedscripList a{
   color: #6e6e6e;

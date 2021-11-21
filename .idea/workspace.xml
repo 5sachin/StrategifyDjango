@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3fad8172-af2d-4027-b0e3-d42adf7c0941" name="Default Changelist" comment="" />
+    <list default="true" id="3fad8172-af2d-4027-b0e3-d42adf7c0941" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/file.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/styles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/JS/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/JS/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/backtestHistory.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/backtestHistory.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/createStrategy.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/createStrategy.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/file.csv" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/file.csv" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,16 +38,16 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/FinalYearProject" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/FinalYearProject/Strategify/static" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Sachin\Desktop\Strategify\FinalYearProject\Strategify\static" />
       <recent name="C:\Users\Sachin\Desktop\Strategify\FinalYearProject" />
       <recent name="C:\Users\Sachin\Desktop\Strategify\FinalYearProject\Strategify" />
       <recent name="C:\Users\Sachin\Desktop\Strategify\FinalYearProject\Strategify\templates" />
       <recent name="C:\Users\Sachin\Desktop\Strategify\FinalYearProject\Strategify\static\IMAGES" />
-      <recent name="C:\Users\Sachin\Desktop\Strategify\FinalYearProject\Strategify\templates\Strategify" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Sachin\Desktop\Strategify\FinalYearProject\Strategify" />
@@ -120,6 +129,7 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.js" />
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.css" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="EMA indicator added" />
@@ -130,6 +140,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="222" y="66" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1633357741611" />
+    <state x="535" y="214" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1637163055903">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="535" y="214" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1637163055903" />
     <state x="423" y="5" key="CommitChangelistDialog2" timestamp="1637090586780">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -138,46 +152,46 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="548" y="166" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1633357707070" />
-    <state width="1513" height="228" key="GridCell.Tab.0.bottom" timestamp="1637090633015">
+    <state width="1513" height="270" key="GridCell.Tab.0.bottom" timestamp="1637422025087">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="228" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1637090633015" />
-    <state width="1513" height="228" key="GridCell.Tab.0.center" timestamp="1637090633015">
+    <state width="1513" height="270" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1637422025087" />
+    <state width="1513" height="270" key="GridCell.Tab.0.center" timestamp="1637422025086">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="228" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1637090633015" />
-    <state width="1513" height="228" key="GridCell.Tab.0.left" timestamp="1637090633015">
+    <state width="1513" height="270" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1637422025086" />
+    <state width="1513" height="270" key="GridCell.Tab.0.left" timestamp="1637422025085">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="228" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1637090633015" />
-    <state width="1513" height="228" key="GridCell.Tab.0.right" timestamp="1637090633015">
+    <state width="1513" height="270" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1637422025085" />
+    <state width="1513" height="270" key="GridCell.Tab.0.right" timestamp="1637422025086">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="228" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1637090633015" />
-    <state width="1513" height="169" key="GridCell.Tab.1.bottom" timestamp="1637076806089">
+    <state width="1513" height="270" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1637422025086" />
+    <state width="1513" height="151" key="GridCell.Tab.1.bottom" timestamp="1637353274553">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="169" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1637076806089" />
-    <state width="1513" height="169" key="GridCell.Tab.1.center" timestamp="1637076806089">
+    <state width="1513" height="151" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1637353274553" />
+    <state width="1513" height="151" key="GridCell.Tab.1.center" timestamp="1637353274553">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="169" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1637076806089" />
-    <state width="1513" height="169" key="GridCell.Tab.1.left" timestamp="1637076806089">
+    <state width="1513" height="151" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1637353274553" />
+    <state width="1513" height="151" key="GridCell.Tab.1.left" timestamp="1637353274553">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="169" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1637076806089" />
-    <state width="1513" height="169" key="GridCell.Tab.1.right" timestamp="1637076806089">
+    <state width="1513" height="151" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1637353274553" />
+    <state width="1513" height="151" key="GridCell.Tab.1.right" timestamp="1637353274553">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="169" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1637076806089" />
+    <state width="1513" height="151" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1637353274553" />
     <state x="276" y="53" key="SettingsEditor" timestamp="1632840315767">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="276" y="53" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1632840315767" />
-    <state x="463" y="234" key="com.intellij.ide.util.TipDialog" timestamp="1637083735661">
+    <state x="463" y="234" key="com.intellij.ide.util.TipDialog" timestamp="1637436612465">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="463" y="234" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1637083735661" />
+    <state x="463" y="234" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1637436612465" />
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1636915492806">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

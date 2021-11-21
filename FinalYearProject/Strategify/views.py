@@ -28,9 +28,12 @@ def createstrategy(response):
 def createStrategyForm(response):
 
     if response.method == "POST":
-        # data = movingAverage(response,response.POST.get('scripList'),15,20)
-        data = movingAverage(response,response.POST.get('scripList'),7,14,response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
-        # data = exponentialMovingAverage(response,response.POST.get('scripList'),10,15,response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
+        a = response.POST.get("indicator1").split(",")
+        b = response.POST.get("indicator2").split(",")
+        if a[0] == "MA":
+            data = movingAverage(response,response.POST.get('scripList'),int(a[1]),int(b[1]),response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
+        elif a[0] == "EMA":
+            data = exponentialMovingAverage(response,response.POST.get('scripList'),10,15,response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
         return render(response, 'Strategify/backtestHistory.html',{'data':data})
 
 def movingAverage(response,scrip,fastMa,slowMa,target,steploss,quantity):
@@ -44,7 +47,7 @@ def movingAverage(response,scrip,fastMa,slowMa,target,steploss,quantity):
     data['Signal'] = np.where(data['shortAvg'] > data['longAvg'], 1, 0)
     data['Position'] = data['Signal'].diff()
 
-    return movingAveragePLCalculaion(response, data, int(target), int(steploss), quantity, fastMa, slowMa)
+    return movingAveragePLCalculaion(response, data, int(target), int(steploss), quantity)
 
 
 def ema(df, days, col='Close', start=0):
@@ -66,7 +69,7 @@ def ema(df, days, col='Close', start=0):
 
 def exponentialMovingAverage(response,scrip,fastMa,slowMa,target,steploss,quantity):
     data = pd.read_csv(scrip + '.csv')
-    print(quantity)
+    print(data.columns)
     data = data.apply(lambda x: x.fillna(x.value_counts().index[0]))
     shortNo = fastMa
     longNo = slowMa
@@ -79,10 +82,10 @@ def exponentialMovingAverage(response,scrip,fastMa,slowMa,target,steploss,quanti
     data['Position'] = data['Signal'].diff()
     data.rename({'EMA{}'.format(shortNo): 'shortAvg', 'EMA{}'.format(longNo): 'longAvg'}, axis=1, inplace=True)
 
-    return movingAveragePLCalculaion(response,data,int(target),int(steploss),quantity,fastMa,slowMa)
+    return movingAveragePLCalculaion(response,data,int(target),int(steploss),quantity)
 
 
-def movingAveragePLCalculaion(response,data,target,steploss,quantity,shortNo,longNo):
+def movingAveragePLCalculaion(response,data,target,steploss,quantity):
     a = 0
     status = 0
     WinsCount = 0

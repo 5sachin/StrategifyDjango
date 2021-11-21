@@ -53,7 +53,7 @@
     <div class="container createStrategy">
         <div class="row">
             <div class="col-md-12">
-                <form id="form" action="{% url 'createsStrategyForm' %}" method="post">
+                <form id="createStrategyform" action="{% url 'createsStrategyForm' %}" method="post">
                     {% csrf_token %}
                     <div class="card">
                         <div class="card-body">
@@ -76,7 +76,7 @@
                                                 </select>
                                             </div>
                                             <div class="col-6">
-                                                <input type="number" name="quantityLots" placeholder="Enter Quantity in lots" class="form-control">
+                                                <input type="number" name="quantityLots" placeholder="Enter Quantity in lots" class="form-control" required>
                                             </div>
                                         </div>
                                     </li>
@@ -85,23 +85,23 @@
                                             <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
                                                 <div class="wrapper">
                                                     <div class="search-input">
-                                                        <!--<input type="text" name="scrip" class="form-control" placeholder="Add Scrip. E.g SBIN">
+                                                        <input type="text" name="scrip" class="form-control" placeholder="Add Scrip. E.g SBIN">
                                                         <ul class="autocom-box" id="autocom-box">
-                                                            <a class="btn" name="Reliance" value="Reliance">Reliance<span class="removeAddedScripName" onclick="cancel('Reliance')">×</span></a>
-                                                        </ul>-->
-                                                        <select class="form-select form-control" name="scripList" aria-label="Default select example" id="scripNameFrameDropBtn">
-                                                            <option selected>Scrip</option>
+                                                        </ul>
+
+                                                    </div>
+                                                    <select class="form-select form-control" name="scripList" aria-label="Default select example" id="scripNameFrameDropBtn" required>
+                                                            <option selected value="">Scrip</option>
                                                             <option value="RELIANCE">Reliance</option>
                                                             <option value="ITC">ITC</option>
                                                             <option value="TCS">TCS</option>
                                                             <option value="ADANIENT">Adani Enterprise</option>
                                                         </select>
-                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
-                                                <select class="form-select form-control" name="timeframe" aria-label="Default select example" id="scripTimeFrameDropBtn">
-                                                        <option selected>Time Frame</option>
+                                                <select class="form-select form-control" name="timeframe" aria-label="Default select example" id="scripTimeFrameDropBtn" required>
+                                                        <option selected value="">Time Frame</option>
                                                         <option value="3600">1 Day</option>
                                                 </select>
                                             </div>
@@ -118,7 +118,11 @@
                                             <div class="col-12">
                                                 <div class="row">
                                                     <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">
-                                                        <input type="text" name="indicator1" placeholder="Indicator" class="form-control">
+                                                        <div class="indicator-search">
+                                                            <input type="text" name="indicator1" placeholder="Indicator" class="form-control" autocomplete="off">
+                                                            <ul class="indicatorsuggest-box" id="indicatorBox">
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                     <div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">
                                                         <select class="form-select form-control" name="comparator" aria-label="Default select example">
@@ -130,7 +134,7 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">
-                                                        <input type="text" name="indicator2" placeholder="Indicator" class="form-control">
+                                                        <input type="text" name="indicator2" placeholder="Indicator" class="form-control indicator2">
                                                     </div>
                                                 </div>
                                                 <div class="entryConditionRow">
@@ -150,10 +154,10 @@
                                             <div class="col-12">
                                                 <div class="row">
                                                     <div class="col-lg-6 col-xl-6 col-sm-12 col-xs-12 col-md-12">
-                                                        <input type="text" name="stoploss" placeholder="Stop loss %" class="form-control stoploss">
+                                                        <input type="text" name="stoploss" placeholder="Stop loss %" class="form-control stoploss" required>
                                                     </div>
                                                     <div class="col-lg-6 col-xl-6 col-sm-12 col-xs-12 col-md-12">
-                                                        <input type="text" name="targetper" placeholder="Target %" class="form-control targetper">
+                                                        <input type="text" name="targetper" placeholder="Target %" class="form-control targetper" required>
                                                     </div>
                                                 </div>
                                                 <div class="exitConditionRow mt-3">
@@ -206,6 +210,38 @@
                             </div>
                         </div>
                     </div>
+                    <div class="modal fade" id="indicatorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-color" id="indicatorheadingModal"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group row p-1">
+                                        <div class="col-6">
+                                            <label class="text-dark form-control">Period 1</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" name="period1" class="form-control" required>
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="text-dark form-control">Period 2</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" name="period2" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary" onclick="saveIndicatordetails()">Done</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </form>  
             </div>
         </div>
@@ -224,41 +260,6 @@
     <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
     <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static './JS/script.js' %}"></script>
-    <script>
-
-        <!--$('#form').on('submit', function(e){
-        var scripName = [];
-        var $val = $('#addedscripList');
-        $('#addedscripList').children().each(function(index) {
-            console.log($(this).attr("value"));
-            scripName.push($(this).attr("value"));
-        });
-
-        console.log(scripName);
-
-        e.preventDefault();
-        var $val = $('#addedscripList').html();
-
-        var data = $('#form').serialize();
-        $.ajax({
-                type : "POST",
-                url: "{% url 'createsStrategyForm' %}",
-                data: {
-                data: data,
-                array: scripName,
-                 csrfmiddlewaretoken: '{{ csrf_token }}',
-                 scripName: scripName,
-                },
-                success: function(data){
-                   console.log("Sucess");
-                },
-                failure: function() {
-                    console.log("Error");
-                }
-        });
-    });-->
-    </script>
 </body>
 </html>
