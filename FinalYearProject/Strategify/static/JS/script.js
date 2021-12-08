@@ -54,19 +54,16 @@ function closeNav() {
 
 
 
-let suggestions = ["ITC","Reliance","SBIN","TCS","LTI","Tata Motors","Aditya Birla Capital Ltd","Ajanta Pharma Ltd","ACC Ltd","Adani Total Gas Ltd","Adani Green Energy Ltd","Adani Transmission Ltd","MRF","HDFC","Yes Bank","Adani","Titan","Bharti Airtel","Tata Steel","Infosys"];
+let suggestions = ["ITC.NS","RELIANCE.NS","SBIN.NS","TCS","LTI.NS","TATAMOTORS.NS","ABCAPITAL.NS","AJANTPHARM.NS","AMBUJACEM.NS","ATGL.NS","ADANIGREEN.NS","ADANITRANS.NS","MRF.NS","HDFC.NS","YESBANK.NS","ADANIENT.NS","TITAN.NS","BHARTIARTL.NS","TATASTEEL.NS","INFY.NS"];
 
 const searchWrapper = document.querySelector(".search-input");
 const inputBox = searchWrapper.querySelector("input");
 const suggBox = searchWrapper.querySelector(".autocom-box");
-const icon = searchWrapper.querySelector(".icon");
-let linkTag = searchWrapper.querySelector("a");
-
+console.log("1. ",searchWrapper," 2. ",inputBox);
 
 inputBox.onkeyup = (e)=>{
     let userData = e.target.value;
     let emptyArray = [];
-    console.log(e);
     if(userData){
         emptyArray = suggestions.filter((data)=>{
             return data.toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
@@ -87,6 +84,7 @@ inputBox.onkeyup = (e)=>{
     }
 }
 
+let scripList = [];
 var scripAddedContainer = document.querySelector(".addedscripList");
 function addScripName(element){
 
@@ -94,22 +92,29 @@ function addScripName(element){
     scripAddedName.setAttribute("class","btn");
     scripAddedName.setAttribute("name",element);
     scripAddedName.setAttribute("value",element);
-    scripAddedName.setAttribute("data-scrip",element);
+    scripAddedName.setAttribute("id",element);
     scripAddedName.innerHTML = element;
-    inputBox.value ="";
 
+    inputBox.value ="";
     var span = document.createElement('span');
     span.setAttribute("class","removeAddedScripName");
     span.setAttribute("onclick","cancel('" + element + "')");
     span.innerHTML = '&times';
-
     scripAddedName.append(span);
     scripAddedContainer.append(scripAddedName);
-
     searchWrapper.classList.remove("active");
+    scripList.push(element);
+
+    let v = ""
+
+    for(let i = 0;i<scripList.length;i++){
+        v += scripList[i]+",";
+    }
+
+    let x = document.getElementById('allscriplist');
+    x.value = v;
+    x.innerHTML = v;
 }
-
-
 
 function showSuggestions(list){
     let listData;
@@ -124,18 +129,32 @@ function showSuggestions(list){
 
 
 function cancel(val){
-    var parent = document.getElementById("autocom-box");
+    var parent = document.getElementById('autocom-box');
     var child = document.getElementById(val);
-    console.log(parent);
-    console.log(child);
     child.remove(parent);
+    var index = scripList.indexOf(val);
+    if (index !== -1) {
+      scripList.splice(index, 1);
+    }
+    let v = "";
+    for(let i = 0;i<scripList.length;i++){
+        v += scripList[i]+",";
+        console.log(v,scripList[i]);
+    }
+
+    let x = document.getElementById('allscriplist');
+    x.value = "";
+    x.innerHTML = "";
+    console.log(v,x);
+    x.innerHTML = v;
+    console.log(x);
 }
 
 
 
 
 
-let indicatorsuggestions = [["MA","Moving Average"],["EMA","Exponential Moving Average"],["DEMA","Double Moving Average"],["MACD","Moving Average Crossover Divergion"]];
+let indicatorsuggestions = [["MA","Moving Average"],["EMA","Exponential Moving Average"],["WMA","Weighted Moving Average"]];
 
 const indicatorWrapper = document.querySelector(".indicator-search");
 const indicatorInputBox = indicatorWrapper.querySelector("input");

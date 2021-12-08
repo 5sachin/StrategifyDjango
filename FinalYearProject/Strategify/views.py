@@ -2,12 +2,11 @@ from django.shortcuts import render
 import pandas as pd
 import numpy as np
 import io
-from datetime import datetime
+import yfinance as yf
 import base64,urllib
 import matplotlib.pyplot as plt
-from nsepy import get_history
-plt.style.use('fivethirtyeight')
 
+plt.style.use('fivethirtyeight')
 
 def home(response):
     return render(response, 'Strategify/index.html',{})
@@ -30,15 +29,29 @@ def createStrategyForm(response):
     if response.method == "POST":
         a = response.POST.get("indicator1").split(",")
         b = response.POST.get("indicator2").split(",")
-        if a[0] == "MA":
-            data = movingAverage(response,response.POST.get('scripList'),int(a[1]),int(b[1]),response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
-        elif a[0] == "EMA":
-            data = exponentialMovingAverage(response,response.POST.get('scripList'),10,15,response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
-        return render(response, 'Strategify/backtestHistory.html',{'data':data})
+        scriplist = response.POST.get('allscriplist')
+        scriplist = scriplist.split(",")
+        alldata = []
+        for i in range(0,len(scriplist)-1):
+            if a[0] == "MA":
+                data = movingAverage(response, scriplist[i], int(a[1]), int(b[1]), response.POST.get('targetper'),
+                                     response.POST.get('stoploss'), response.POST.get('quantityLots'))
+                alldata.append(data)
+            elif a[0] == "EMA":
+                data = exponentialMovingAverage(response, scriplist[i], int(a[1]), int(b[1]),
+                                                response.POST.get('targetper'), response.POST.get('stoploss'),
+                                                response.POST.get('quantityLots'))
+                alldata.append(data)
+            elif a[0] == "WMA":
+                data = weightedmovingaverage(response, scriplist[i], int(a[1]), int(b[1]), response.POST.get('targetper'),
+                                     response.POST.get('stoploss'), response.POST.get('quantityLots'))
+                alldata.append(data)
+
+        return render(response, 'Strategify/backtestHistory.html',{'data':alldata})
 
 def movingAverage(response,scrip,fastMa,slowMa,target,steploss,quantity):
-    data = pd.read_csv(scrip + '.csv')
-    print(quantity)
+    # data = pd.read_csv(scrip + '.csv')
+    data = yf.download(scrip, start=response.POST.get('startDate'), end=response.POST.get('stopDate'))
     shortNo = fastMa
     longNo = slowMa
     data = data.apply(lambda x: x.fillna(x.value_counts().index[0]))
@@ -47,7 +60,7 @@ def movingAverage(response,scrip,fastMa,slowMa,target,steploss,quantity):
     data['Signal'] = np.where(data['shortAvg'] > data['longAvg'], 1, 0)
     data['Position'] = data['Signal'].diff()
 
-    return movingAveragePLCalculaion(response, data, int(target), int(steploss), quantity)
+    return movingAveragePLCalculaion(response, scrip, data, int(target), int(steploss), quantity)
 
 
 def ema(df, days, col='Close', start=0):
@@ -68,13 +81,13 @@ def ema(df, days, col='Close', start=0):
 
 
 def exponentialMovingAverage(response,scrip,fastMa,slowMa,target,steploss,quantity):
-    data = pd.read_csv(scrip + '.csv')
-    print(data.columns)
+    data = yf.download(scrip, start=response.POST.get('startDate'), end=response.POST.get('stopDate'))
+
     data = data.apply(lambda x: x.fillna(x.value_counts().index[0]))
     shortNo = fastMa
     longNo = slowMa
 
-    days = [10, 15]
+    days = [shortNo, longNo]
     for i in days:
         ema(data, days=i)
 
@@ -82,10 +95,34 @@ def exponentialMovingAverage(response,scrip,fastMa,slowMa,target,steploss,quanti
     data['Position'] = data['Signal'].diff()
     data.rename({'EMA{}'.format(shortNo): 'shortAvg', 'EMA{}'.format(longNo): 'longAvg'}, axis=1, inplace=True)
 
-    return movingAveragePLCalculaion(response,data,int(target),int(steploss),quantity)
+    return movingAveragePLCalculaion(response, scrip, data, int(target), int(steploss), quantity)
 
 
-def movingAveragePLCalculaion(response,data,target,steploss,quantity):
+def wma(df,n):
+    column = 'Close'
+    weights = np.arange(1, n + 1)
+    wmas = df[column].rolling(n).apply(lambda x: np.dot(x, weights) /
+                                       weights.sum(), raw=True).to_list()
+    df[f'WMA{n}'] = wmas
+
+
+def weightedmovingaverage(response,scrip,fastMa,slowMa,target,steploss,quantity):
+    data = yf.download(scrip, start=response.POST.get('startDate'), end=response.POST.get('stopDate'))
+
+    data = data.apply(lambda x: x.fillna(x.value_counts().index[0]))
+    shortNo = fastMa
+    longNo = slowMa
+
+    wma(data,shortNo)
+    wma(data, longNo)
+
+    data['Signal'] = np.where(data['WMA{}'.format(shortNo)] > data['WMA{}'.format(longNo)], 1, 0)
+    data['Position'] = data['Signal'].diff()
+    data.rename({'WMA{}'.format(shortNo): 'shortAvg', 'WMA{}'.format(longNo): 'longAvg'}, axis=1, inplace=True)
+
+    return movingAveragePLCalculaion(response, scrip, data, int(target), int(steploss), quantity)
+
+def movingAveragePLCalculaion(response,scrip,data,target,steploss,quantity):
     a = 0
     status = 0
     WinsCount = 0
@@ -94,30 +131,49 @@ def movingAveragePLCalculaion(response,data,target,steploss,quantity):
     totL = 0
     balance = 0
     enter = 0
+    alllist = []
 
     for i in range(0, len(data['Position'])):
 
         if data['Position'][i] == 1.0 and enter == 0:
             a = data['Close'][i]
             enter = 1
-            print("Buy Date: ",data['Date'][i]," Price: ",a)
+            alllist.append({
+                'date': data.index[i],
+                'price': data['Close'][i],
+                'buysell': "buy",
+                'balance': balance,
+            })
+            print("Buy Date: ",data.index[i]," Price: ",a)
 
         else:
             if a > 0:
                 if ((data['Close'][i] - a) / a) * 100 >= int(target):
                     balance += data['Close'][i] - a
                     print("Profit ", " I ", i, " current price ", data['Close'][i], " buy price ", a, " Date: ",
-                          data['Date'][i], " net profit ", data['Close'][i] - a)
+                          data.index[i], " net profit ", data['Close'][i] - a)
                     WinsCount += 1
                     totP += data['Close'][i] - a
+                    alllist.append({
+                        'date': data.index[i],
+                        'price': data['Close'][i],
+                        'buysell': "sell",
+                        'balance': balance
+                    })
                     a = 0
                     enter = 0
                 elif ((a - data['Close'][i]) / a) * 100 >= int(steploss):
                     balance += data['Close'][i] - a
                     print("Loss ", " I ", i, " current price ", data['Close'][i], " buy price ", a, " Date ",
-                          data['Date'][i], " net loss ", data['Close'][i] - a)
+                          data.index[i], " net loss ", data['Close'][i] - a)
                     LossCount += 1
                     totL += data['Close'][i] - a
+                    alllist.append({
+                        'date': data.index[i],
+                        'price': data['Close'][i],
+                        'buysell': "sell",
+                        'balance': balance
+                    })
                     a = 0
                     enter = 0
 
@@ -126,6 +182,7 @@ def movingAveragePLCalculaion(response,data,target,steploss,quantity):
     if totP + totL > 0:
         status = 1
 
+    pd.DataFrame(alllist).to_csv('Strategify/static/Output.csv')
     periodHigh = "{:.2f}".format(data['Close'].max())
     periodLow = "{:.2f}".format(data['Close'].min())
     balance = "{:.2f}".format(balance)
@@ -142,7 +199,6 @@ def movingAveragePLCalculaion(response,data,target,steploss,quantity):
         AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
         AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
 
-    print(data.columns)
     x = plt.figure(figsize=(15, 7))
     plt.title('Close Price History w/ Buy & Sell Signals', fontsize=18)
     plt.plot(data['Close'], alpha=0.5, label='Close')
@@ -158,9 +214,8 @@ def movingAveragePLCalculaion(response,data,target,steploss,quantity):
     uri = urllib.parse.quote(string)
 
     percentBar = (float(totP) / (float(totP) + float(totL))) * 100
-    data.to_csv('file.csv')
     alldata = {
-        'ScripName': response.POST.get('scripList'),
+        'ScripName': scrip.replace('.NS', ''),
         'PL': "{:.2f}".format(float(balance) * int(quantity)),
         'Status': status,
         'Signal': WinsCount + LossCount,
