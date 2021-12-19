@@ -401,6 +401,9 @@ footer .row h3{
   margin-top: 10%;
 }
 
+#cpassword[input]:focus {
+outline: none;
+}
 
 /* -------------------- END REGISTRATION PAGE ---------------*/
 
@@ -695,7 +698,7 @@ body > div.contact-us.container.p-5 > div{
 
 
 
-.indicator-search .indicatorsuggest-box{
+.indicator-search .indicatorsuggest-box, .indicator-search2 .indicatorsuggest-box2{
   padding: 10px 8px;
   max-height: 200px;
   overflow-y: auto;
@@ -707,7 +710,7 @@ body > div.contact-us.container.p-5 > div{
   color: black;
 }
 
-.indicator-search .indicatorsuggest-box li{
+.indicator-search .indicatorsuggest-box li, .indicator-search2 .indicatorsuggest-box2 li{
   list-style: none;
   padding: 8px 12px;
   width: 100%;
@@ -717,22 +720,22 @@ body > div.contact-us.container.p-5 > div{
   border-bottom: 1px solid #f3f3f3;
 }
 
-.indicator-search .indicatorsuggest-box li .indicatorsuggestionHead{
+.indicator-search .indicatorsuggest-box li .indicatorsuggestionHead, .indicator-search2 .indicatorsuggest-box2 li .indicator2suggestionHead{
   color: black;
   font-weight: bold;
   font-size: 1.3rem;
 }
 
-.indicator-search .indicatorsuggest-box li .indicatorsuggestionDesc{
+.indicator-search .indicatorsuggest-box li .indicatorsuggestionDesc, .indicator-search2 .indicatorsuggest-box2 li .indicator2suggestionDesc{
   color: black;
   font-size: 1.2rem;
 }
 
-.indicator-search .indicatorsuggest-box li:hover{
+.indicator-search .indicatorsuggest-box li:hover, .indicator-search2 .indicatorsuggest-box2 li:hover{
   background: #efefef;
 }
 
-.indicator-search.active .indicatorsuggest-box{
+.indicator-search.active .indicatorsuggest-box, .indicator-search2.active .indicatorsuggest-box2{
   padding-top: 10px 8px;
   opacity: 1;
   pointer-events: auto;
@@ -740,7 +743,7 @@ body > div.contact-us.container.p-5 > div{
   color: black;
 }
 
-.indicator-search.active .indicatorsuggest-box li{
+.indicator-search.active .indicatorsuggest-box li, .indicator-search2.active .indicatorsuggest-box2 li{
   color: black;
   display: block;
 }

@@ -56,14 +56,14 @@
         <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title text-color" id="exampleModalLongTitle">Login</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
+                    <form id="loginForm" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title text-color" id="exampleModalLongTitle">Login</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
                             <div class="form-group row p-1">
                                 <div class="col-12">
                                     <input type="email" name="email" placeholder="Email Id" class="form-control">
@@ -74,13 +74,13 @@
                                     <input type="password" name="password" placeholder="Password" class="form-control">
                                 </div>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <a href="{% url 'registrationpage' %}" class="btn btn-primary">Register</a>
-                        <input type="submit" name="" class="btn btn-primary" value="Login">
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a href="{% url 'registrationpage' %}" class="btn btn-primary">Register</a>
+                            <button type="button" onclick="return loginForm()" class="btn btn-secondary">Login</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -190,6 +190,7 @@
     <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="{% static '././JS/script.js' %}"></script>
     <script type="text/javascript">
         AOS.init();

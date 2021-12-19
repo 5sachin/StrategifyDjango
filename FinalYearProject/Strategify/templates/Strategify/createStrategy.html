@@ -45,11 +45,6 @@
 
 
 
-
-
-
-
-
     <div class="container createStrategy">
         <div class="row">
             <div class="col-md-12">
@@ -92,12 +87,6 @@
                                                     <input type="hidden" name="allscriplist" id="allscriplist" class="form-control" >
                                                 </div>
                                             </div>
-                                            <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
-                                                <select class="form-select form-control" name="timeframe" aria-label="Default select example" id="scripTimeFrameDropBtn" required>
-                                                        <option selected value="">Time Frame</option>
-                                                        <option value="3600">1 Day</option>
-                                                </select>
-                                            </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
@@ -127,7 +116,11 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">
-                                                        <input type="text" name="indicator2" placeholder="Indicator" class="form-control indicator2">
+                                                        <div class="indicator-search2">
+                                                            <input type="text" name="indicator2" placeholder="Indicator" class="form-control indicator2" autocomplete="off">
+                                                            <ul class="indicatorsuggest-box2" id="indicatorBox2">
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="entryConditionRow">
@@ -171,10 +164,10 @@
                                                 <div class="collapse" id="advanceExitCondition">
                                                     <div class="row mt-4">
                                                         <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
-                                                            <input type="text" onfocus="(this.type='date')" name="startDate" placeholder="Start Date" class="form-control">
+                                                            <input type="date" id="startDate"  name="startDate" placeholder="Start Date" class="form-control">
                                                         </div>
                                                         <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
-                                                            <input type="text" name="stopDate" onfocus="(this.type='date')" placeholder="Stop Date" class="form-control">
+                                                            <input type="date" id="stopDate" name="stopDate" placeholder="Stop Date" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -189,8 +182,6 @@
                                                 <div class="row">
                                                     <hr class="dashed">
                                                     <div class="offset-lg-2 offset-xl-2">
-                                                           
-
                                                     </div>
                                                     <div class="col-12 text-center">
                                                         <input type="submit" class="btn backTestBtn" name="backTestBtn"/>
@@ -235,6 +226,34 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal fade" id="indicator2Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-color" id="indicator2headingModal"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group row p-1">
+                                        <div class="col-6">
+                                            <label class="text-dark form-control">Period 2</label>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="number" name="indicatorperiod22" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary" onclick="saveIndicatordetails2()">Done</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>  
             </div>
         </div>
@@ -254,5 +273,6 @@
     <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="{% static './JS/script.js' %}"></script>
+    <script src="{% static './JS/createStrategy.js' %}"></script>
 </body>
 </html>
