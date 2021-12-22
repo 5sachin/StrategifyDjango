@@ -71,6 +71,7 @@ def signIn(request):
             if(user_data):
                 if user_data.email == email and user_data.password == password:
                     response_data['success'] = "Logged In Success"
+                    dashboard(request)
                 else:
                     response_data['error'] = "Invalid Login"
             else:
@@ -89,6 +90,7 @@ def createstrategy(response):
     return render(response, 'Strategify/createStrategy.html', {})
 
 def dashboard(response):
+    print(response.POST.get('username'))
     return render(response,'Strategify/dashboard.html', {})
 
 def createStrategyForm(response):

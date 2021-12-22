@@ -1,9 +1,9 @@
 // Chart.js scripts
 // -- Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#292b2c';
+//Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+// Chart.defaults.global.defaultFontColor = '#292b2c';
 // -- Area Chart Example
-var ctx = document.getElementById("myAreaChart");
+/*var ctx = document.getElementById("myAreaChart");
 var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
@@ -109,8 +109,8 @@ var myPieChart = new Chart(ctx, {
 
 $(document).ready(function() {
   $('#dataTable').DataTable();
-});
-
+});*/
+/*
 (function($) {
   "use strict"; // Start of use strict
   // Configure tooltips for collapsed side navigation
@@ -156,3 +156,39 @@ $(document).ready(function() {
     event.preventDefault();
   });
 })(jQuery); // End of use strict
+*/
+
+const buttonRight = document.getElementById('slideRight');
+const buttonLeft = document.getElementById('slideLeft');
+
+
+buttonRight.onclick = function () {
+  document.getElementById('mystrategy').scrollLeft += 800;
+};
+    
+buttonLeft.onclick = function () {
+  document.getElementById('mystrategy').scrollLeft -= 800;
+};
+
+
+/*const userAction = async () => {
+  console.log("Here");
+  const response = await fetch('https://api.twelvedata.com/stocks');
+  const myJson = await response.json();
+  console.log(myJson);
+}
+*/
+
+var xhttp = new XMLHttpRequest();
+let response = null;
+xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        var data_filter = myArr.filter( element => element.country =="India")
+        console.log(data_filter)
+        console.log(Object.values(myArr).filter(user => user.country === 1));
+    }
+};
+xhttp.open("GET", "https://api.twelvedata.com/stocks", true);
+xhttp.send();
+console.log(response);
