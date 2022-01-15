@@ -523,15 +523,15 @@ footer.sticky-footer {
 .progress {
     height: 10px;
     border-radius: 10px
-    background-color: red
+    background-color: red;
 }
 
 .progress div {
-    background-color: red
+    background-color: green;
 }
 
 .progress-bar{
-    background-color: red;
+    background-color: green;
 }
 .text1 {
     font-size: 14px;

@@ -698,7 +698,7 @@ body > div.contact-us.container.p-5 > div{
 
 
 
-.indicator-search .indicatorsuggest-box, .indicator-search2 .indicatorsuggest-box2{
+.indicator-search .indicatorsuggest-box, .indicator-search2 .indicatorsuggest-box2, .exitConditionRow .indicatorsuggest-box3, .exitConditionRow .indicatorsuggest-box4{
   padding: 10px 8px;
   max-height: 200px;
   overflow-y: auto;
@@ -710,7 +710,7 @@ body > div.contact-us.container.p-5 > div{
   color: black;
 }
 
-.indicator-search .indicatorsuggest-box li, .indicator-search2 .indicatorsuggest-box2 li{
+.indicator-search .indicatorsuggest-box li, .indicator-search2 .indicatorsuggest-box2 li, .exitConditionRow .indicatorsuggest-box3 li, .exitConditionRow .indicatorsuggest-box4 li{
   list-style: none;
   padding: 8px 12px;
   width: 100%;
@@ -720,7 +720,7 @@ body > div.contact-us.container.p-5 > div{
   border-bottom: 1px solid #f3f3f3;
 }
 
-.indicator-search .indicatorsuggest-box li .indicatorsuggestionHead, .indicator-search2 .indicatorsuggest-box2 li .indicator2suggestionHead{
+.indicator-search .indicatorsuggest-box li .indicatorsuggestionHead, .indicator-search2 .indicatorsuggest-box2 li .indicator2suggestionHead, .exitConditionRow .indicatorsuggest-box3 li .indicatorsuggestionHead, .exitConditionRow .indicatorsuggest-box4 li .indicatorsuggestionHead{
   color: black;
   font-weight: bold;
   font-size: 1.3rem;
@@ -731,11 +731,11 @@ body > div.contact-us.container.p-5 > div{
   font-size: 1.2rem;
 }
 
-.indicator-search .indicatorsuggest-box li:hover, .indicator-search2 .indicatorsuggest-box2 li:hover{
+.indicator-search .indicatorsuggest-box li:hover, .indicator-search2 .indicatorsuggest-box2 li:hover, .exitConditionRow .indicatorsuggest-box3 li:hover, .exitConditionRow .indicatorsuggest-box4 li:hover{
   background: #efefef;
 }
 
-.indicator-search.active .indicatorsuggest-box, .indicator-search2.active .indicatorsuggest-box2{
+.indicator-search.active .indicatorsuggest-box, .indicator-search2.active .indicatorsuggest-box2, .exitConditionRow.active .indicatorsuggest-box3, .exitConditionRow.active .indicatorsuggest-box4{
   padding-top: 10px 8px;
   opacity: 1;
   pointer-events: auto;
@@ -743,7 +743,7 @@ body > div.contact-us.container.p-5 > div{
   color: black;
 }
 
-.indicator-search.active .indicatorsuggest-box li, .indicator-search2.active .indicatorsuggest-box2 li{
+.indicator-search.active .indicatorsuggest-box li, .indicator-search2.active .indicatorsuggest-box2 li, .exitConditionRow.active .indicatorsuggest-box3 li, .exitConditionRow.active .indicatorsuggest-box4 li{
   color: black;
   display: block;
 }
@@ -807,9 +807,6 @@ body > div.contact-us.container.p-5 > div{
   border: none;
 }
 
-.createStrategy{
-  margin-top: 120px;
-}
 
 .timeline .card-body{
   padding: none;

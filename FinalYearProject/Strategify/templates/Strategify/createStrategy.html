@@ -1,58 +1,143 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {% load static %}
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{% static './././node_modules/bootstrap/dist/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static './././node_modules/font-awesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
+    <link rel="stylesheet" href="{% static './CSS/dashboard.css' %}">
     <link rel="stylesheet" href="{% static './CSS/styles.css' %}">
-	<title>Strateigfy</title>
+    <title>Create Strategy</title>
 </head>
-<body>
-	<header class="page-head">
-        <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
-            <a href="#" class="navbar-brand brand">Strateigfy</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a href="{% url 'home' %}" class="nav-link">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'contactus' %}" class="nav-link">Contact Us</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <img src="{% static 'IMAGES/img_avatar.png' %}" class="avatar dropdown-toggle" role="button" data-toggle="dropdown" id="navbarDropdown"  aria-expanded="false">
-                        <div class="dropdown-menu text-left" aria-labelledby="navbarDropdown"> 
-                            <a href="{% url 'home' %}" class="dropdown-item text-dark">Logout</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+    <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="index.html">Strategify</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+          <a class="nav-link" href="index.html">
+            <i class="fa fa-fw fa-dashboard"></i>
+            <span class="nav-link-text">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+          <a class="nav-link" href="charts.html">
+            <i class="fa fa-fw fa-area-chart"></i>
+            <span class="nav-link-text">Charts</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
+          <a class="nav-link" href="tables.html">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">Live Trades</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
+          <a class="nav-link" href="tables.html">
+            <i class="fa fa-fw fa-table"></i>
+            <span class="nav-link-text">Deployed</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
+          <a class="nav-link" href="#">
+            <i class="fa fa-fw fa-link"></i>
+            <span class="nav-link-text">Paper Trades</span>
+          </a>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-user"></i>
+            <span class="nav-link-text">{{data.name}}</span>
+          </a>
+          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+            <li>
+              <a href="login.html">Profile</a>
+            </li>
+            <li>
+              <a href="forgot-password.html">Logout</a>
+            </li>
+            <li>
+              <a href="blank.html">Delete Account</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <ul class="navbar-nav sidenav-toggler">
+        <li class="nav-item">
+          <a class="nav-link text-center" id="sidenavToggler">
+            <i class="fa fa-fw fa-angle-left"></i>
+          </a>
+        </li>
+      </ul>
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle ml-lg-4" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-fw fa-bell"></i>
+            <span class="d-lg-none">Alerts
+              <span class="badge badge-pill badge-warning">6 New</span>
+            </span>
+            <span class="indicator text-warning d-none d-lg-block">
+              <i class="fa fa-fw fa-circle"></i>
+            </span>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+            <h6 class="dropdown-header">New Alerts:</h6>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">
+              <span class="text-success">
+                <strong>
+                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
+              </span>
+              <span class="small float-right text-muted">11:21 AM</span>
+              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">
+              <span class="text-danger">
+                <strong>
+                  <i class="fa fa-long-arrow-down fa-fw"></i>Status Update</strong>
+              </span>
+              <span class="small float-right text-muted">11:21 AM</span>
+              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#">
+              <span class="text-success">
+                <strong>
+                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
+              </span>
+              <span class="small float-right text-muted">11:21 AM</span>
+              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item small" href="#">View all alerts</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
 
+  <div class="content-wrapper">
+    <div class="container-fluid">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active">Create Strategy</li>
+      </ol>
 
-
-
-
-    <div class="container createStrategy">
+      <div class="container createStrategy">
         <div class="row">
             <div class="col-md-12">
                 <form id="createStrategyform" action="{% url 'createsStrategyForm' %}" method="post">
                     {% csrf_token %}
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="card-title">Create Strategy</h4>
                             <div id="content">
                                 <ul class="timeline">
                                     <li class="event" value="Strategy Name">
@@ -97,12 +182,12 @@
                                     </li>
                                     <li class="event" value="Entry Condition">
                                         <div class="row mt-5">
-                                            <div class="col-12">
+                                            <div class="col-12 indicator-search">
                                                 <div class="row">
                                                     <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="indicator-search">
-                                                            <input type="text" name="indicator1" placeholder="Indicator" class="form-control" autocomplete="off">
-                                                            <ul class="indicatorsuggest-box" id="indicatorBox">
+                                                        <div>
+                                                            <input type="text" name="entryfirindicator1" id="entryfirindicator1" onkeyup="lookup(this)" placeholder="Indicator" class="form-control" autocomplete="off">
+                                                            <ul class="indicatorsuggest-box" id="firindicatorBox1">
                                                             </ul>
                                                         </div>
                                                     </div>
@@ -116,14 +201,12 @@
                                                         </select>
                                                     </div>
                                                     <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">
-                                                        <div class="indicator-search2">
-                                                            <input type="text" name="indicator2" placeholder="Indicator" class="form-control indicator2" autocomplete="off">
-                                                            <ul class="indicatorsuggest-box2" id="indicatorBox2">
+                                                            <input type="text" name="entrysecindicator1" placeholder="Indicator" class="form-control indicator2" autocomplete="off" id="entrysecindicator1" onkeyup="lookup2(this)">
+                                                            <ul class="indicatorsuggest-box2" id="secindicatorBox1">
                                                             </ul>
-                                                        </div>
                                                     </div>
                                                 </div>
-                                                <div class="entryConditionRow">
+                                                <div class="entryConditionRow indicator-search2">
 
                                                 </div>
                                                 <div class="row">
@@ -135,7 +218,7 @@
                                         </div>
                                     </li>
                                     <li class="event" value="Exit Condition">
-                                        
+
                                         <div class="row mt-4">
                                             <div class="col-12">
                                                 <div class="row">
@@ -147,7 +230,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="exitConditionRow mt-3">
-                                                    
+
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-12">
@@ -173,7 +256,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                            </div>   
+                                            </div>
                                         </div>
                                     </li>
                                     <li class="event" value="Finish">
@@ -187,13 +270,14 @@
                                                         <input type="submit" class="btn backTestBtn" name="backTestBtn"/>
                                                     </div>
                                                 </div>
-                                            </div>  
+                                            </div>
                                         </div>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
+
                     <div class="modal fade" id="indicatorModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
@@ -221,7 +305,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary" onclick="saveIndicatordetails()">Done</button>
+                                    <button type="button" class="btn btn-primary"  id="modalIndicator">Done</button>
                                 </div>
                             </div>
                         </div>
@@ -248,30 +332,25 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="button" class="btn btn-primary" onclick="saveIndicatordetails2()">Done</button>
+                                    <button type="button" class="btn btn-primary" id="modalIndicator2">Done</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                </form>  
+                </form>
             </div>
         </div>
     </div>
 
+    </div>
+  </div>
 
-    <footer class="container-fluid mt-5">
-        <div class="row p-2">
-            <div class="col-12 text-center p-2 m-auto">
-                <h3>&copy Copyright: Strategify.</h3>
-            </div>
-        </div>
-    </footer>
-    
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
     <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
     <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '././JS/dashboard.js' %}"></script>
     <script src="{% static './JS/script.js' %}"></script>
     <script src="{% static './JS/createStrategy.js' %}"></script>
 </body>

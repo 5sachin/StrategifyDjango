@@ -41,49 +41,52 @@
                     <li class="nav-item">
                         <a href="#"  data-toggle="modal" data-target="#LoginModal"  class="nav-link">Log In</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <img src="{% static 'IMAGES/img_avatar.png' %}" class="avatar dropdown-toggle" role="button" data-toggle="dropdown" id="navbarDropdown"  aria-expanded="false">
-                        <div class="dropdown-menu text-left" aria-labelledby="navbarDropdown">
-                            <a href="{% url 'profilepage' %}" class="dropdown-item text-dark">Profile</a>
-                            <div class="dropdown-divider text-dark"></div>
-                            <a href="#" class="dropdown-item text-dark">Logout</a>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </nav>
 
         <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <form id="loginForm" method="POST">
-                        <div class="modal-header">
-                            <h5 class="modal-title text-color" id="exampleModalLongTitle">Login</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group row p-1">
-                                <div class="col-12">
-                                    <input type="email" name="email" placeholder="Email Id" class="form-control">
-                                </div>
-                            </div>
-                            <div class="form-group row p-1">
-                                <div class="col-12">
-                                    <input type="password" name="password" placeholder="Password" class="form-control">
-                                </div>
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-color" id="exampleModalLongTitle">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="p-2" id="loginForm" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group row p-1">
+                            <div class="col-12">
+                                <input type="text" name="email" id="loginUsername" placeholder="Username" class="form-control">
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <a href="{% url 'registrationpage' %}" class="btn btn-primary">Register</a>
-                            <button type="button" onclick="return loginForm()" class="btn btn-secondary">Login</button>
+                        <div class="form-group row p-1">
+                            <div class="col-12">
+                                <input type="email" name="email" id="loginEmail" placeholder="Email Id" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row p-1">
+                            <div class="col-12">
+                                <input type="password" name="password" id="loginPassword" placeholder="Password" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group row p-1">
+                            <div class="col-12">
+                                <h6><strong id="loginMssg"></strong></h6>
+                            </div>
                         </div>
                     </form>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a type="button" class="btn btn-primary" href="{% url 'registrationpage' %}">Register</a>
+                    <button type="button" onclick="login()">Login</button>
+                </div>
             </div>
         </div>
+    </div>
 
 
         <div class="back-video">
@@ -92,7 +95,7 @@
             </video>
             <div class="mid-content text-center">
                 <h2 class="text-light h2 font-weight-bold">Trading Made Easy</h2>
-                <p class="text-light mx-auto">Create yout Strategy, deploy it and earn.</p>
+                <p class="text-light mx-auto">Create your Strategy, deploy it and earn.</p>
                 <a href="#" role="button" type="button" class="btn">Get Started</a>
             </div>
         </div>
@@ -110,66 +113,6 @@
                         </div>
                         <div class="img col-12 col-lg-6 col-md-6 w-50 d-none d-lg-block d-xl-none d-none d-xl-block">
                             <img class="img-fluid" src="{% static 'IMAGES/1secondrow.png' %}">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
-            <div class="shell">
-                <div class="range">
-                    <div class="rows align-items-center scroll">
-                        <div class="horizo-scroll">
-                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                <div class="card" data-aos="zoom-in">
-                                    <a href="viewStrategy.html" class="cardBtn"></a>
-                                    <img class="card-img-top img-fluid " src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title font-weight-bold">Strategy1</h4>
-                                        <a href="#" class="btn btn-primary">Run</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                <div class="card" data-aos="zoom-in">
-                                    <a href="viewStrategy.html" class="cardBtn"></a>
-                                    <img class="card-img-top img-fluid " src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title font-weight-bold">Strategy2</h4>
-                                        <a href="#" class="btn btn-primary">Run</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                <div class="card" data-aos="zoom-in">
-                                    <a href="viewStrategy.html" class="cardBtn"></a>
-                                    <img class="card-img-top img-fluid " src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title font-weight-bold">Strategy4</h4>
-                                        <a href="#" class="btn btn-primary">Run</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                <div class="card" data-aos="zoom-in">
-                                    <a href="viewStrategy.html" class="cardBtn"></a>
-                                    <img class="card-img-top img-fluid " src="{% static 'IMAGES/cardHeadImg.jpg' %}" alt="Card image cap">
-                                    <div class="card-body text-center">
-                                        <h4 class="card-title font-weight-bold">Strategy5</h4>
-                                        <a href="#" class="btn btn-primary">Run</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="cardDiv  col-12 col-xs-12 col-sm-6 col-md-4 col-lg-4">
-                                <div class="card" data-aos="zoom-in">
-                                    <img class="card-img-top img-fluid m-auto" src="{% static 'IMAGES/plusIcon.png' %}" alt="Card image cap">
-                                    <div class="card-body text-center new-strategy">
-                                        <h4 class="card-title font-weight-bold">NEW STRATEGY</h4>
-                                        <a href="{% url 'createstrategy' %}" class="btn btn-primary">CREATE</a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -194,6 +137,34 @@
     <script src="{% static '././JS/script.js' %}"></script>
     <script type="text/javascript">
         AOS.init();
+        function login(){
+        var loginEmail = document.getElementById("loginEmail").value;
+        var loginPassword = document.getElementById("loginPassword").value;
+        var loginUsername = document.getElementById("loginUsername").value;
+        var message = document.getElementById("loginMssg");
+        csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        $.ajax({
+            type:"POST",
+            url:'{% url 'signIn' %}',
+            data:{
+              'csrfmiddlewaretoken': csrfmiddlewaretoken,
+              'email':loginEmail,
+              'password':loginPassword,
+              'username':loginUsername,
+            },
+            success :function(data){
+                console.log(data);
+                if(data.success){
+                message.innerHTML = data.success;
+                message.style.color = 'green';
+                window.location = '{% url 'dashboard' %}';
+                }else{
+                message.innerHTML = data.error;
+                message.style.color = 'red';
+                }
+            }
+        })
+    }
     </script>
 </body>
 </html>

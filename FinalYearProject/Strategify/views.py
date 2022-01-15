@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 import pandas as pd
 import numpy as np
 import io
@@ -10,6 +10,7 @@ from .models import UserRegistration
 
 plt.style.use('fivethirtyeight')
 data = None
+USERNAME = None
 
 def home(response):
     return render(response, 'Strategify/index.html',{})
@@ -54,26 +55,25 @@ def checkUsername(request):
             if UserRegistration.objects.filter(username=username).exists():
                 response_data['success'] = "Availiable"
             else:
-                response_data['error'] = "Not Availiable"
+                response_data['error'] = "Not Available"
         except Exception as e:
             print(e)
         return JsonResponse(response_data)
 
 
 def signIn(request):
+    global USERNAME
     response_data = {}
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
         try:
-            user_data = UserRegistration.objects.get(username=username)
+            user_data = UserRegistration.objects.get(username=username,email=email,password=password)
             if(user_data):
-                if user_data.email == email and user_data.password == password:
-                    response_data['success'] = "Logged In Success"
-                    dashboard(request)
-                else:
-                    response_data['error'] = "Invalid Login"
+                response_data['success'] = "Logged In Success"
+                USERNAME = username
+                dashboard(request)
             else:
                 response_data['error'] = "Invalid Login"
         except Exception as e:
@@ -87,18 +87,30 @@ def profilepage(response):
     return render(response, 'Strategify/profilePage.html', {})
 
 def createstrategy(response):
-    return render(response, 'Strategify/createStrategy.html', {})
+    data = UserRegistration.objects.get(username=USERNAME)
+    userData = {
+        'username': USERNAME,
+        'name': data.name,
+    }
+    return render(response, 'Strategify/createStrategy.html', {'data':userData})
+
+
 
 def dashboard(response):
-    print(response.POST.get('username'))
-    return render(response,'Strategify/dashboard.html', {})
+    data = UserRegistration.objects.get(username=USERNAME)
+    userData = {
+    'username': USERNAME,
+    'name': data.name,
+    }
+    print(userData)
+    return render(response,'Strategify/dashboard.html', {'data':userData})
 
 def createStrategyForm(response):
     global data
     try:
         if response.method == "POST":
-            a = response.POST.get("indicator1").split(",")
-            b = response.POST.get("indicator2").split(",")
+            a = response.POST.get("entryfirindicator1").split(",")
+            b = response.POST.get("entrysecindicator1").split(",")
             startDate = response.POST.get('startDate')
             stopDate = response.POST.get('stopDate')
             x = b[0]
@@ -107,26 +119,28 @@ def createStrategyForm(response):
             scriplist = response.POST.get('allscriplist')
             scriplist = scriplist.split(",")
             alldata = []
-
+            entrywithexit = True
+            print(a,b)
             for i in range(0,len(scriplist)-1):
                 try:
                     data = yf.download(scriplist[i], start=startDate, end=stopDate)
                 except ConnectionError as e:
                     print(e)
-                val = None
                 for j in range(0,2):
                     if a[j] == "MA":
+                        print("Here")
                         MA(int(b[0]))
                         if j == 1:
                             MA(int(b[1]))
-                            val = signalGenearation(scriplist[i],str(a[0])+str(b[0]),str(a[1])+str(b[1]),response.POST.get('targetper'), response.POST.get('stoploss'),
+
+                            val = entrySignalGeneration(scriplist[i],str(a[0])+str(b[0]),str(a[1])+str(b[1]),response.POST.get('targetper'), response.POST.get('stoploss'),
                                                         response.POST.get('quantityLots'))
                             alldata.append(val)
                     elif a[j] == "EMA":
                         EMA(int(b[0]))
                         if j == 1:
                             EMA(int(b[1]))
-                            val = signalGenearation(scriplist[i], str(a[0]) + str(b[0]),
+                            val = entrySignalGeneration(scriplist[i], str(a[0]) + str(b[0]),
                                                         str(a[1]) + str(b[1]), response.POST.get('targetper'),
                                                         response.POST.get('stoploss'),
                                                         response.POST.get('quantityLots'))
@@ -135,7 +149,7 @@ def createStrategyForm(response):
                         WMA(int(b[0]))
                         if j == 1:
                             WMA(int(b[1]))
-                            val = signalGenearation(scriplist[i], str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),
+                            val = entrySignalGeneration(scriplist[i], str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),
                                                     response.POST.get('targetper'), response.POST.get('stoploss'),
                                                     response.POST.get('quantityLots'))
                             alldata.append(val)
@@ -143,7 +157,7 @@ def createStrategyForm(response):
                         RSI(int(b[0]))
                         if j == 1:
                             RSI(int(b[1]))
-                            val = signalGenearation(scriplist[i], str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),
+                            val = entrySignalGeneration(scriplist[i], str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),
                                                     response.POST.get('targetper'), response.POST.get('stoploss'),
                                                     response.POST.get('quantityLots'))
                             alldata.append(val)
@@ -151,7 +165,7 @@ def createStrategyForm(response):
                         Value(int(b[0]))
                         if j == 1:
                             Value(int(b[1]))
-                            val = signalGenearation(scriplist[i], str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),
+                            val = entrySignalGeneration(scriplist[i], str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),
                                                     response.POST.get('targetper'), response.POST.get('stoploss'),
                                                     response.POST.get('quantityLots'))
                             alldata.append(val)
@@ -219,12 +233,18 @@ def RSI(period):
     data['RSI{}'.format(period)] = rsi_df[3:]
 
 
-def signalGenearation(scrip,period1,period2,target,steploss,quantity):
+def entrySignalGeneration(scrip,period1,period2,target,steploss,quantity):
     global data
-    data['Signal'] = np.where(data['{}'.format(period1)] > data['{}'.format(period2)], 1, 0)
-    data['Position'] = data['Signal'].diff()
+    print("Here",data);
+    data['EntrySignal'] = np.where(data['{}'.format(period1)] > data['{}'.format(period2)], 1, 0)
+    data['EntryPosition'] = data['EntrySignal'].diff()
     return ProfitLossCalculation(scrip,period1,period2,target,steploss,quantity)
 
+def exitSignalGeneration(scrip,period1,period2,target,steploss,quantity):
+    global data
+    data['ExitSignal'] = np.where(data['{}'.format(period1)] > data['{}'.format(period2)], 0, 1)
+    data['ExitPosition'] = data['ExitSignal'].diff()
+    return ProfitLossCalculation(scrip, period1, period2, target, steploss, quantity)
 
 def ProfitLossCalculation(scrip,period1,period2,target,steploss,quantity):
     global data
@@ -242,9 +262,9 @@ def ProfitLossCalculation(scrip,period1,period2,target,steploss,quantity):
     streakP = 0
     streakL = 0
 
-    for i in range(0, len(data['Position'])):
+    for i in range(0, len(data['EntryPosition'])):
 
-        if data['Position'][i] == 1.0 and enter == 0:
+        if data['EntryPosition'][i] == 1.0 and enter == 0:
             a = data['Close'][i]
             enter = 1
             alllist.append({
