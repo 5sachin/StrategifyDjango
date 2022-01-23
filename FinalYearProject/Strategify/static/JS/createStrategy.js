@@ -32,7 +32,7 @@ var scripAddedContainer = document.querySelector(".addedscripList");
 function addScripName(element){
 
     var scripAddedName = document.createElement("a");
-    scripAddedName.setAttribute("class","btn");
+    scripAddedName.setAttribute("class","btn fadeIn");
     scripAddedName.setAttribute("name",element);
     scripAddedName.setAttribute("value",element);
     scripAddedName.setAttribute("id",element);
@@ -74,6 +74,7 @@ function showSuggestions(list){
 function cancel(val){
     var parent = document.getElementById('autocom-box');
     var child = document.getElementById(val);
+    console.log(child);
     child.remove(parent);
     var index = scripList.indexOf(val);
     if (index !== -1) {
@@ -242,7 +243,7 @@ function lookup2(arg){
             allList[i].appendChild(head);
             allList[i].appendChild(desc);
             allList[i].setAttribute("name", 'this.innerText');
-            allList[i].setAttribute("onclick", "openIndicator2Details('"+dataArray[i][0]+"',"+no);
+            allList[i].setAttribute("onclick", "openIndicator2Details('"+dataArray[i][0]+"',"+no+")");
         }
     }else{
         indicatorWrapper2.classList.remove("active");
@@ -445,3 +446,12 @@ function saveIndicatordetails4(id){
     indicatorWrapper4.classList.remove("active");
     $('#indicator2Modal').modal('hide');
 }
+
+
+
+
+
+
+
+
+

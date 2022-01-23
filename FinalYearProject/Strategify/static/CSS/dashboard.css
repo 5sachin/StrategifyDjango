@@ -1,3 +1,5 @@
+ @import url('https://fonts.googleapis.com/css2?family=Arsenal:ital@1&family=Cormorant+Garamond:ital@1&family=Cormorant+Upright:wght@500&family=Tourney:ital,wght@1,700&display=swap');
+
 html {
   position: relative;
   min-height: 100%;
@@ -63,6 +65,25 @@ body.fixed-nav {
 
 .z-1 {
   z-index: 1;
+}
+
+@-webkit-keyframes fadeIn{
+  0% {opacity:  0;}
+  100% {opacity: 1;}
+}
+
+@keyframes fadeIn{
+  0% {opacity:  0;}
+  100% {opacity: 1;}
+}
+
+.fadeIn{
+  -webkit-animation-name: fadeIn;
+  animation-name: fadeIn;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
 #mainNav .navbar-collapse {
@@ -143,9 +164,14 @@ body.fixed-nav {
   text-overflow: ellipsis;
 }
 
+.brand{
+
+}
+
 @media (min-width: 992px) {
   #mainNav .navbar-brand {
     width: 250px;
+    font-family: 'Tourney', cursive;
   }
   #mainNav .navbar-collapse {
     overflow: visible;
@@ -504,9 +530,10 @@ footer.sticky-footer {
   scroll-behavior: smooth;
 }
 
-.mystrategy.div{
+.mystrategy .div{
   transform: translateY(0);
   opacity: 1;
+  scroll-behavior: smooth;
 }
 
 

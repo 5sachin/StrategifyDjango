@@ -102,88 +102,91 @@ def dashboard(response):
     'username': USERNAME,
     'name': data.name,
     }
-    print(userData)
     return render(response,'Strategify/dashboard.html', {'data':userData})
 
 def createStrategyForm(response):
     global data
+    entryCondition = []
+    exitCondition = []
     try:
         if response.method == "POST":
-            a = response.POST.get("entryfirindicator1").split(",")
-            b = response.POST.get("entrysecindicator1").split(",")
+            j = 1
+            for i in response.POST:
+                tempCondition = []
+                a = response.POST.get("entryfirindicator"+str(j))
+                b = response.POST.get("entrysecindicator"+str(j))
+                c = response.POST.get("entrycomparator" + str(j))
+                if((a and b and c) != None):
+                    tempCondition.append(a)
+                    tempCondition.append(c)
+                    tempCondition.append(b)
+                    entryCondition.append(tempCondition)
+                j +=1
+            j = 1
+            for i in response.POST:
+                tempCondition = []
+                a = response.POST.get("exitfirindicator"+str(j))
+                b = response.POST.get("exitsecindicator"+str(j))
+                c = response.POST.get("exitcomparator" + str(j))
+                if((a and b and c) != None):
+                    tempCondition.append(a)
+                    tempCondition.append(c)
+                    tempCondition.append(b)
+                    exitCondition.append(tempCondition)
+                j +=1
+
             startDate = response.POST.get('startDate')
             stopDate = response.POST.get('stopDate')
-            x = b[0]
-            b[0]= a[1]
-            a[1] = x
             scriplist = response.POST.get('allscriplist')
             scriplist = scriplist.split(",")
             alldata = []
-            entrywithexit = True
-            print(a,b)
             for i in range(0,len(scriplist)-1):
                 try:
                     data = yf.download(scriplist[i], start=startDate, end=stopDate)
+                    data['Position'] = None
                 except ConnectionError as e:
                     print(e)
-                for j in range(0,2):
-                    if a[j] == "MA":
-                        print("Here")
-                        MA(int(b[0]))
-                        if j == 1:
-                            MA(int(b[1]))
 
-                            val = entrySignalGeneration(scriplist[i],str(a[0])+str(b[0]),str(a[1])+str(b[1]),response.POST.get('targetper'), response.POST.get('stoploss'),
-                                                        response.POST.get('quantityLots'))
-                            alldata.append(val)
-                    elif a[j] == "EMA":
-                        EMA(int(b[0]))
-                        if j == 1:
-                            EMA(int(b[1]))
-                            val = entrySignalGeneration(scriplist[i], str(a[0]) + str(b[0]),
-                                                        str(a[1]) + str(b[1]), response.POST.get('targetper'),
-                                                        response.POST.get('stoploss'),
-                                                        response.POST.get('quantityLots'))
-                            alldata.append(val)
-                    elif a[j] == "WMA":
-                        WMA(int(b[0]))
-                        if j == 1:
-                            WMA(int(b[1]))
-                            val = entrySignalGeneration(scriplist[i], str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),
-                                                    response.POST.get('targetper'), response.POST.get('stoploss'),
-                                                    response.POST.get('quantityLots'))
-                            alldata.append(val)
-                    elif a[j] == "RSI":
-                        RSI(int(b[0]))
-                        if j == 1:
-                            RSI(int(b[1]))
-                            val = entrySignalGeneration(scriplist[i], str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),
-                                                    response.POST.get('targetper'), response.POST.get('stoploss'),
-                                                    response.POST.get('quantityLots'))
-                            alldata.append(val)
-                    elif a[j] == "Value":
-                        Value(int(b[0]))
-                        if j == 1:
-                            Value(int(b[1]))
-                            val = entrySignalGeneration(scriplist[i], str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),
-                                                    response.POST.get('targetper'), response.POST.get('stoploss'),
-                                                    response.POST.get('quantityLots'))
-                            alldata.append(val)
+                for k in range(len(entryCondition)):
+                    a = entryCondition[k][0].split(",")
+                    b = entryCondition[k][2].split(",")
+                    x = b[0]
+                    b[0] = a[1]
+                    a[1] = x
 
+                    for j in range(0,2):
+                        globals()[a[j]](int(b[0]))
+                        if j == 1:
+                            globals()[a[j]](int(b[1]))
+                            entrySignalGeneration(scriplist[i],str(a[0])+str(b[0]),str(a[1])+str(b[1]),response.POST.get('targetper'), response.POST.get('stoploss'),
+                                                        response.POST.get('quantityLots'))
+
+                if entryCondition:
+                    for k in range(len(exitCondition)):
+                        a = exitCondition[k][0].split(",")
+                        b = exitCondition[k][2].split(",")
+                        x = b[0]
+                        b[0] = a[1]
+                        a[1] = x
+                        print(a)
+                        print(b)
+
+                val = ProfitLossCalculation(scriplist[i],response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
+                alldata.append(val)
             return render(response, 'Strategify/backtestHistory.html',{'data':alldata,'strategyName':response.POST.get('strategyname'),'startDate':startDate,'stopDate':stopDate})
     except Exception as e:
-        print(e)
+        print("Error",e)
 
 def Value(period):
     data['Value{}'.format(period)] = period
 
 def MA(period):
     global data
+    print("Here",period)
     try:
-        data = data.apply(lambda x: x.fillna(x.value_counts().index[0]))
         data['MA{}'.format(period)] = data['Close'].rolling(window=period).mean()
     except Exception as e:
-        print(e)
+        print("Error Line 200",e)
 
 def EMA(days):
     global data
@@ -235,18 +238,17 @@ def RSI(period):
 
 def entrySignalGeneration(scrip,period1,period2,target,steploss,quantity):
     global data
-    print("Here",data);
+
     data['EntrySignal'] = np.where(data['{}'.format(period1)] > data['{}'.format(period2)], 1, 0)
-    data['EntryPosition'] = data['EntrySignal'].diff()
-    return ProfitLossCalculation(scrip,period1,period2,target,steploss,quantity)
+    data['Position{}'.format(str(period1)+str(period2))] = data['EntrySignal'].diff()
 
-def exitSignalGeneration(scrip,period1,period2,target,steploss,quantity):
-    global data
-    data['ExitSignal'] = np.where(data['{}'.format(period1)] > data['{}'.format(period2)], 0, 1)
-    data['ExitPosition'] = data['ExitSignal'].diff()
-    return ProfitLossCalculation(scrip, period1, period2, target, steploss, quantity)
+    for i in range(0, len(data['Position{}'.format(str(period1)+str(period2))])):
+        if data['Position'][i] != 1.0:
+            data['Position'][i] = data['Position{}'.format(str(period1)+str(period2))][i]
+    data['Position'] = data['Position'].replace([-1.0],[0.0])
 
-def ProfitLossCalculation(scrip,period1,period2,target,steploss,quantity):
+
+def ProfitLossCalculation(scrip,target,steploss,quantity):
     global data
     a = 0
     status = 0
@@ -262,9 +264,10 @@ def ProfitLossCalculation(scrip,period1,period2,target,steploss,quantity):
     streakP = 0
     streakL = 0
 
-    for i in range(0, len(data['EntryPosition'])):
 
-        if data['EntryPosition'][i] == 1.0 and enter == 0:
+    for i in range(0, len(data['Position'])):
+
+        if data['Position'][i] == 1.0 and enter == 0:
             a = data['Close'][i]
             enter = 1
             alllist.append({
@@ -273,14 +276,13 @@ def ProfitLossCalculation(scrip,period1,period2,target,steploss,quantity):
                 'buysell': "buy",
                 'balance': balance,
             })
-            print("Buy Date: ",data.index[i]," Price: ",a)
+            print("Buy:    Date: ",data.index[i]," Price: ",a)
 
         else:
             if a > 0:
                 if ((data['Close'][i] - a) / a) * 100 >= int(target):
                     balance += data['Close'][i] - a
-                    print("Profit ", " I ", i, " current price ", data['Close'][i], " buy price ", a, " Date: ",
-                          data.index[i], " net profit ", data['Close'][i] - a)
+                    print("Sell:   Profit  Price: ", data['Close'][i], " Date: ", data.index[i], " Net Profit: ", data['Close'][i] - a)
                     WinsCount += 1
                     totP += data['Close'][i] - a
                     alllist.append({
@@ -297,8 +299,7 @@ def ProfitLossCalculation(scrip,period1,period2,target,steploss,quantity):
                     enter = 0
                 elif ((a - data['Close'][i]) / a) * 100 >= int(steploss):
                     balance += data['Close'][i] - a
-                    print("Loss ", " I ", i, " current price ", data['Close'][i], " buy price ", a, " Date ",
-                          data.index[i], " net loss ", data['Close'][i] - a)
+                    print("Sell:   Loss   Price: ", data['Close'][i], " Date: ",data.index[i], " Net Loss: ", data['Close'][i] - a)
                     LossCount += 1
                     totL += data['Close'][i] - a
                     alllist.append({
@@ -339,8 +340,8 @@ def ProfitLossCalculation(scrip,period1,period2,target,steploss,quantity):
     x = plt.figure(figsize=(15, 7))
     plt.title('Close Price History w/ Buy & Sell Signals', fontsize=18)
     plt.plot(data['Close'], alpha=0.5, label='Close')
-    plt.plot(data['{}'.format(period1)], alpha=1, label='shortAvg', color="green")
-    plt.plot(data['{}'.format(period2)], alpha=1, label='longAvg', color="red")
+    # plt.plot(data['{}'.format(period1)], alpha=1, label='shortAvg', color="green")
+    # plt.plot(data['{}'.format(period2)], alpha=1, label='longAvg', color="red")
     plt.xlabel('Date', fontsize=18)
     plt.ylabel('Close Price', fontsize=18)
 

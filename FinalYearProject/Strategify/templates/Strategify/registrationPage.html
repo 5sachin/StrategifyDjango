@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
     <link rel="stylesheet" href="{% static './CSS/styles.css' %}">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <title>Strategify</title>
+    <title>Registration</title>
 </head>
 <body>
 
@@ -81,7 +81,7 @@
 
     <!-- Main Content -->
 
-    <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
+    <!-- <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
         <div class="shell">
             <div class="range justify-content-center text-center">
                 <div class="row p-3 registrationPage">
@@ -153,18 +153,49 @@
                 </div>
             </div>
         </div>
+    </div> -->
+
+
+    <div class="container signup-form">
+        <div class="row mt-5 ">
+            <div class="col-md-6 col-xl-6 p-2 col-sm-12 col-xs-12 form-signup-container">
+                <form id="registerForm" method="POST">
+                    {% csrf_token %}
+                    <h1>Create Account</h1>
+                    <span>Use your email for registration</span>
+                    <input type="text" name="username" id="username" placeholder="Username" onKeyUp="checkUsername()">
+                    <span><strong id="usernameMssg"></strong></span>
+                    <input type="text" name="name" id="name" placeholder="Name">
+                    <input type="tel" name="phone" id="phone" placeholder="Phone No">
+                    <input type="email" name="email" id="email" placeholder="Email Id">
+                    <span><strong id="emailMssg"></strong></span>
+                    <input type="password" name="password" id="password" placeholder="Password">
+                    <span><strong id="passwordMssg"></strong></span>
+                    <input type="password" name="cpassword" id="cpassword" placeholder="Confirm Password" onKeyUp="checkPassword()">
+                    <span><strong id="cpasswordMssg"></strong></span>
+                    <h6><strong id="message"></strong></h6>
+                    <button onclick="signup();" type="button">Sign Up</button>
+                </form>
+            </div>
+            <div class="col-6 d-sm-none d-md-block d-none d-sm-block align-content-center form-overlay-container">
+                <div class="form-overlay">
+                    <div class="overlay-panel">
+                        <h1 class="brand">Strategify</h1>
+                        <h5>Just 10 seconds away to earn!</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- End Main Content -->
 
-    <footer>
-        <div class="container-fluid fixed-bottom">
-            <div class="row p-2">
-                <div class="col-12 text-center p-2 m-auto">
-                    <h3>&copy Copyright: Strategify.</h3>
-                </div>
-            </div>
+    <footer class="sticky-footer fixed-bottom">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © Strategify 2022</small>
         </div>
+      </div>
     </footer>
     
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
@@ -204,6 +235,10 @@
             }else if(password1 != password2){
                 message.innerHTML = "Both Password should be same";
                 message.style.color = 'red';
+                 setTimeout(function(){
+                    message.innerHTML = "";
+                    message.style.color = 'transparent';
+                }, 3000);
             }
             else{
             if(passwordStatus == 0 || usernameStatus == 0){

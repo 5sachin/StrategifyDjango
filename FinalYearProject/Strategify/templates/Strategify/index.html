@@ -72,7 +72,10 @@
                                 <input type="password" name="password" id="loginPassword" placeholder="Password" class="form-control">
                             </div>
                         </div>
-                        <div class="form-group row p-1">
+                        <div class="form-group row p-1" style="-webkit-animation-duration: 0.8s;
+  animation-duration: 0.8s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;">
                             <div class="col-12">
                                 <h6><strong id="loginMssg"></strong></h6>
                             </div>
@@ -120,12 +123,12 @@
         </div>
     </div>
 
-    <footer>
-        <div class="row p-2">
-            <div class="col-12 text-center p-2 m-auto">
-                <h3>&copy Copyright: Strategify.</h3>
-            </div>
+    <footer class="sticky-footer">
+      <div class="container">
+        <div class="text-center">
+          <small>Copyright © Strategify 2021</small>
         </div>
+      </div>
     </footer>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
@@ -157,10 +160,12 @@
                 if(data.success){
                 message.innerHTML = data.success;
                 message.style.color = 'green';
+                message.classList.add("fadeIn");
                 window.location = '{% url 'dashboard' %}';
                 }else{
                 message.innerHTML = data.error;
                 message.style.color = 'red';
+                message.classList("fadeIn");
                 }
             }
         })
