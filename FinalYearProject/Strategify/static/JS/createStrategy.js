@@ -1,3 +1,4 @@
+/*
 let suggestions = ["ITC.NS","RELIANCE.NS","SBIN.NS","TCS","LTI.NS","TATAMOTORS.NS","ABCAPITAL.NS","AJANTPHARM.NS","AMBUJACEM.NS","ATGL.NS","ADANIGREEN.NS","ADANITRANS.NS","MRF.NS","HDFC.NS","YESBANK.NS","ADANIENT.NS","TITAN.NS","BHARTIARTL.NS","TATASTEEL.NS","INFY.NS"];
 
 const searchWrapper = document.querySelector(".search-input");
@@ -92,6 +93,7 @@ function cancel(val){
     x.innerHTML = v;
 
 }
+*/
 
 
 var today = new Date();
@@ -455,3 +457,27 @@ function saveIndicatordetails4(id){
 
 
 
+function searchallscrip(){
+    var input,filter;
+    input = document.getElementById("searchStrategy");
+    csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+    filter = input.value.toUpperCase();
+    console.log(filter);
+    $.ajax({
+            type:"POST",
+            url:'${search_url_link}',
+            data:{
+              'csrfmiddlewaretoken': csrfmiddlewaretoken,
+              'scrip':filter,
+            },
+            success :function(data){
+                console.log(data);
+                if(data.success){
+                console.log(data.success);
+                console.log(data.data)
+                }else{
+                console.log(data.error);
+                }
+            }
+        })
+    }

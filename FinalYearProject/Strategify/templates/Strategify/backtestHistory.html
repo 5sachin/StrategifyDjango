@@ -168,100 +168,106 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        {% for e in data %}
-                                            <tr>
-                                                <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.ScripName}}</td>
-                                                <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">--(--%)</td>
-                                                {% if e.Status == 0 %}
-                                                    <td data-label="Amount" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle"><span class="text-danger">{{e.PL}}</span></td>
-                                                {% else %}
-                                                    <td data-label="Amount" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle"><span class="text-success">+{{e.PL}}</span></td>
-                                                {% endif %}
-                                                <td data-label="Period" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">
-                                                    <div class="progress bg-danger">
-                                                        <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{e.PercentBar}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Signal}}</td>
-                                                <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Wins}}</td>
-                                                <td data-label="Amount" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Loss}}</td>
-                                                <td data-label="Period" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.WinStreak}}</td>
-                                                <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.LossStreak}}</td>
-                                                <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">--</td>
-                                                <td data-label="Amount"><span><a href="{% static '{{e.ScripName}}' %}"><i class="fa fa-download"></i></a></span></td>
-                                                <td data-label="Period"><input type="checkbox" name="check"></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="12" class="hiddenRow">
-                                                    <div class="accordian-body collapse" id="{{e.ScripName}}">
-                                                        <div class="container-fluid">
-                                                            <div class="row">
-                                                                <div class="col-6">
-                                                                    <img src="data:image/png;base64,{{e.Uri}}" style="width:100%">
+                                            {% if error %}
+                                                <tr>
+                                                    <td colspan="12"><b>{{error.error}}</b></td>
+                                                </tr>
+                                            {% else %}
+                                                {% for e in data %}
+                                                    <tr>
+                                                        <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.ScripName}}</td>
+                                                        <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">--(--%)</td>
+                                                        {% if e.Status == 0 %}
+                                                            <td data-label="Amount" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle"><span class="text-danger">{{e.PL}}</span></td>
+                                                        {% else %}
+                                                            <td data-label="Amount" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle"><span class="text-success">+{{e.PL}}</span></td>
+                                                        {% endif %}
+                                                        <td data-label="Period" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">
+                                                            <div class="progress bg-danger">
+                                                                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{e.PercentBar}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                                                 </div>
-                                                                <div class="col-3 backtestHistorySecondC">
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">Total no of Signal</span>
-                                                                        <span class="backtestHistorySecondCF2">{{e.Signal}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">No of Wins</span>
-                                                                        <span class="backtestHistorySecondCF2">{{e.Wins}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">No of Losses</span>
-                                                                        <span class="backtestHistorySecondCF2">{{e.Loss}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">Winning Streak</span>
-                                                                        <span class="backtestHistorySecondCF2">{{e.WinStreak}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">Lossing Streak</span>
-                                                                        <span class="backtestHistorySecondCF2">{{e.LossStreak}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">Max Gain</span>
-                                                                        <span class="backtestHistorySecondCF2">{{e.MaxGain}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">Max Loss</span>
-                                                                        <span class="backtestHistorySecondCF2">-{{e.MaxLoss}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">Average gain</span>
-                                                                        <span class="backtestHistorySecondCF2">{{e.AvgGain}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">Average Loss</span>
-                                                                        <span class="backtestHistorySecondCF2">-{{e.AvgLoss}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistorySecondCF">
-                                                                        <span class="backtestHistorySecondCF1">Max Drawdown</span>
-                                                                        <span class="backtestHistorySecondCF2">--</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-3 backtestHistoryThirdC">
-                                                                    <div class="backtestHistoryThirdCF">
-                                                                        <span class="backtestHistoryThirdCF1">Period High</span>
-                                                                        <span class="backtestHistoryThirdCF2">{{e.PeriodHigh}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistoryThirdCF">
-                                                                        <span class="backtestHistoryThirdCF1">Period Low</span>
-                                                                        <span class="backtestHistoryThirdCF2">{{e.PeriodLow}}</span>
-                                                                    </div>
-                                                                    <div class="backtestHistoryThirdCF">
-                                                                        <span class="backtestHistoryThirdCF1">Period Return</span>
-                                                                        <span class="backtestHistoryThirdCF2">--%</span>
+                                                            </div>
+                                                        </td>
+                                                        <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Signal}}</td>
+                                                        <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Wins}}</td>
+                                                        <td data-label="Amount" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Loss}}</td>
+                                                        <td data-label="Period" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.WinStreak}}</td>
+                                                        <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.LossStreak}}</td>
+                                                        <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">--</td>
+                                                        <td data-label="Amount"><span><a href="{% static '{{e.ScripName}}' %}"><i class="fa fa-download"></i></a></span></td>
+                                                        <td data-label="Period"><input type="checkbox" name="check"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="12" class="hiddenRow">
+                                                            <div class="accordian-body collapse" id="{{e.ScripName}}">
+                                                                <div class="container-fluid">
+                                                                    <div class="row">
+                                                                        <div class="col-6">
+                                                                            <img src="data:image/png;base64,{{e.Uri}}" style="width:100%">
+                                                                        </div>
+                                                                        <div class="col-3 backtestHistorySecondC">
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">Total no of Signal</span>
+                                                                                <span class="backtestHistorySecondCF2">{{e.Signal}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">No of Wins</span>
+                                                                                <span class="backtestHistorySecondCF2">{{e.Wins}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">No of Losses</span>
+                                                                                <span class="backtestHistorySecondCF2">{{e.Loss}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">Winning Streak</span>
+                                                                                <span class="backtestHistorySecondCF2">{{e.WinStreak}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">Lossing Streak</span>
+                                                                                <span class="backtestHistorySecondCF2">{{e.LossStreak}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">Max Gain</span>
+                                                                                <span class="backtestHistorySecondCF2">{{e.MaxGain}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">Max Loss</span>
+                                                                                <span class="backtestHistorySecondCF2">-{{e.MaxLoss}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">Average gain</span>
+                                                                                <span class="backtestHistorySecondCF2">{{e.AvgGain}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">Average Loss</span>
+                                                                                <span class="backtestHistorySecondCF2">-{{e.AvgLoss}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistorySecondCF">
+                                                                                <span class="backtestHistorySecondCF1">Max Drawdown</span>
+                                                                                <span class="backtestHistorySecondCF2">--</span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-3 backtestHistoryThirdC">
+                                                                            <div class="backtestHistoryThirdCF">
+                                                                                <span class="backtestHistoryThirdCF1">Period High</span>
+                                                                                <span class="backtestHistoryThirdCF2">{{e.PeriodHigh}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistoryThirdCF">
+                                                                                <span class="backtestHistoryThirdCF1">Period Low</span>
+                                                                                <span class="backtestHistoryThirdCF2">{{e.PeriodLow}}</span>
+                                                                            </div>
+                                                                            <div class="backtestHistoryThirdCF">
+                                                                                <span class="backtestHistoryThirdCF1">Period Return</span>
+                                                                                <span class="backtestHistoryThirdCF2">--%</span>
+                                                                            </div>
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        {% endfor %}
+                                                        </td>
+                                                    </tr>
+                                                {% endfor %}
+                                            {% endif %}
                                         </tbody>
                                     </table>
                                 </div>
@@ -288,5 +294,8 @@
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{% static 'JS/script.js' %}"></script>
+    <script>
+        console.log({{error|safe}});
+    </script>
 </body>
 </html>

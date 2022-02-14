@@ -94,7 +94,7 @@ background-color:transparent !important;
 }
 
 
-.navbar{
+.registration-navbar{
   background: -webkit-linear-gradient(to right,#204669, #4f8cc9, #204669);
   background: linear-gradient(to right,#204669, #4f8cc9, #204669);
 },
@@ -238,9 +238,8 @@ footer.sticky-footer {
 .rows{
   border: 2px #204469 solid;
   min-height: 200px;
-  -webkit-box-shadow: 0 10px 10px -10px #000000;
-  -moz-box-shadow: 0 10px 10px -10px #000000;
-  box-shadow: 0 10px 10px -10px #000000;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25),
+            0 10px 10px rgba(0,0,0,0.22);
   margin: 0px;
   padding: 25px 0px 25px 0px;
   border: 2px ridge;
@@ -369,6 +368,14 @@ footer.sticky-footer {
 }
 
 
+.loginMssg{
+  -webkit-animation-duration: 0.8s;
+  animation-duration: 0.8s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+
 /*------------------- END RESPONSIVE ---------------------*/
 
 
@@ -403,7 +410,15 @@ footer.sticky-footer {
 outline: none;
 }
 
-.signup-form{
+.signup-form input:focus, .otp-form input: focus{
+  outline-color: #204669;
+}
+
+.otp-form{
+  display: none;
+}
+
+.signup-form,.otp-form{
     margin-top: 220px;
     margin-bottom: 220px;
 }
@@ -421,7 +436,7 @@ outline: none;
 
 
 .form-signup-container  form input{
-    background-color: #eee;
+    background-color: #e9ecef;
     border: none;
     padding: 12px 15px;
     margin: 8px 0;
@@ -445,8 +460,8 @@ outline: none;
 .form-signup-container button {
   border-radius: 20px;
   border: 1px solid #204669;
-  background: -webkit-linear-gradient(to right, #4f8cc9, #204669);
-  background: linear-gradient(to right, #4f8cc9, #204669);
+  background: -webkit-linear-gradient(to right, #4E575F, #343A40);
+  background: linear-gradient(to right, #4E575F, #343A40);
   color: #FFFFFF;
   font-size: 12px;
   font-weight: bold;
@@ -466,6 +481,19 @@ outline: none;
   cursor: pointer;
 }
 
+.primarybtn{
+  border-radius: 20px;
+  border: 1px solid #343A40;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  background: -webkit-linear-gradient(to right, #4E575F, #343A40);
+  background: linear-gradient(to right, #4E575F, #343A40);
+}
+
+
 .form-overlay-container{
     position: relative;
     top: 0;
@@ -480,21 +508,23 @@ outline: none;
 
 .form-overlay{
     z-index: 1000;
-    background: -webkit-linear-gradient(to right, #4f8cc9, #204669);
-    background: linear-gradient(to right, #4f8cc9, #204669);
+    background: -webkit-linear-gradient(to right, #4E575F, #343A40);
+    background: linear-gradient(to right, #4E575F, #343A40);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
     color: #FFFFFF;
     position: relative;
-    height: 100%;
     width: 200%;
     transform: translateX(0);
     transition: transform 0.6s ease-in-out;
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25),
+            0 10px 10px rgba(0,0,0,0.22);
+    border-radius: 10px;
 }
 
 .overlay-panel {
-  position: absolute;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -503,7 +533,6 @@ outline: none;
   text-align: center;
   top: 0;
   height: 100%;
-  width: 50%;
   transform: translateX(0);
   transition: transform 0.6s ease-in-out;
 }
@@ -523,6 +552,15 @@ outline: none;
   margin: 0 5px;
   height: 40px;
   width: 40px;
+}
+#otpsignup{
+    text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+    .overlay-panel {
+        display: none;
+    }
 }
 
 /* -------------------- END REGISTRATION PAGE ---------------*/
@@ -552,9 +590,8 @@ outline: none;
 
 
 .contact-us, .row-content{
-  -webkit-box-shadow: 0 10px 10px -10px #000000;
-  -moz-box-shadow: 0 10px 10px -10px #000000;
-  box-shadow: 0 10px 10px -10px #000000;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25),
+            0 10px 10px rgba(0,0,0,0.22);
 }
 
 body > div.contact-us.container.p-5 > div{
@@ -580,7 +617,6 @@ body > div.contact-us.container.p-5 > div{
 #LoginModal > div > div > div.modal-footer > input{
   background-color: #204469;
 }
-
 
 
 /* ------------------- END LOGIN MODAL -----------------------*/

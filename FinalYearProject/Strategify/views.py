@@ -1,12 +1,18 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+from .StockData import *
 import pandas as pd
 import numpy as np
 import io
 import yfinance as yf
 import base64,urllib
 import matplotlib.pyplot as plt
-from .models import UserRegistration
+from .models import *
+import datetime
+from django.core.mail import send_mail
+import math, random
+from django.core.exceptions import *
+from django.db import *
 
 plt.style.use('fivethirtyeight')
 data = None
@@ -15,11 +21,8 @@ USERNAME = None
 def home(response):
     return render(response, 'Strategify/index.html',{})
 
-
-
 def registration(request):
     return render(request, 'Strategify/registrationPage.html', {})
-
 
 def signup(request):
     response_data = {}
@@ -30,22 +33,30 @@ def signup(request):
         phone = request.POST.get('phone')
         password = request.POST.get('password')
 
-        try:
-            UserRegistration.objects.create(
-                username = username,
-                name = name,
-                email = email,
-                phone = phone,
-                password = password,
-            )
-            response_data['success'] = "Account Created"
+        if request.POST.get('otp')==str(request.session['otp']):
+            try:
+                UserRegistration.objects.create(
+                    username = username,
+                    name = name,
+                    email = email,
+                    phone = phone,
+                    password = password,
+                )
+                response_data['success'] = "Account Created"
+                return JsonResponse(response_data)
+            except IntegrityError as e:
+                print("Error Account Creating: "+str(e))
+                response_data['error'] = str("Already Account Created")
+            except Exception as e:
+                print("Error Account Creating: "+str(e))
+                response_data['error'] = str(e)
+                return JsonResponse(response_data)
+        else:
+            print("Incorrect OTP")
+            response_data['error'] = "Incorrect OTP"
             return JsonResponse(response_data)
-        except Exception as e:
-            response_data['error'] = e
-            return JsonResponse(response_data)
-    else:
-        response_data['error'] = "Error Occured"
-        return JsonResponse(response_data)
+
+    return JsonResponse(response_data)
 
 def checkUsername(request):
     response_data = {}
@@ -57,9 +68,32 @@ def checkUsername(request):
             else:
                 response_data['error'] = "Not Available"
         except Exception as e:
-            print(e)
+            response_data['error'] = str(e)
         return JsonResponse(response_data)
 
+def generateOTP():
+    digits = "0123456789"
+    OTP = ""
+    for i in range(4):
+        OTP += digits[math.floor(random.random() * 10)]
+    return OTP
+
+def generateotp(request):
+    response_data = {}
+    email = request.POST.get("email")
+    try:
+        otp = generateOTP()
+        request.session['otp'] = otp
+        print(otp)
+        htmlgen = '<p>Dear Customer, We thank you for registration at Strategify.</p><br><p>Your OTP is <strong>'+otp+'</strong></p>'
+        # send_mail('OTP request', otp, 'Strategify', [email], fail_silently=False, html_message=htmlgen)
+        print("OTP has been SENT")
+        response_data['success'] = "OTP has been sent."
+    except Exception as e:
+        print("Error OTP sending: "+str(e))
+        response_data['error'] = str(e)
+        return JsonResponse(response_data)
+    return JsonResponse(response_data)
 
 def signIn(request):
     global USERNAME
@@ -73,11 +107,14 @@ def signIn(request):
             if(user_data):
                 response_data['success'] = "Logged In Success"
                 USERNAME = username
+                request.session['username'] = user_data.username
                 dashboard(request)
             else:
                 response_data['error'] = "Invalid Login"
-        except Exception as e:
+        except ObjectDoesNotExist as e:
             response_data['error'] = "Invalid Login"
+        except Exception as e:
+            response_data['error'] = str(e)
         return JsonResponse(response_data)
 
 def contactus(response):
@@ -86,28 +123,89 @@ def contactus(response):
 def profilepage(response):
     return render(response, 'Strategify/profilePage.html', {})
 
+def checkstrategyName(request):
+    response_data = {}
+    if request.method == 'POST':
+        try:
+            if StrategyRegistration.objects.filter(username=request.session['username'],strategyname=request.POST.get('strategyname')).exists():
+                response_data['success'] = "Availiable"
+            else:
+                response_data['error'] = "Not Available"
+        except ObjectDoesNotExist as e:
+            response_data['success'] = "Availiable"
+        except Exception as e:
+            response_data['error'] = str(e)
+        return JsonResponse(response_data)
+
 def createstrategy(response):
-    data = UserRegistration.objects.get(username=USERNAME)
+    response_data = {}
+    showStrategyDetails(response)
+    data = UserRegistration.objects.get(username=response.session['username'])
+    try:
+        nse = NSE()
+    except Exception as e:
+        print("Connection Error NSE: ",e)
+        response_data['error'] = "Unable to Load"
+        return JsonResponse(response_data)
     userData = {
         'username': USERNAME,
         'name': data.name,
+        'scripdata': nse.allscrip(),
     }
     return render(response, 'Strategify/createStrategy.html', {'data':userData})
 
-
-
 def dashboard(response):
-    data = UserRegistration.objects.get(username=USERNAME)
+    data = UserRegistration.objects.get(username=response.session['username'])
     userData = {
-    'username': USERNAME,
+    'username': response.session['username'],
     'name': data.name,
     }
-    return render(response,'Strategify/dashboard.html', {'data':userData})
+
+    allstrategydata = []
+    for i in showStrategyDetails(response):
+        current = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        ends = datetime.datetime.strptime(i.createDate, '%Y-%m-%d %H:%M:%S')
+        start = datetime.datetime.strptime(current, '%Y-%m-%d %H:%M:%S')
+        strategydata={
+            'strategyname':i.strategyname,
+            'quantity':i.quantity,
+            'scripname':i.scripname,
+            'entrycondition':i.entrycondition,
+            'stoploss':i.stoploss,
+            'target':i.target,
+            'exitcondition':i.exitcondition,
+            'startdate':i.startdate,
+            'enddate':i.enddate,
+            'createDate':convertTime(start-ends),
+        }
+        allstrategydata.append(strategydata)
+    return render(response,'Strategify/dashboard.html', {'data':userData,'strategydata':allstrategydata})
+
+
+def convertTime(time):
+    time = str(time).split(":")
+    if (time[0] == "0" and time[1] == "00" and time[2] == "00"):
+        return "0 sec ago"
+    elif time[0] == "0" and time[1] == "00" and time[2] != "00":
+        return str(time[2])+" sec ago"
+    elif time[0] == "0" and time[1] != "00":
+        return str(time[1])+" min ago"
+    elif time[0] != "0":
+        return str(time[0])+" hours ago"
+    else:
+        print("Error")
+
+def showStrategyDetails(response):
+    data = StrategyRegistration.objects.filter(username=response.session['username'])
+    return data
 
 def createStrategyForm(response):
     global data
     entryCondition = []
     exitCondition = []
+    response_data = {}
+    dataentryCondition = ""
+    dataexitCondition = ""
     try:
         if response.method == "POST":
             j = 1
@@ -116,11 +214,13 @@ def createStrategyForm(response):
                 a = response.POST.get("entryfirindicator"+str(j))
                 b = response.POST.get("entrysecindicator"+str(j))
                 c = response.POST.get("entrycomparator" + str(j))
+                
                 if((a and b and c) != None):
                     tempCondition.append(a)
                     tempCondition.append(c)
                     tempCondition.append(b)
                     entryCondition.append(tempCondition)
+                    dataentryCondition += str(a)+"-"+str(b)+"-"+str(c)+"/"
                 j +=1
             j = 1
             for i in response.POST:
@@ -128,11 +228,13 @@ def createStrategyForm(response):
                 a = response.POST.get("exitfirindicator"+str(j))
                 b = response.POST.get("exitsecindicator"+str(j))
                 c = response.POST.get("exitcomparator" + str(j))
+                
                 if((a and b and c) != None):
                     tempCondition.append(a)
                     tempCondition.append(c)
                     tempCondition.append(b)
                     exitCondition.append(tempCondition)
+                    dataexitCondition += str(a) + "-" + str(b) + "-" + str(c) + "/"
                 j +=1
 
             startDate = response.POST.get('startDate')
@@ -155,66 +257,78 @@ def createStrategyForm(response):
                     a[1] = x
 
                     for j in range(0,2):
-                        globals()[a[j]](int(b[0]))
+                        globals()[a[j]]("ENTRY", int(b[0]))
                         if j == 1:
-                            globals()[a[j]](int(b[1]))
-                            entrySignalGeneration(scriplist[i],str(a[0])+str(b[0]),str(a[1])+str(b[1]),response.POST.get('targetper'), response.POST.get('stoploss'),
-                                                        response.POST.get('quantityLots'))
+                            globals()[a[j]]("ENTRY", int(b[1]))
+                            entrySignalGeneration(str(a[0])+str(b[0]), str(a[1])+str(b[1]))
 
-                if entryCondition:
+                if exitCondition:
                     for k in range(len(exitCondition)):
                         a = exitCondition[k][0].split(",")
                         b = exitCondition[k][2].split(",")
                         x = b[0]
                         b[0] = a[1]
                         a[1] = x
-                        print(a)
-                        print(b)
-
-                val = ProfitLossCalculation(scriplist[i],response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
+                        for j in range(0, 2):
+                            globals()[a[j]]("EXIT", int(b[0]))
+                            if j == 1:
+                                globals()[a[j]]("EXIT", int(b[1]))
+                                exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
+                if exitCondition:
+                    val = ProfitLossCalculationWithExit(scriplist[i],response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
+                else:
+                    val = ProfitLossCalculationWithoutExit(scriplist[i], response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
                 alldata.append(val)
-            return render(response, 'Strategify/backtestHistory.html',{'data':alldata,'strategyName':response.POST.get('strategyname'),'startDate':startDate,'stopDate':stopDate})
+
+            if dataexitCondition == "":
+                dataexitCondition = "None"
+            try:
+                user = UserRegistration.objects.get(username=response.session['username'])
+                StrategyRegistration.objects.create(
+                    strategyid=response.session['username'] + response.POST.get('strategyname'),
+                    username=user,
+                    strategyname=response.POST.get('strategyname'),
+                    quantity=response.POST.get('quantityLots'),
+                    scripname=response.POST.get('allscriplist'),
+                    entrycondition=dataentryCondition,
+                    stoploss=response.POST.get('stoploss'),
+                    target=response.POST.get('targetper'),
+                    exitcondition=dataexitCondition,
+                    startdate=startDate,
+                    enddate=stopDate,
+                    createDate=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                )
+                print(StrategyRegistration.objects.filter(username = "sachin5"))
+            except IntegrityError as e:
+                response_data['error'] = "Strategy Name Already Exist Hence Not Saved. Use different Name"
+            except Exception as e:
+                response_data['error'] = str(e)
+            return render(response, 'Strategify/backtestHistory.html',{'data':alldata,'strategyName':response.POST.get('strategyname'),'startDate':startDate,'stopDate':stopDate,'error':response_data})
     except Exception as e:
         print("Error",e)
 
 def Value(period):
     data['Value{}'.format(period)] = period
 
-def MA(period):
+def MA(condition,period):
     global data
-    print("Here",period)
     try:
-        data['MA{}'.format(period)] = data['Close'].rolling(window=period).mean()
+        data['{}MA{}'.format(condition,period)] = data['Close'].rolling(window=period).mean()
     except Exception as e:
         print("Error Line 200",e)
 
-def EMA(days):
+def EMA(condition,days):
     global data
-    data = data.apply(lambda x: x.fillna(x.value_counts().index[0]))
-    col = 'Close'
-    start = 0
-    if data.shape[0] > days:
-        multiplier = 2 / (days + 1)
-        first_ema = data.iloc[:days, data.columns.get_loc(col)].sum(axis=0) / days
-        data['EMA{}'.format(days)] = np.nan
-        data['EMA{}'.format(days)][days - 1] = first_ema
-        for i in range(days, (data.shape[0])):
-            EMA = data.iloc[i, data.columns.get_loc(col)] * multiplier + data.iloc[
-                (i - 1), data.columns.get_loc("EMA{}".format(days))] * (1 - multiplier)
-            data['EMA{}'.format(days)][i] = EMA
-            start = start + 1
-    else:
-        print("Not Sufficient data to calculate {}-days EMA".format(days))
+    data['{}EMA{}'.format(condition,days)] = data['Close'].ewm(span=days, adjust=False).mean();
 
-
-def WMA(period):
+def WMA(condition,period):
     global data
     column = 'Close'
     weights = np.arange(1, period + 1)
     wmas = data[column].rolling(period).apply(lambda x: np.dot(x, weights) /weights.sum(), raw=True).to_list()
-    data[f'WMA{period}'] = wmas
+    data[f'{condition}WMA{period}'] = wmas
 
-def RSI(period):
+def RSI(condition,period):
     ret = data['Close'].diff()
     up = []
     down = []
@@ -233,22 +347,196 @@ def RSI(period):
     rsi = 100 - (100 / (1 + rs))
     rsi_df = pd.DataFrame(rsi).rename(columns={0: 'rsi'}).set_index(data['Close'].index)
     rsi_df = rsi_df.dropna()
-    data['RSI{}'.format(period)] = rsi_df[3:]
+    data['{}RSI{}'.format(condition,period)] = rsi_df[3:]
 
-
-def entrySignalGeneration(scrip,period1,period2,target,steploss,quantity):
+def entrySignalGeneration(period1,period2):
     global data
+    data['EntrySignal'] = np.where(data['ENTRY{}'.format(period1)] > data['ENTRY{}'.format(period2)], 1, 0)
+    data['ENTRYPosition{}'.format(str(period1)+str(period2))] = data['EntrySignal'].diff()
 
-    data['EntrySignal'] = np.where(data['{}'.format(period1)] > data['{}'.format(period2)], 1, 0)
-    data['Position{}'.format(str(period1)+str(period2))] = data['EntrySignal'].diff()
 
-    for i in range(0, len(data['Position{}'.format(str(period1)+str(period2))])):
+    for i in range(0, len(data['ENTRYPosition{}'.format(str(period1)+str(period2))])):
         if data['Position'][i] != 1.0:
-            data['Position'][i] = data['Position{}'.format(str(period1)+str(period2))][i]
+            data['Position'][i] = data['ENTRYPosition{}'.format(str(period1)+str(period2))][i]
     data['Position'] = data['Position'].replace([-1.0],[0.0])
 
+def exitSignalGeneration(period1,period2):
+    global data
+    data['ExitSignal'] = np.where(data['EXIT{}'.format(period1)] > data['EXIT{}'.format(period2)], 0, 1)
+    data['EXITPosition{}'.format(str(period1)+str(period2))] = data['ExitSignal'].diff()
 
-def ProfitLossCalculation(scrip,target,steploss,quantity):
+    for i in range(0, len(data['EXITPosition{}'.format(str(period1)+str(period2))])):
+        if data['Position'][i] != -1.0:
+            if data['Position'][i] == 1.0 and data['EXITPosition{}'.format(str(period1)+str(period2))][i] == -1.0:
+                data['Position'][i] = 0.0
+            elif data['Position'][i] == 1.0:
+                data['Position'][i] = 1.0
+            else:
+                data['Position'][i] = data['EXITPosition{}'.format(str(period1)+str(period2))][i]
+
+def ProfitLossCalculationWithExit(scrip,target,steploss,quantity):
+    global data
+    a = 0
+    status = 0
+    WinsCount = 0
+    LossCount = 0
+    totP = 0
+    totL = 0
+    balance = 0
+    enter = 0
+    alllist = []
+    PS = 0
+    PL = 0
+    streakP = 0
+    streakL = 0
+
+    for i in range(0, len(data['Position'])):
+
+        if data['Position'][i] == 1.0 and enter == 0:
+            a = data['Close'][i]
+            enter = 1
+            alllist.append({
+                'date': data.index[i],
+                'price': data['Close'][i],
+                'buysell': "buy",
+                'balance': balance,
+            })
+            print("Buy:    Date: ", data.index[i], " Price: ", a)
+        elif data['Position'][i] == -1.0 and enter == 1:
+            balance += data['Close'][i] - a
+            if data['Close'][i]-a >= 0:
+                print("Sell:   Profit  Price: ", data['Close'][i], " Date: ", data.index[i], " Net Profit: ",
+                      data['Close'][i] - a)
+                WinsCount += 1
+                totP += data['Close'][i] - a
+                alllist.append({
+                    'date': data.index[i],
+                    'price': data['Close'][i],
+                    'buysell': "sell",
+                    'balance': balance
+                })
+                PS += 1
+                PL = 0
+                if PS > streakP:
+                    streakP = PS
+                a = 0
+                enter = 0
+            else:
+                print("Sell:   Loss   Price: ", data['Close'][i], " Date: ", data.index[i], " Net Loss: ",
+                      data['Close'][i] - a)
+                LossCount += 1
+                totL += data['Close'][i] - a
+                alllist.append({
+                    'date': data.index[i],
+                    'price': data['Close'][i],
+                    'buysell': "sell",
+                    'balance': balance
+                })
+                PL += 1
+                PS = 0
+                if PL > streakL:
+                    streakL = PL
+                a = 0
+                enter = 0
+        else:
+            if a > 0 and enter == 1:
+                if ((data['Close'][i] - a) / a) * 100 >= int(target):
+                    balance += data['Close'][i] - a
+                    print("Sell:   Profit  Price: ", data['Close'][i], " Date: ", data.index[i], " Net Profit: ",
+                          data['Close'][i] - a)
+                    WinsCount += 1
+                    totP += data['Close'][i] - a
+                    alllist.append({
+                        'date': data.index[i],
+                        'price': data['Close'][i],
+                        'buysell': "sell",
+                        'balance': balance
+                    })
+                    PS += 1
+                    PL = 0
+                    if PS > streakP:
+                        streakP = PS
+                    a = 0
+                    enter = 0
+                elif ((a - data['Close'][i]) / a) * 100 >= int(steploss):
+                    balance += data['Close'][i] - a
+                    print("Sell:   Loss   Price: ", data['Close'][i], " Date: ", data.index[i], " Net Loss: ",
+                          data['Close'][i] - a)
+                    LossCount += 1
+                    totL += data['Close'][i] - a
+                    alllist.append({
+                        'date': data.index[i],
+                        'price': data['Close'][i],
+                        'buysell': "sell",
+                        'balance': balance
+                    })
+                    PL += 1
+                    PS = 0
+                    if PL > streakL:
+                        streakL = PL
+                    a = 0
+                    enter = 0
+
+    print("Balance: ", balance, " Total Wins: ", WinsCount, " Total Loss: ", LossCount, " Total Profit:  ", totP,
+          " Total Loss: ", totL)
+
+    if totP + totL > 0:
+        status = 1
+
+    pd.DataFrame(alllist).to_csv('Strategify/static/' + scrip.replace('.NS', '') + '.csv')
+    periodHigh = "{:.2f}".format(data['Close'].max())
+    periodLow = "{:.2f}".format(data['Close'].min())
+    balance = "{:.2f}".format(balance)
+    totP = "{:.2f}".format(totP)
+    totL = "{:.2f}".format(-totL)
+
+    if WinsCount == 0:
+        AvgGain = 0
+        AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
+    elif LossCount == 0:
+        AvgLoss = 0
+        AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
+    else:
+        AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
+        AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
+
+    x = plt.figure(figsize=(15, 7))
+    plt.title('Close Price History w/ Buy & Sell Signals', fontsize=18)
+    plt.plot(data['Close'], alpha=0.5, label='Close')
+    # plt.plot(data['{}'.format(period1)], alpha=1, label='shortAvg', color="green")
+    # plt.plot(data['{}'.format(period2)], alpha=1, label='longAvg', color="red")
+    plt.xlabel('Date', fontsize=18)
+    plt.ylabel('Close Price', fontsize=18)
+
+    buf = io.BytesIO()
+    x.savefig(buf, format="png")
+    buf.seek(0)
+    string = base64.b64encode(buf.read())
+    uri = urllib.parse.quote(string)
+
+    percentBar = (float(totP) / (float(totP) + float(totL))) * 100
+    alldata = {
+        'ScripName': scrip.replace('.NS', ''),
+        'PL': "{:.2f}".format(float(balance) * int(quantity)),
+        'Status': status,
+        'Signal': WinsCount + LossCount,
+        'WinStreak': streakP,
+        'LossStreak': streakL,
+        'Wins': WinsCount,
+        'Loss': LossCount,
+        'MaxGain': "{:.2f}".format(float(totP) * int(quantity)),
+        'MaxLoss': "{:.2f}".format(float(totL) * int(quantity)),
+        'PeriodHigh': periodHigh,
+        'PeriodLow': periodLow,
+        'AvgGain': AvgGain,
+        'AvgLoss': AvgLoss,
+        'Uri': uri,
+        'PercentBar': percentBar,
+    }
+
+    return alldata
+
+def ProfitLossCalculationWithoutExit(scrip,target,steploss,quantity):
     global data
     a = 0
     status = 0
@@ -370,5 +658,4 @@ def ProfitLossCalculation(scrip,target,steploss,quantity):
         'Uri': uri,
         'PercentBar': percentBar,
     }
-
     return alldata

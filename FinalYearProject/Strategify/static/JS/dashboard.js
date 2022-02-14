@@ -12,7 +12,7 @@ buttonLeft.onclick = function () {
 
 
 function searchStrategyByName(){
-    var input, filter, cards, cardContainer, h5, title, i;
+var input, filter, cards, cardContainer, h5, title, i;
     input = document.getElementById("searchStrategy");
     filter = input.value.toUpperCase();
     cardContainer = document.getElementById("mystrategy");
