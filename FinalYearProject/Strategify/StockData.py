@@ -23,3 +23,18 @@ class NSE:
             allscrip.append(str(key)+".NS")
             
         return allscrip
+
+    def topgainers(self):
+        data = self.session.get(f"https://www1.nseindia.com/live_market/dynaContent/live_analysis/gainers/niftyGainers1.json",
+                                    headers=self.header).json()
+        return data
+
+    def toplosers(self):
+        data = self.session.get(f"https://www1.nseindia.com/live_market/dynaContent/live_analysis/losers/niftyLosers1.json",
+                                    headers=self.header).json()
+        return data
+
+    def allindex(self):
+        data = self.session.get(f"https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/liveIndexWatchData.json",
+                                    headers=self.header).json()
+        return data

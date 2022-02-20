@@ -36,12 +36,6 @@
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
           <a class="nav-link" href="tables.html">
             <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">Live Trades</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
-          <a class="nav-link" href="tables.html">
-            <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">Deployed</span>
           </a>
         </li>
@@ -153,7 +147,7 @@
                                     <li class="event" value="Position">
                                         <div class="row mt-5">
                                             <div class="col-6">
-                                                <input type="number" name="quantityLots" placeholder="Enter Quantity in lots" class="form-control" required>
+                                                <input type="number" name="quantityLots" id="quantityLots" placeholder="Enter Quantity in lots" class="form-control" required>
                                             </div>
                                         </div>
                                     </li>
@@ -189,26 +183,26 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">
-                                                        <select class="form-select form-control" name="entrycomparator1" aria-label="Default select example">
-                                                            <option selected value="0">Crosses Below</option>
+                                                        <select class="form-select form-control" name="entrycomparator1" id="entrycomparator1" aria-label="Default select example">
+                                                            <option value="0">Crosses Below</option>
                                                             <option value="1">Equal To</option>
-                                                            <option selected value="2">Lower than</option>
+                                                            <option value="2">Lower than</option>
                                                             <option value="3">Higher Than</option>
-                                                            <option value="4">Crosses Above</option>
+                                                            <option selected value="4">Crosses Above</option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">
+                                                    <div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12 indicator-search2">
                                                             <input type="text" name="entrysecindicator1" placeholder="Indicator" class="form-control indicator2" autocomplete="off" id="entrysecindicator1" onkeyup="lookup2(this)">
                                                             <ul class="indicatorsuggest-box2" id="secindicatorBox1">
                                                             </ul>
                                                     </div>
                                                 </div>
-                                                <div class="entryConditionRow indicator-search2">
+                                                <div class="entryConditionRow">
 
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <a href="#" class="addEntryRow">Add Another Field</a>
+                                                        <a href="#" id="addEntryRow" class="addEntryRow">Add Another Field</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -219,10 +213,10 @@
                                             <div class="col-12">
                                                 <div class="row">
                                                     <div class="col-lg-6 col-xl-6 col-sm-12 col-xs-12 col-md-12">
-                                                        <input type="text" name="stoploss" placeholder="Stop loss %" class="form-control stoploss" required>
+                                                        <input type="text" name="stoploss" id="stoploss" placeholder="Stop loss %" class="form-control stoploss" required>
                                                     </div>
                                                     <div class="col-lg-6 col-xl-6 col-sm-12 col-xs-12 col-md-12">
-                                                        <input type="text" name="targetper" placeholder="Target %" class="form-control targetper" required>
+                                                        <input type="text" name="targetper" id="targetper" placeholder="Target %" class="form-control targetper" required>
                                                     </div>
                                                 </div>
                                                 <div class="exitConditionRow mt-3">
@@ -289,13 +283,13 @@
                                             <label class="text-dark form-control">Period 1</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" name="period1" class="form-control" required>
+                                            <input type="number" name="period1" class="form-control">
                                         </div>
                                         <div class="col-6">
                                             <label class="text-dark form-control">Period 2</label>
                                         </div>
                                         <div class="col-6">
-                                            <input type="number" name="period2" class="form-control" required>
+                                            <input type="number" name="period2" class="form-control">
                                         </div>
                                     </div>
                                 </div>
@@ -352,19 +346,107 @@
     <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
     <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static '././JS/dashboard.js' %}"></script>
     <script src="{% static './JS/script.js' %}"></script>
     <script src="{% static './JS/createStrategy.js' %}"></script>
     <script>
-        let suggestions = {{data.scripdata|safe}};
+        // let suggestions = {{data.scripdata|safe}};
+        let suggestions = ["Reliance","TCS","HDFC","SBIN","ONGC","ADANIPORTS","IOC","DIVISLAB","LT","AXISBANK","TATASTEEL"];
 
         const searchWrapper = document.querySelector(".search-input");
         const inputBox = searchWrapper.querySelector("input");
         const suggBox = searchWrapper.querySelector(".autocom-box");
+        let scripList = [];
+        var scripAddedContainer = document.querySelector(".addedscripList");
+
+        if("{{strategydata}}" != "None"){
+            document.getElementById("strategyname").value = "{{strategydata.strategyname}}";
+            document.getElementById("quantityLots").value = "{{strategydata.quantity}}";
+            document.getElementById("stoploss").value = "{{strategydata.stoploss}}";
+            document.getElementById("targetper").value = "{{strategydata.target}}";
+            document.getElementById("startDate").value = "{{strategydata.startdate}}";
+            document.getElementById("stopDate").value = "{{strategydata.enddate}}";
+
+            var allscrip = "{{strategydata.scripname}}"
+            allscrip = allscrip.split(",");
+            for(let i = 0;i<allscrip.length-1;i++){
+                addScripName(allscrip[i])
+            }
+
+
+            var entrycondition = "{{strategydata.entrycondition}}"
+            var x = 2;
+            entrycondition = entrycondition.split("/");
+            for(let i = 0;i<entrycondition.length-1;i++){
+                var entry = entrycondition[i].split("-");
+                if(i==0){
+                    document.getElementById("entryfirindicator1").value = entry[0];
+                    document.getElementById("entrycomparator1").options.selectedIndex = entry[2];
+                    document.getElementById("entrysecindicator1").value = entry[1];
+                }else{
+                    var wrapper1 = $(".entryConditionRow");
+                    $(wrapper1).append('<div class="row fadeIn" id="inputEntryFormRow">'+
+                        '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
+                            '<div class="indicator-search">'+
+                                '<input type="text" name="entryfirindicator'+x+'" placeholder="Indicator" class="form-control" autocomplete="off" id="entryfirindicator'+x+'" onkeyup="lookup(this);">'+
+                                        '<ul class="indicatorsuggest-box" id="firindicatorBox'+x+'"></ul>'+
+                                        '</div>'+
+                                    '</div>'+
+                                    '<div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">'+
+                                        '<select class="form-select form-control" id="entrycomparator'+x+'" name="entrycomparator'+x+'" aria-label="Default select example">'+
+                                            '<option selected value="0">Crosses Below</option><option value="1">Equal To</option><option selected value="2">Lower than</option><option value="3">Higher Than</option><option value="4">Crosses Above</option>'+
+                                        '</select>'+
+                                    '</div>'+
+                                    '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
+                                        '<input type="text" name="entrysecindicator'+x+'" id="entrysecindicator'+x+'" placeholder="Indicator" class="form-control" onkeyup="lookup2(this)";>'+
+                                        '<ul class="indicatorsuggest-box2" id="secindicatorBox'+x+'"></ul></div><div class="col-1">'+
+                                        '<span class="w-50 h-50 deleteEntryRow" style="font-size:3rem">&times;</span>'+
+                                    '</div>'+
+                                '</div>');
+
+                    document.getElementById("entryfirindicator"+x).value = entry[0];
+                    document.getElementById("entrycomparator"+x).options.selectedIndex = entry[2];
+                    document.getElementById("entrysecindicator"+x).value = entry[1];
+                    x += 1;
+                }
+            }
+
+            var exitcondition = "{{strategydata.exitcondition}}"
+            var y = 1;
+            exitcondition = exitcondition.split("/");
+            for(let i = 0;i<exitcondition.length-1;i++){
+                var exit = exitcondition[i].split("-");
+                var wrapper2 = $(".exitConditionRow");
+
+                $(wrapper2).append('<div class="row fadeIn" id="inputExitFormRow">'+
+                    '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
+                        '<div class="indicator-search">'+
+                            '<input type="text" name="exitfirindicator'+y+'" placeholder="Indicator" class="form-control" autocomplete="off" id="exitfirindicator'+y+'" onkeyup="lookup3(this);">'+
+                            '<ul class="indicatorsuggest-box3" id="exitfirindicatorBox'+y+'"></ul>'+
+                        '</div>'+
+                    '</div>'+
+                    '<div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">'+
+                        '<select class="form-select form-control" id="exitcomparator'+y+'" name="exitcomparator'+y+'" aria-label="Default select example">'+
+                                                '<option selected value="0">Crosses Below</option><option value="1">Equal To</option><option selected value="2">Lower than</option><option value="3">Higher Than</option><option value="4">Crosses Above</option></select>'+
+                    '</div>'+
+                    '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
+                        '<input type="text" name="exitsecindicator'+y+'" id="exitsecindicator'+y+'" placeholder="Indicator" class="form-control" onkeyup="lookup4(this)";>'+
+                        '<ul class="indicatorsuggest-box4" id="exitsecindicatorBox'+y+'"></ul></div><div class="col-1">'+
+                        '<span class="w-50 h-50 deleteExitRow" style="font-size:3rem">&times;</span>'+
+                    '</div>'+
+                '</div>');
+
+                document.getElementById("exitfirindicator"+y).value = exit[0];
+                document.getElementById("exitcomparator"+y).options.selectedIndex = exit[2];
+                document.getElementById("exitsecindicator"+y).value = exit[1];
+                y += 1;       
+            }
+        }
+            
+
+
 
         inputBox.onkeyup = (e)=>{
         let userData = e.target.value;
-        console.log(userData);
         let emptyArray = [];
         if(userData){
             emptyArray = suggestions.filter((data)=>{
@@ -384,11 +466,9 @@
         }else{
             searchWrapper.classList.remove("active");
         }
-
     }
 
-    let scripList = [];
-    var scripAddedContainer = document.querySelector(".addedscripList");
+    
     function addScripName(element){
 
         var scripAddedName = document.createElement("a");
@@ -478,7 +558,6 @@
             }
         })
     }
-
 
     </script>
 </body>

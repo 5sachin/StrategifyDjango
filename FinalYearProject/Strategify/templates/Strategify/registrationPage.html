@@ -55,11 +55,6 @@
                         </div>
                         <div class="form-group row p-1">
                             <div class="col-12">
-                                <input type="email" name="email" id="loginEmail" placeholder="Email Id" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group row p-1">
-                            <div class="col-12">
                                 <input type="password" name="password" id="loginPassword" placeholder="Password" class="form-control">
                             </div>
                         </div>
@@ -380,7 +375,6 @@
     }
 
     function login(){
-        var loginEmail = document.getElementById("loginEmail").value;
         var loginPassword = document.getElementById("loginPassword").value;
         var loginUsername = document.getElementById("loginUsername").value;
         var message = document.getElementById("loginMssg");
@@ -390,7 +384,6 @@
             url:'{% url 'signIn' %}',
             data:{
               'csrfmiddlewaretoken': csrfmiddlewaretoken,
-              'email':loginEmail,
               'password':loginPassword,
               'username':loginUsername,
             },

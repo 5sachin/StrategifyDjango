@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Arsenal:ital@1&family=Cormorant+Garamond:ital@1&family=Cormorant+Upright:wght@500&family=Tourney:ital,wght@1,700&display=swap');
 
-
 /*------------------ GLOBAL --------------------*/
 
 html {
@@ -48,10 +47,10 @@ input[type=submit]:hover {
 }
 
 .cardBtn{
-position: absolute;
-top: 0; left: 0;
-height: 100%; width: 100%;
-background-color:transparent !important;
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%; width: 100%;
+  background-color:transparent !important;
 }
 
 .jumbotron{
@@ -60,26 +59,6 @@ background-color:transparent !important;
   border-bottom: 1px ridge;
 }
 /*------------------- END GLOBAL ------------------*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* ---------------- HEADER ---------------*/
@@ -118,30 +97,6 @@ background-color:transparent !important;
 
 /* --------- END HEADER -----------*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* -----------------FOOTER ----------------*/
 
 footer.sticky-footer {
@@ -153,35 +108,7 @@ footer.sticky-footer {
   line-height: 55px;
 }
 
-
-
 /* ----------------- END FOOTER -----------------*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* ------------------ INDEX PAGE ---------------------*/
 
@@ -282,7 +209,6 @@ footer.sticky-footer {
   color: white;
 }
 
-
 .rows .card{
   border: 2px #204469 solid;
   min-height: 10%;
@@ -316,57 +242,34 @@ footer.sticky-footer {
   display: inline-block;
 }
 
-
 /* ------------------END INDEX PAGE ---------------------*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*----------------- RESPONSIVE -------------------------*/
 
-
 @media screen and (max-width: 601px) {
   .mid-content h2{
-  font-size: 2rem;
-}
+    font-size: 2rem;
+  }
 
   .rows h3{
-  font-size: 2rem;
-}
+    font-size: 2rem;
+  }
 
   footer .row h3{
-  font-size: 1rem;
-}
+    font-size: 1rem;
+  }
 
-.padding{
-  padding: 0;
-}
-  
+  .padding{
+      padding: 0;
+    }
 }
 
 @media screen and (max-width: 993px){
-
   .loginbtn{
-  display: none;
+    display: none;
+  }
 }
-
-}
-
 
 .loginMssg{
   -webkit-animation-duration: 0.8s;
@@ -375,39 +278,17 @@ footer.sticky-footer {
   animation-fill-mode: both;
 }
 
-
 /*------------------- END RESPONSIVE ---------------------*/
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* -------------------- REGISTRATION PAGE ------------------*/
-
 
 .registrationPage{
   margin-top: 10%;
 }
 
 #cpassword[input]:focus {
-outline: none;
+  outline: none;
 }
 
 .signup-form input:focus, .otp-form input: focus{
@@ -419,41 +300,38 @@ outline: none;
 }
 
 .signup-form,.otp-form{
-    margin-top: 220px;
-    margin-bottom: 220px;
+  margin-top: 220px;
+  margin-bottom: 220px;
 }
 
 .form-signup-container  form{
-    background-color: #FFFFFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    padding: 0 50px;
-    height: 100%;
-    text-align: center;
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
 }
-
 
 .form-signup-container  form input{
-    background-color: #e9ecef;
-    border: none;
-    padding: 12px 15px;
-    margin: 8px 0;
-    width: 100%;
+  background-color: #e9ecef;
+  border: none;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
 }
 
-
 .form-signup-container{
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25),
-            0 10px 10px rgba(0,0,0,0.22);
-    position: relative;
-    overflow: hidden;
-    width: 768px;
-    max-width: 100%;
-    min-height: 480px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22);
+  position: relative;
+  overflow: hidden;
+  width: 768px;
+  max-width: 100%;
+  min-height: 480px;
 }
 
 
@@ -493,34 +371,32 @@ outline: none;
   background: linear-gradient(to right, #4E575F, #343A40);
 }
 
-
 .form-overlay-container{
-    position: relative;
-    top: 0;
-    width: 50%;
-    overflow: hidden;
-    transition: transform 0.6s ease-in-out;
-    z-index: -100;
-    border-radius: 10px;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22);
-    background: #4f8cc9;
+  position: relative;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: -100;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22);
+  background: #4f8cc9;
 }
 
 .form-overlay{
-    z-index: 1000;
-    background: -webkit-linear-gradient(to right, #4E575F, #343A40);
-    background: linear-gradient(to right, #4E575F, #343A40);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: 0 0;
-    color: #FFFFFF;
-    position: relative;
-    width: 200%;
-    transform: translateX(0);
-    transition: transform 0.6s ease-in-out;
-    box-shadow: 0 14px 28px rgba(0,0,0,0.25),
-            0 10px 10px rgba(0,0,0,0.22);
-    border-radius: 10px;
+  z-index: 1000;
+  background: -webkit-linear-gradient(to right, #4E575F, #343A40);
+  background: linear-gradient(to right, #4E575F, #343A40);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 0 0;
+  color: #FFFFFF;
+  position: relative;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22);
+  border-radius: 10px;
 }
 
 .overlay-panel {
@@ -537,8 +413,6 @@ outline: none;
   transition: transform 0.6s ease-in-out;
 }
 
-
-
 .social-container {
   margin: 20px 0;
 }
@@ -553,6 +427,7 @@ outline: none;
   height: 40px;
   width: 40px;
 }
+
 #otpsignup{
     text-align: center;
 }
@@ -565,33 +440,10 @@ outline: none;
 
 /* -------------------- END REGISTRATION PAGE ---------------*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ---------------- LOGIN MODAL ------------------*/
 
-
 .contact-us, .row-content{
-  box-shadow: 0 14px 28px rgba(0,0,0,0.25),
-            0 10px 10px rgba(0,0,0,0.22);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22);
 }
 
 body > div.contact-us.container.p-5 > div{
@@ -618,44 +470,7 @@ body > div.contact-us.container.p-5 > div{
   background-color: #204469;
 }
 
-
 /* ------------------- END LOGIN MODAL -----------------------*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /* ------------------- VIEW STRATEGY ---------------------------*/
@@ -679,7 +494,6 @@ body > div.contact-us.container.p-5 > div{
   padding: 8px 8px 8px 8px;
   font-size: 1.5rem;
 }
-
 
 .sidenav {
   height: 100%;
@@ -734,40 +548,15 @@ body > div.contact-us.container.p-5 > div{
   .sidenav a {font-size: 18px;}
 }
 
-
-
-
-
-
 @media screen and (max-width: 991px) {
-
-.strategyList{
-  display: none;
-}
-
+  .strategyList{
+    display: none;
+  }
 } 
-
-
-
 
 /* -------------------END  VIEW STRATEGY ---------------------------*/
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*-------------------- CREATE STRATEGY -------------------------------*/
-
 
 .createStrategy input,.createStrategy select{
   border-color: transparent;
@@ -778,7 +567,6 @@ body > div.contact-us.container.p-5 > div{
   border-color: white;
   -webkit-box-shadow: none;
 }
-
 
 .timeline label{
   font-size: 1.5rem;
@@ -799,7 +587,6 @@ body > div.contact-us.container.p-5 > div{
   -webkit-animation-name: fadeIn;
   animation-name: fadeIn;
 }
-
 
 @-webkit-keyframes fadeOut{
   0% {opacity:  1;}
@@ -827,7 +614,6 @@ body > div.contact-us.container.p-5 > div{
   z-index: 2000;
 }
 
-
 .search-input .autocom-box li{
   list-style: none;
   padding: 8px 12px;
@@ -837,7 +623,6 @@ body > div.contact-us.container.p-5 > div{
   display: none;
   border-bottom: 1px solid #f3f3f3;
 }
-
 
 .search-input .autocom-box li:hover{
   background: #efefef;
@@ -854,11 +639,6 @@ body > div.contact-us.container.p-5 > div{
   color: black;
   display: block;
 }
-
-
-
-
-
 
 .indicator-search .indicatorsuggest-box, .indicator-search2 .indicatorsuggest-box2, .exitConditionRow .indicatorsuggest-box3, .exitConditionRow .indicatorsuggest-box4{
   padding: 10px 8px;
@@ -910,15 +690,6 @@ body > div.contact-us.container.p-5 > div{
   display: block;
 }
 
-
-
-
-
-
-
-
-
-
 .addedscripList a{
   color: #6e6e6e;
   margin: 0 0.5rem 0.5rem 0.5rem;
@@ -967,31 +738,26 @@ body > div.contact-us.container.p-5 > div{
   background-color: #d7f7ed;
 }
 
-
-
 .createStrategy .card{
   border: none;
 }
-
 
 .timeline .card-body{
   padding: none;
 }
 
-
-
 .timeline {
-    border-left: 3px solid #343a40;
-    border-bottom-right-radius: 4px;
-    border-top-right-radius: 4px;
-    margin: 0 auto;
-    letter-spacing: 0.2px;
-    position: relative;
-    line-height: 1.4em;
-    font-size: 1.03em;
-    padding: 50px;
-    list-style: none;
-    text-align: left;
+  border-left: 3px solid #343a40;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+  margin: 0 auto;
+  letter-spacing: 0.2px;
+  position: relative;
+  line-height: 1.4em;
+  font-size: 1.03em;
+  padding: 50px;
+  list-style: none;
+  text-align: left;
 }
 
 @media (max-width: 767px) {
@@ -1006,8 +772,7 @@ body > div.contact-us.container.p-5 > div{
     font-size: 1.4em;
 }
 
-.timeline h2,
-.timeline h3 {
+.timeline h2,.timeline h3 {
     font-weight: 600;
     font-size: 1rem;
     margin-bottom: 10px;
@@ -1054,15 +819,15 @@ body > div.contact-us.container.p-5 > div{
 }
 
 .timeline .event:after {
-    -webkit-box-shadow: 0 0 0 3px #727cf5;
-    box-shadow: 0 0 0 3px #727cf5;
-    left: -55.8px;
-    background: #fff;
-    border-radius: 50%;
-    height: 9px;
-    width: 9px;
-    content: "";
-    top: 5px;
+  -webkit-box-shadow: 0 0 0 3px #727cf5;
+  box-shadow: 0 0 0 3px #727cf5;
+  left: -55.8px;
+  background: #fff;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  content: "";
+  top: 5px;
 }
 
 @media (max-width: 767px) {
@@ -1072,13 +837,13 @@ body > div.contact-us.container.p-5 > div{
 }
 
 .rtl .timeline {
-    border-left: 0;
-    text-align: right;
-    border-bottom-right-radius: 0;
-    border-top-right-radius: 0;
-    border-bottom-left-radius: 4px;
-    border-top-left-radius: 4px;
-    border-right: 3px solid #727cf5;
+  border-left: 0;
+  text-align: right;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px;
+  border-right: 3px solid #727cf5;
 }
 
 .rtl .timeline .event::before {
@@ -1096,7 +861,6 @@ body > div.contact-us.container.p-5 > div{
   background-color: #343a40;
 }
 
-
 .entryConditionRow .row{
   -webkit-animation-duration: 0.8s;
   animation-duration: 0.8s;
@@ -1113,19 +877,7 @@ body > div.contact-us.container.p-5 > div{
 
 /*-------------------- END CREATE STRATEGY -------------------------*/
 
-
-
-
-
-
-
-
-
-
-
-
 /* ------------------------  BACK TEST HISTORY ----------------------*/
-
 
 .backtestHistory row{
   border-bottom: 2px solid #e2e2e2;
@@ -1140,7 +892,6 @@ body > div.contact-us.container.p-5 > div{
   border-color: inherit;
   -webkit-box-shadow: none;
 }
-
 
 table {
   border: 1px solid #ccc;
@@ -1178,26 +929,27 @@ table th {
   text-transform: uppercase;
 }
 
-
-
-
 .hiddenRow {
-    padding: 0 !important;
+  padding: 0 !important;
+  background: #F8F8F8;
+}
+
+.text-end{
+  text-align: end;
 }
 
 .backtestHistorySecondC{
   flex: 3;
-    padding: 12px 30px 0;
-    margin-left: 2rem;
-    border-left: 1px solid #989898;
-    border-right: 1px solid #989898;
+  padding: 12px 30px 0;
+  margin-left: 2rem;
+  border-left: 1px solid #989898;
+  border-right: 1px solid #989898;
 }
 
 .backtestHistorySecondCF{
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
-
 
 .backtestHistorySecondCF1{
   flex: 2;
@@ -1207,7 +959,6 @@ table th {
   text-align: left;
 }
 
-
 .backtestHistorySecondCF2{
   flex: 1;
   color: #383838;
@@ -1215,18 +966,16 @@ table th {
   font-weight: 400;
 }
 
-
 .backtestHistoryThirdC{
   flex: 3;
-    padding: 12px 30px 0;
-    margin-left: 2rem;
+  padding: 12px 30px 0;
+  margin-left: 2rem;
 }
 
 .backtestHistoryThirdCF{
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
-
 
 .backtestHistoryThirdCF1{
   flex: 2;
@@ -1236,7 +985,6 @@ table th {
   text-align: left;
 }
 
-
 .backtestHistoryThirdCF2{
   flex: 1;
   color: #383838;
@@ -1244,40 +992,7 @@ table th {
   font-weight: 400;
 }
 
-
-
 /*  ------------------------ END BACK TEST HISTORY ----------------------*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 /* Dashed border */
 hr.dashed {
@@ -1300,9 +1015,6 @@ hr.rounded {
   border-top: 8px solid #bbb;
   border-radius: 5px;
 }
-
-
-
 
 .font-3{
   font-size: 0.15rem;
@@ -1416,239 +1128,233 @@ hr.rounded {
 }
 
 
-
-
-
 @media (min-width: 480px) {
 
   .font-3{
   font-size: 0.15rem;
-}
+  }
 
-.font-4{
-  font-size: 0.2rem;
-}
+  .font-4{
+    font-size: 0.2rem;
+  }
 
-.font-5{
-  font-size: 0.25rem;
-}
+  .font-5{
+    font-size: 0.25rem;
+  }
 
-.font-6{
-  font-size: 0.3rem;
-}
+  .font-6{
+    font-size: 0.3rem;
+  }
 
-.font-7{
-  font-size: 0.35rem;
-}
+  .font-7{
+    font-size: 0.35rem;
+  }
 
-.font-8{
-  font-size: 0.4rem;
-}
+  .font-8{
+    font-size: 0.4rem;
+  }
 
-.font-9{
-  font-size: 0.45rem;
-}
+  .font-9{
+    font-size: 0.45rem;
+  }
 
-.font-10{
-  font-size: 0.5rem;
-}
-.font-11{
-  font-size: 0.55rem;
-}
+  .font-10{
+    font-size: 0.5rem;
+  }
+  .font-11{
+    font-size: 0.55rem;
+  }
 
-.font-12{
-  font-size: 0.6rem;
+  .font-12{
+    font-size: 0.6rem;
+  }
+
+  .font-13{
+    font-size: 0.65rem;
+  }
+
+  .font-14{
+    font-size: 0.7rem;
+  }
+
+  .font-15{
+    font-size: 1.2rem;
+  }
+
+  .font-16{
+    font-size: 0.8rem;
+  }
+
+  .font-17{
+    font-size: 0.85rem;
+  }
+
+  .font-18{
+    font-size: 0.9rem;
+  }
+
+  .font-19{
+    font-size: 0.95rem;
+  }
+
+  .font-20{
+    font-size: 2.5rem;
+  }
+
+  .font-21{
+    font-size: 1.05rem;
+  }
+
+  .font-22{
+    font-size: 2.2rem;
+  }
+
+  .font-23{
+    font-size: 2.3rem;
+  }
+
+  .font-24{
+    font-size: 2.4rem;
+  }
+
+  .font-25{
+    font-size: 2rem;
+  }
+
+  .font-26{
+    font-size: 2.6rem;
+  }
+
+  .font-27{
+    font-size: 2.7rem;
+  }
+
+  .font-28{
+    font-size: 2.8rem;
+  }
+
+  .font-29{
+    font-size: 2.9rem;
+  }
+
+  .font-30{
+    font-size: 3rem;
+  }
+
 }
-
-.font-13{
-  font-size: 0.65rem;
-}
-
-.font-14{
-  font-size: 0.7rem;
-}
-
-.font-15{
-  font-size: 1.2rem;
-}
-
-.font-16{
-  font-size: 0.8rem;
-}
-
-.font-17{
-  font-size: 0.85rem;
-}
-
-.font-18{
-  font-size: 0.9rem;
-}
-
-.font-19{
-  font-size: 0.95rem;
-}
-
-.font-20{
-  font-size: 2.5rem;
-}
-
-.font-21{
-  font-size: 1.05rem;
-}
-
-.font-22{
-  font-size: 2.2rem;
-}
-
-.font-23{
-  font-size: 2.3rem;
-}
-
-.font-24{
-  font-size: 2.4rem;
-}
-
-.font-25{
-  font-size: 2rem;
-}
-
-.font-26{
-  font-size: 2.6rem;
-}
-
-.font-27{
-  font-size: 2.7rem;
-}
-
-.font-28{
-  font-size: 2.8rem;
-}
-
-.font-29{
-  font-size: 2.9rem;
-}
-
-.font-30{
-  font-size: 3rem;
-}
-
-}
-
-
 
 @media (min-width: 768px) {
 
   .font-3{
-  font-size: 1.1rem;
-}
+    font-size: 1.1rem;
+  }
 
-.font-4{
-  font-size: 1.2rem;
-}
+  .font-4{
+    font-size: 1.2rem;
+  }
 
-.font-5{
-  font-size: 1.3rem;
-}
+  .font-5{
+    font-size: 1.3rem;
+  }
 
-.font-6{
-  font-size: 1.4rem;
-}
+  .font-6{
+    font-size: 1.4rem;
+  }
 
-.font-7{
-  font-size: 1.5rem;
-}
+  .font-7{
+    font-size: 1.5rem;
+  }
 
-.font-8{
-  font-size: 1.6rem;
-}
+  .font-8{
+    font-size: 1.6rem;
+  }
 
-.font-9{
-  font-size: 1.7rem;
-}
+  .font-9{
+    font-size: 1.7rem;
+  }
 
-.font-10{
-  font-size: 1.8rem;
-}
-.font-11{
-  font-size: 1.9rem;
-}
+  .font-10{
+    font-size: 1.8rem;
+  }
+  .font-11{
+    font-size: 1.9rem;
+  }
 
-.font-12{
-  font-size: 2rem;
-}
+  .font-12{
+    font-size: 2rem;
+  }
 
-.font-13{
-  font-size: 2.1rem;
-}
+  .font-13{
+    font-size: 2.1rem;
+  }
 
-.font-14{
-  font-size: 2.2rem;
-}
+  .font-14{
+    font-size: 2.2rem;
+  }
 
-.font-15{
-  font-size: 2.3rem;
-}
+  .font-15{
+    font-size: 2.3rem;
+  }
 
-.font-16{
-  font-size: 2.4rem;
-}
+  .font-16{
+    font-size: 2.4rem;
+  }
 
-.font-17{
-  font-size: 2.5rem;
-}
+  .font-17{
+    font-size: 2.5rem;
+  }
 
-.font-18{
-  font-size: 2.6rem;
-}
+  .font-18{
+    font-size: 2.6rem;
+  }
 
-.font-19{
-  font-size: 2.7rem;
-}
+  .font-19{
+    font-size: 2.7rem;
+  }
 
-.font-20{
-  font-size: 2.8rem;
-}
+  .font-20{
+    font-size: 2.8rem;
+  }
 
-.font-21{
-  font-size: 2.9rem;
-}
+  .font-21{
+    font-size: 2.9rem;
+  }
 
-.font-22{
-  font-size: 3rem;
-}
+  .font-22{
+    font-size: 3rem;
+  }
 
-.font-23{
-  font-size: 3.1rem;
-}
+  .font-23{
+    font-size: 3.1rem;
+  }
 
-.font-24{
-  font-size: 3.2rem;
-}
+  .font-24{
+    font-size: 3.2rem;
+  }
 
-.font-25{
-  font-size: 3.3rem;
-}
+  .font-25{
+    font-size: 3.3rem;
+  }
 
-.font-26{
-  font-size: 3.4rem;
-}
+  .font-26{
+    font-size: 3.4rem;
+  }
 
-.font-27{
-  font-size: 3.5rem;
-}
+  .font-27{
+    font-size: 3.5rem;
+  }
 
-.font-28{
-  font-size: 3.5rem;
-}
+  .font-28{
+    font-size: 3.5rem;
+  }
 
-.font-29{
-  font-size: 3.6rem;
-}
+  .font-29{
+    font-size: 3.6rem;
+  }
 
-.font-30{
-  font-size: 3.7rem;
-}
-
+  .font-30{
+    font-size: 3.7rem;
+  }
 }
 
 
@@ -1657,116 +1363,115 @@ hr.rounded {
 @media (min-width: 1251px) {
 
   .font-3{
-  font-size: 1.05rem;
-}
+    font-size: 1.05rem;
+  }
 
-.font-4{
-  font-size: 1.15rem;
-}
+  .font-4{
+    font-size: 1.15rem;
+  }
 
-.font-5{
-  font-size: 1.25rem;
-}
+  .font-5{
+    font-size: 1.25rem;
+  }
 
-.font-6{
-  font-size: 1.35rem;
-}
+  .font-6{
+    font-size: 1.35rem;
+  }
 
-.font-7{
-  font-size: 1.45rem;
-}
+  .font-7{
+    font-size: 1.45rem;
+  }
 
-.font-8{
-  font-size: 1.55rem;
-}
+  .font-8{
+    font-size: 1.55rem;
+  }
 
-.font-9{
-  font-size: 1.65rem;
-}
+  .font-9{
+    font-size: 1.65rem;
+  }
 
-.font-10{
-  font-size: 1.75rem;
-}
-.font-11{
-  font-size: 1.85rem;
-}
+  .font-10{
+    font-size: 1.75rem;
+  }
+  .font-11{
+    font-size: 1.85rem;
+  }
 
-.font-12{
-  font-size: 1.95rem;
-}
+  .font-12{
+    font-size: 1.95rem;
+  }
 
-.font-13{
-  font-size: 2.05rem;
-}
+  .font-13{
+    font-size: 2.05rem;
+  }
 
-.font-14{
-  font-size: 2.15rem;
-}
+  .font-14{
+    font-size: 2.15rem;
+  }
 
-.font-15{
-  font-size: 2.25rem;
-}
+  .font-15{
+    font-size: 2.25rem;
+  }
 
-.font-16{
-  font-size: 2.35rem;
-}
+  .font-16{
+    font-size: 2.35rem;
+  }
 
-.font-17{
-  font-size: 2.45rem;
-}
+  .font-17{
+    font-size: 2.45rem;
+  }
 
-.font-18{
-  font-size: 2.55rem;
-}
+  .font-18{
+    font-size: 2.55rem;
+  }
 
-.font-19{
-  font-size: 2.65rem;
-}
+  .font-19{
+    font-size: 2.65rem;
+  }
 
-.font-20{
-  font-size: 2.75rem;
-}
+  .font-20{
+    font-size: 2.75rem;
+  }
 
-.font-21{
-  font-size: 2.85rem;
-}
+  .font-21{
+    font-size: 2.85rem;
+  }
 
-.font-22{
-  font-size: 2.95rem;
-}
+  .font-22{
+    font-size: 2.95rem;
+  }
 
-.font-23{
-  font-size: 3.05rem;
-}
+  .font-23{
+    font-size: 3.05rem;
+  }
 
-.font-24{
-  font-size: 3.15rem;
-}
+  .font-24{
+    font-size: 3.15rem;
+  }
 
-.font-25{
-  font-size: 3.25rem;
-}
+  .font-25{
+    font-size: 3.25rem;
+  }
 
-.font-26{
-  font-size: 3.35rem;
-}
+  .font-26{
+    font-size: 3.35rem;
+  }
 
-.font-27{
-  font-size: 3.45rem;
-}
+  .font-27{
+    font-size: 3.45rem;
+  }
 
-.font-28{
-  font-size: 3.55rem;
-}
+  .font-28{
+    font-size: 3.55rem;
+  }
 
-.font-29{
-  font-size: 3.65rem;
-}
+  .font-29{
+    font-size: 3.65rem;
+  }
 
-.font-30{
-  font-size: 3.75rem;
-}
-
+  .font-30{
+    font-size: 3.75rem;
+  }
 }
 
 
@@ -1774,134 +1479,117 @@ hr.rounded {
 
 @media (min-width: 1485px) {
 
+  .font-3{
+    font-size: 1.1rem;
+  }
 
-.font-3{
-  font-size: 1.1rem;
+  .font-4{
+    font-size: 1.2rem;
+  }
+
+  .font-5{
+    font-size: 1.3rem;
+  }
+
+  .font-6{
+    font-size: 1.4rem;
+  }
+
+  .font-7{
+    font-size: 1.5rem;
+  }
+
+  .font-8{
+    font-size: 1.6rem;
+  }
+
+  .font-9{
+    font-size: 1.7rem;
+  }
+
+  .font-10{
+    font-size: 1.8rem;
+  }
+  .font-11{
+    font-size: 1.9rem;
+  }
+
+  .font-12{
+    font-size: 2rem;
+  }
+
+  .font-13{
+    font-size: 2.1rem;
+  }
+
+  .font-14{
+    font-size: 2.2rem;
+  }
+
+  .font-15{
+    font-size: 2.3rem;
+  }
+
+  .font-16{
+    font-size: 2.4rem;
+  }
+
+  .font-17{
+    font-size: 2.5rem;
+  }
+
+  .font-18{
+    font-size: 2.6rem;
+  }
+
+  .font-19{
+    font-size: 2.7rem;
+  }
+
+  .font-20{
+    font-size: 2.5rem;
+  }
+
+  .font-21{
+    font-size: 2.9rem;
+  }
+
+  .font-22{
+    font-size: 3rem;
+  }
+
+  .font-23{
+    font-size: 3.1rem;
+  }
+
+  .font-24{
+    font-size: 3.2rem;
+  }
+
+  .font-25{
+    font-size: 3.3rem;
+  }
+
+  .font-26{
+    font-size: 3.4rem;
+  }
+
+  .font-27{
+    font-size: 3.5rem;
+  }
+
+  .font-28{
+    font-size: 3.6rem;
+  }
+
+  .font-29{
+    font-size: 3.70rem;
+  }
+
+  .font-30{
+    font-size: 3.8rem;
+  }
 }
-
-.font-4{
-  font-size: 1.2rem;
-}
-
-.font-5{
-  font-size: 1.3rem;
-}
-
-.font-6{
-  font-size: 1.4rem;
-}
-
-.font-7{
-  font-size: 1.5rem;
-}
-
-.font-8{
-  font-size: 1.6rem;
-}
-
-.font-9{
-  font-size: 1.7rem;
-}
-
-.font-10{
-  font-size: 1.8rem;
-}
-.font-11{
-  font-size: 1.9rem;
-}
-
-.font-12{
-  font-size: 2rem;
-}
-
-.font-13{
-  font-size: 2.1rem;
-}
-
-.font-14{
-  font-size: 2.2rem;
-}
-
-.font-15{
-  font-size: 2.3rem;
-}
-
-.font-16{
-  font-size: 2.4rem;
-}
-
-.font-17{
-  font-size: 2.5rem;
-}
-
-.font-18{
-  font-size: 2.6rem;
-}
-
-.font-19{
-  font-size: 2.7rem;
-}
-
-.font-20{
-  font-size: 2.5rem;
-}
-
-.font-21{
-  font-size: 2.9rem;
-}
-
-.font-22{
-  font-size: 3rem;
-}
-
-.font-23{
-  font-size: 3.1rem;
-}
-
-.font-24{
-  font-size: 3.2rem;
-}
-
-.font-25{
-  font-size: 3.3rem;
-}
-
-.font-26{
-  font-size: 3.4rem;
-}
-
-.font-27{
-  font-size: 3.5rem;
-}
-
-.font-28{
-  font-size: 3.6rem;
-}
-
-.font-29{
-  font-size: 3.70rem;
-}
-
-.font-30{
-  font-size: 3.8rem;
-}
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .section-0 {
   padding-top: 0;

@@ -1,4 +1,4 @@
- @import url('https://fonts.googleapis.com/css2?family=Arsenal:ital@1&family=Cormorant+Garamond:ital@1&family=Cormorant+Upright:wght@500&family=Tourney:ital,wght@1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arsenal:ital@1&family=Cormorant+Garamond:ital@1&family=Cormorant+Upright:wght@500&family=Tourney:ital,wght@1,700&display=swap');
 
 html {
   position: relative;
@@ -20,6 +20,15 @@ body.sticky-footer .content-wrapper {
 body.fixed-nav {
   padding-top: 56px;
 }
+
+.bg-danger1{
+  background-color: #b30000;
+}
+
+.bg-success1{
+  background-color: #326744;
+}
+
 
 .content-wrapper {
   min-height: calc(100vh - 56px);
@@ -525,7 +534,6 @@ footer.sticky-footer {
 
 .mystrategy{
   overflow: hidden;
-  white-space: nowrap;
   display: flex;
   scroll-behavior: smooth;
 }

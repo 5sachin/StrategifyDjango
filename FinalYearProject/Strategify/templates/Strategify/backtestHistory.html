@@ -13,139 +13,139 @@
 	<title>BackTestResult</title>
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand brand" href="index.html">Strategify</a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="index.html">
-            <i class="fa fa-fw fa-dashboard"></i>
-            <span class="nav-link-text">Dashboard</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="charts.html">
-            <i class="fa fa-fw fa-area-chart"></i>
-            <span class="nav-link-text">Charts</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
-          <a class="nav-link" href="tables.html">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">Live Trades</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
-          <a class="nav-link" href="tables.html">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">Deployed</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
-          <a class="nav-link" href="#">
-            <i class="fa fa-fw fa-link"></i>
-            <span class="nav-link-text">Paper Trades</span>
-          </a>
-        </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
-            <i class="fa fa-fw fa-user"></i>
-            <span class="nav-link-text">{{data.name}}</span>
-          </a>
-          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
-            <li>
-              <a href="login.html">Profile</a>
+        <a class="navbar-brand brand" href="index.html">Strategify</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                    <a class="nav-link" href="index.html">
+                        <i class="fa fa-fw fa-dashboard"></i>
+                        <span class="nav-link-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
+                    <a class="nav-link" href="charts.html">
+                        <i class="fa fa-fw fa-area-chart"></i>
+                        <span class="nav-link-text">Charts</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
+                    <a class="nav-link" href="{% url 'deploypage' %}">
+                        <i class="fa fa-fw fa-table"></i>
+                        <span class="nav-link-text">Deployed</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
+                    <a class="nav-link" href="#">
+                        <i class="fa fa-fw fa-link"></i>
+                        <span class="nav-link-text">Paper Trades</span>
+                    </a>
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+                    <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
+                        <i class="fa fa-fw fa-user"></i>
+                        <span class="nav-link-text">{{response.session.username}}</span>
+                    </a>
+                    <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+                        <li>
+                            <a href="login.html">Profile</a>
+                        </li>
+                        <li>
+                            <a href="forgot-password.html">Logout</a>
+                        </li>
+                        <li>
+                            <a href="blank.html">Delete Account</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="navbar-nav sidenav-toggler">
+                <li class="nav-item">
+                    <a class="nav-link text-center" id="sidenavToggler">
+                        <i class="fa fa-fw fa-angle-left"></i>
+                    </a>
+                </li>
+            </ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle ml-lg-4" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-fw fa-bell"></i>
+                    <span class="d-lg-none">Alerts
+                        <span class="badge badge-pill badge-warning">6 New</span>
+                    </span>
+                    <span class="indicator text-warning d-none d-lg-block">
+                        <i class="fa fa-fw fa-circle"></i>
+                    </span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="alertsDropdown">
+                    <h6 class="dropdown-header">New Alerts:</h6>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">
+                        <span class="text-success">
+                            <strong>
+                                <i class="fa fa-long-arrow-up fa-fw"></i>Status Update
+                            </strong>
+                        </span>
+                        <span class="small float-right text-muted">11:21 AM</span>
+                        <div class="dropdown-message small">
+                            This is an automated server response message. All systems are online.
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">
+                            <span class="text-danger">
+                            <strong>
+                                <i class="fa fa-long-arrow-down fa-fw"></i>
+                                Status Update
+                            </strong>
+                        </span>
+                        <span class="small float-right text-muted">11:21 AM</span>
+                        <div class="dropdown-message small">
+                            This is an automated server response message. All systems are online.
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">
+                        <span class="text-success">
+                            <strong>
+                                <i class="fa fa-long-arrow-up fa-fw"></i>
+                                Status Update
+                            </strong>
+                        </span>
+                        <span class="small float-right text-muted">11:21 AM</span>
+                        <div class="dropdown-message small">
+                            This is an automated server response message. All systems are online.
+                        </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item small" href="#">View all alerts</a>
+                </div>
             </li>
-            <li>
-              <a href="forgot-password.html">Logout</a>
-            </li>
-            <li>
-              <a href="blank.html">Delete Account</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="navbar-nav sidenav-toggler">
-        <li class="nav-item">
-          <a class="nav-link text-center" id="sidenavToggler">
-            <i class="fa fa-fw fa-angle-left"></i>
-          </a>
-        </li>
-      </ul>
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle ml-lg-4" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-fw fa-bell"></i>
-            <span class="d-lg-none">Alerts
-              <span class="badge badge-pill badge-warning">6 New</span>
-            </span>
-            <span class="indicator text-warning d-none d-lg-block">
-              <i class="fa fa-fw fa-circle"></i>
-            </span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-            <h6 class="dropdown-header">New Alerts:</h6>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-success">
-                <strong>
-                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-danger">
-                <strong>
-                  <i class="fa fa-long-arrow-down fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-success">
-                <strong>
-                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item small" href="#">View all alerts</a>
-          </div>
-        </li>
-      </ul>
+        </ul>
     </div>
-  </nav>
+</nav>
 
-
-
-    <div class="content-wrapper">
-        <div class="container-fluid">
-          <!-- Breadcrumbs-->
-          <ol class="breadcrumb">
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <ol class="breadcrumb">
             <li class="breadcrumb-item active">{{strategyName}}</li>
-          </ol>
-
-
-
-
-            <div class="container-fluid backtestHistory">
-                <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
-                    <div class="shell">
-                        <div class="range">
-                            <div class="row">
-                                <div class="col-6">
-                                    {{startDate}} to {{stopDate}}
-                                </div>
+        </ol>
+        <div class="container-fluid backtestHistory">
+            <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
+                <div class="shell">
+                    <div class="range">
+                        <div class="row">
+                            <div class="col-6">
+                                {{response.POST.startDate}} to {{response.POST.stopDate}}
+                            </div>
+                            <div class="col-6 ml-auto align-content-end text-end">
+                                <button class="ghost" id="deploy" onclick="deploy()">Deploy</button>
                             </div>
                         </div>
+                    </div>
                     <div class="range mt-5">
                         <div class="row">
                             <div class="panel panel-default">
@@ -167,7 +167,7 @@
                                                 <th scope="col">CheckBox</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="MAonTCS">
                                             {% if error %}
                                                 <tr>
                                                     <td colspan="12"><b>{{error.error}}</b></td>
@@ -175,8 +175,12 @@
                                             {% else %}
                                                 {% for e in data %}
                                                     <tr>
-                                                        <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.ScripName}}</td>
-                                                        <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">--(--%)</td>
+                                                        <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">
+                                                            {{e.ScripName}}
+                                                        </td>
+                                                        <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">
+                                                            {{e.LTP}}
+                                                        </td>
                                                         {% if e.Status == 0 %}
                                                             <td data-label="Amount" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle"><span class="text-danger">{{e.PL}}</span></td>
                                                         {% else %}
@@ -184,17 +188,22 @@
                                                         {% endif %}
                                                         <td data-label="Period" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">
                                                             <div class="progress bg-danger">
-                                                                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: {{e.PercentBar}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                                <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 
+                                                                {{e.PercentBar}}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                                                                 </div>
                                                             </div>
                                                         </td>
-                                                        <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Signal}}</td>
-                                                        <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Wins}}</td>
+                                                        <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">
+                                                            {{e.Signal}}
+                                                        </td>
+                                                        <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">
+                                                            {{e.Wins}}
+                                                        </td>
                                                         <td data-label="Amount" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Loss}}</td>
                                                         <td data-label="Period" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.WinStreak}}</td>
                                                         <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.LossStreak}}</td>
                                                         <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">--</td>
-                                                        <td data-label="Amount"><span><a href="{% static '{{e.ScripName}}' %}"><i class="fa fa-download"></i></a></span></td>
+                                                        <td data-label="Amount"><span><a href="static/{{e.username}}{{e.ScripName}}.csv"><i class="fa fa-download"></i></a></span></td>
                                                         <td data-label="Period"><input type="checkbox" name="check"></td>
                                                     </tr>
                                                     <tr>
@@ -276,16 +285,16 @@
                     </div>
                 </div>
             </div>
-            </div>
-            <footer class="sticky-footer">
-              <div class="container">
+        </div>
+        <footer class="sticky-footer">
+            <div class="container">
                 <div class="text-center">
                   <small>Copyright © Strategify 2021</small>
                 </div>
-              </div>
-            </footer>
-        </div>
+            </div>
+        </footer>
     </div>
+</div>
 
     
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->

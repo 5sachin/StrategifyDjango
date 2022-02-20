@@ -1,7 +1,6 @@
 const buttonRight = document.getElementById('slideRight');
 const buttonLeft = document.getElementById('slideLeft');
 
-
 buttonRight.onclick = function () {
   document.getElementById('mystrategy').scrollLeft += 800;
 };
@@ -10,9 +9,8 @@ buttonLeft.onclick = function () {
   document.getElementById('mystrategy').scrollLeft -= 800;
 };
 
-
 function searchStrategyByName(){
-var input, filter, cards, cardContainer, h5, title, i;
+    var input, filter, cards, cardContainer, h5, title, i;
     input = document.getElementById("searchStrategy");
     filter = input.value.toUpperCase();
     cardContainer = document.getElementById("mystrategy");

@@ -78,6 +78,14 @@ def generateOTP():
         OTP += digits[math.floor(random.random() * 10)]
     return OTP
 
+def deploypage(request):
+    data = UserRegistration.objects.get(username=request.session['username'])
+    userData = {
+        'username': USERNAME,
+        'name': data.name,
+    }
+    return render(request, 'Strategify/deployed.html', {'data': userData})
+
 def generateotp(request):
     response_data = {}
     email = request.POST.get("email")
@@ -100,10 +108,9 @@ def signIn(request):
     response_data = {}
     if request.method == 'POST':
         username = request.POST.get('username')
-        email = request.POST.get('email')
         password = request.POST.get('password')
         try:
-            user_data = UserRegistration.objects.get(username=username,email=email,password=password)
+            user_data = UserRegistration.objects.get(username=username,password=password)
             if(user_data):
                 response_data['success'] = "Logged In Success"
                 USERNAME = username
@@ -137,14 +144,19 @@ def checkstrategyName(request):
             response_data['error'] = str(e)
         return JsonResponse(response_data)
 
-def createstrategy(response):
+def openStrategy(response):
     response_data = {}
     showStrategyDetails(response)
     data = UserRegistration.objects.get(username=response.session['username'])
+
+    strategydata = None
+    if response.method == "GET":
+        strategydata = StrategyRegistration.objects.get(strategyid=response.GET.get('strategyid'))
+
     try:
         nse = NSE()
     except Exception as e:
-        print("Connection Error NSE: ",e)
+        print("Connection Error NSE: ", e)
         response_data['error'] = "Unable to Load"
         return JsonResponse(response_data)
     userData = {
@@ -152,7 +164,66 @@ def createstrategy(response):
         'name': data.name,
         'scripdata': nse.allscrip(),
     }
-    return render(response, 'Strategify/createStrategy.html', {'data':userData})
+    return render(response, 'Strategify/createStrategy.html', {'data': userData, 'strategydata': strategydata})
+
+def createstrategy(response):
+    response_data = {}
+    showStrategyDetails(response)
+    data = UserRegistration.objects.get(username=response.session['username'])
+
+    # try:
+    #     nse = NSE()
+    # except Exception as e:
+    #     print("Connection Error NSE: ",e)
+    #     response_data['error'] = "Unable to Load"
+    #     return JsonResponse(response_data)
+    userData = {
+        'username': USERNAME,
+        'name': data.name,
+        'scripdata': "nse.allscrip()",
+    }
+    return render(response, 'Strategify/createStrategy.html', {'data':userData,'strategydata': None})
+
+
+def topgainers(response):
+    response_data = {}
+    try:
+        nse = NSE()
+        response_data['success'] = nse.topgainers()
+        return JsonResponse(response_data)
+    except ConnectionError as e:
+        print("Connection Error: ",e)
+    except Exception as e:
+        print("Top Gainers Error: ",str(e))
+        response_data['error'] = str(e)
+        return JsonResponse(response_data)
+
+def toplosers(response):
+    response_data = {}
+    try:
+        nse = NSE()
+        response_data['success'] = nse.toplosers()
+        return JsonResponse(response_data)
+    except ConnectionError as e:
+        print("Connection Error: ",e)
+    except Exception as e:
+        print("Top Losers Error: ",str(e))
+        response_data['error'] = str(e)
+        return JsonResponse(response_data)
+
+def indexdata(response):
+    response_data = {}
+    try:
+        nse = NSE()
+        response_data['success'] = nse.allindex()
+        return JsonResponse(response_data)
+    except ConnectionError as e:
+        print("Connection Error: ",e)
+    except Exception as e:
+        print("Top Losers Error: ",str(e))
+        response_data['error'] = str(e)
+        return JsonResponse(response_data)
+
 
 def dashboard(response):
     data = UserRegistration.objects.get(username=response.session['username'])
@@ -275,37 +346,63 @@ def createStrategyForm(response):
                                 globals()[a[j]]("EXIT", int(b[1]))
                                 exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
                 if exitCondition:
-                    val = ProfitLossCalculationWithExit(scriplist[i],response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
+                    val = ProfitLossCalculationWithExit(response.session['username'],scriplist[i],response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
                 else:
-                    val = ProfitLossCalculationWithoutExit(scriplist[i], response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
+                    val = ProfitLossCalculationWithoutExit(response.session['username'],scriplist[i], response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
                 alldata.append(val)
 
             if dataexitCondition == "":
                 dataexitCondition = "None"
             try:
-                user = UserRegistration.objects.get(username=response.session['username'])
-                StrategyRegistration.objects.create(
-                    strategyid=response.session['username'] + response.POST.get('strategyname'),
-                    username=user,
-                    strategyname=response.POST.get('strategyname'),
-                    quantity=response.POST.get('quantityLots'),
-                    scripname=response.POST.get('allscriplist'),
-                    entrycondition=dataentryCondition,
-                    stoploss=response.POST.get('stoploss'),
-                    target=response.POST.get('targetper'),
-                    exitcondition=dataexitCondition,
-                    startdate=startDate,
-                    enddate=stopDate,
-                    createDate=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                )
-                print(StrategyRegistration.objects.filter(username = "sachin5"))
+                insertStrategyData(response,dataentryCondition,dataexitCondition)
             except IntegrityError as e:
                 response_data['error'] = "Strategy Name Already Exist Hence Not Saved. Use different Name"
             except Exception as e:
                 response_data['error'] = str(e)
-            return render(response, 'Strategify/backtestHistory.html',{'data':alldata,'strategyName':response.POST.get('strategyname'),'startDate':startDate,'stopDate':stopDate,'error':response_data})
+            return render(response, 'Strategify/backtestHistory.html',{'response':response,'data':alldata,'strategyName':response.POST.get('strategyname'),'error':response_data})
     except Exception as e:
         print("Error",e)
+
+
+def insertStrategyData(response,dataentryCondition,dataexitCondition):
+    try:
+        if StrategyRegistration.objects.filter(username=response.session['username'],strategyid=response.session['username'] + response.POST.get('strategyname')).exists():
+            user = UserRegistration.objects.get(username=response.session['username'])
+            StrategyRegistration.objects.filter(strategyid = response.session['username'] + response.POST.get('strategyname')).update(
+                strategyid=response.session['username'] + response.POST.get('strategyname'),
+                username=user,
+                strategyname=response.POST.get('strategyname'),
+                quantity=response.POST.get('quantityLots'),
+                scripname=response.POST.get('allscriplist'),
+                entrycondition=dataentryCondition,
+                stoploss=response.POST.get('stoploss'),
+                target=response.POST.get('targetper'),
+                exitcondition=dataexitCondition,
+                startdate=response.POST.get('startDate'),
+                enddate=response.POST.get('stopDate'),
+                createDate=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                )
+        else:
+            saveStrategyDetails(response,dataentryCondition,dataexitCondition)
+    except ObjectDoesNotExist as e:
+        saveStrategyDetails(response,dataentryCondition,dataexitCondition)
+
+def saveStrategyDetails(response,dataentryCondition,dataexitCondition):
+    user = UserRegistration.objects.get(username=response.session['username'])
+    StrategyRegistration.objects.create(
+            strategyid=response.session['username'] + response.POST.get('strategyname'),
+            username=user,
+            strategyname=response.POST.get('strategyname'),
+            quantity=response.POST.get('quantityLots'),
+            scripname=response.POST.get('allscriplist'),
+            entrycondition=dataentryCondition,
+            stoploss=response.POST.get('stoploss'),
+            target=response.POST.get('targetper'),
+            exitcondition=dataexitCondition,
+            startdate=response.POST.get('startDate'),
+            enddate=response.POST.get('stopDate'),
+            createDate=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            )
 
 def Value(period):
     data['Value{}'.format(period)] = period
@@ -374,7 +471,7 @@ def exitSignalGeneration(period1,period2):
             else:
                 data['Position'][i] = data['EXITPosition{}'.format(str(period1)+str(period2))][i]
 
-def ProfitLossCalculationWithExit(scrip,target,steploss,quantity):
+def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
     global data
     a = 0
     status = 0
@@ -483,7 +580,7 @@ def ProfitLossCalculationWithExit(scrip,target,steploss,quantity):
     if totP + totL > 0:
         status = 1
 
-    pd.DataFrame(alllist).to_csv('Strategify/static/' + scrip.replace('.NS', '') + '.csv')
+    pd.DataFrame(alllist).to_csv('Strategify/static/' + ''+username+''+scrip.replace('.NS', '')+'.csv')
     periodHigh = "{:.2f}".format(data['Close'].max())
     periodLow = "{:.2f}".format(data['Close'].min())
     balance = "{:.2f}".format(balance)
@@ -516,6 +613,7 @@ def ProfitLossCalculationWithExit(scrip,target,steploss,quantity):
 
     percentBar = (float(totP) / (float(totP) + float(totL))) * 100
     alldata = {
+        'username': username,
         'ScripName': scrip.replace('.NS', ''),
         'PL': "{:.2f}".format(float(balance) * int(quantity)),
         'Status': status,
@@ -536,7 +634,7 @@ def ProfitLossCalculationWithExit(scrip,target,steploss,quantity):
 
     return alldata
 
-def ProfitLossCalculationWithoutExit(scrip,target,steploss,quantity):
+def ProfitLossCalculationWithoutExit(username,scrip,target,steploss,quantity):
     global data
     a = 0
     status = 0
@@ -551,6 +649,7 @@ def ProfitLossCalculationWithoutExit(scrip,target,steploss,quantity):
     PL = 0
     streakP = 0
     streakL = 0
+    ltp = 0
 
 
     for i in range(0, len(data['Position'])):
@@ -596,6 +695,7 @@ def ProfitLossCalculationWithoutExit(scrip,target,steploss,quantity):
                         'buysell': "sell",
                         'balance': balance
                     })
+                    ltp = data['Close'][i]
                     PL += 1
                     PS = 0
                     if PL > streakL:
@@ -608,22 +708,31 @@ def ProfitLossCalculationWithoutExit(scrip,target,steploss,quantity):
     if totP + totL > 0:
         status = 1
 
-    pd.DataFrame(alllist).to_csv('Strategify/static/'+scrip.replace('.NS', '')+'.csv')
+    pd.DataFrame(alllist).to_csv('Strategify/static/'+''+username+''+scrip.replace('.NS', '')+'.csv')
     periodHigh = "{:.2f}".format(data['Close'].max())
     periodLow = "{:.2f}".format(data['Close'].min())
     balance = "{:.2f}".format(balance)
     totP = "{:.2f}".format(totP)
     totL = "{:.2f}".format(-totL)
+    ltp = "{:.2f}".format(float(ltp))
 
-    if WinsCount == 0:
+
+
+    if WinsCount != 0 and LossCount != 0:
+        AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
+        AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
+    elif WinsCount == 0 and LossCount != 0:
         AvgGain = 0
         AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
-    elif LossCount == 0:
+    elif LossCount == 0 and WinsCount != 0:
         AvgLoss = 0
         AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
     else:
-        AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
-        AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
+        AvgGain = 0
+        AvgLoss = 0
+
+
+
 
     x = plt.figure(figsize=(15, 7))
     plt.title('Close Price History w/ Buy & Sell Signals', fontsize=18)
@@ -639,11 +748,18 @@ def ProfitLossCalculationWithoutExit(scrip,target,steploss,quantity):
     string = base64.b64encode(buf.read())
     uri = urllib.parse.quote(string)
 
-    percentBar = (float(totP) / (float(totP) + float(totL))) * 100
+    print(type(totP))
+    if float(totP) == 0.00 and float(totL) == 0.00:
+        print("Here 1")
+        percentBar = 0
+    else: 
+        percentBar = (float(totP) / (float(totP) + float(totL))) * 100
     alldata = {
+        'username':username,
         'ScripName': scrip.replace('.NS', ''),
         'PL': "{:.2f}".format(float(balance) * int(quantity)),
         'Status': status,
+        'LTP': ltp,
         'Signal': WinsCount + LossCount,
         'WinStreak': streakP,
         'LossStreak': streakL,

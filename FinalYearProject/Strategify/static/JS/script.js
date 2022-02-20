@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     var wrapper1 = $(".entryConditionRow");
     var add_button1 = $(".addEntryRow");
@@ -16,7 +15,7 @@ $(document).ready(function() {
                                     '</div>'+
                                 '</div>'+
                                 '<div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">'+
-                                    '<select class="form-select form-control" name="entrycomparator'+x+'" aria-label="Default select example">'+
+                                    '<select class="form-select form-control" id="entrycomparator'+x+'" name="entrycomparator'+x+'" aria-label="Default select example">'+
                                                             '<option selected value="0">Crosses Below</option><option value="1">Equal To</option><option selected value="2">Lower than</option><option value="3">Higher Than</option><option value="4">Crosses Above</option></select>'+
                                 '</div>'+
                                 '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
@@ -68,8 +67,6 @@ $(document).ready(function() {
 
 });
 
-
-
 $('#createStrategyForm').submit(function(){
     var $vala = $('#addedscripList').html();
 });
@@ -82,9 +79,12 @@ function closeNav() {
   document.getElementById("mySidenav").style.display = "none";
 }
 
-
-
-
+function deploy(){
+    var container = document.querySelector("#MAonTCS");
+    var checkboxesAll = container.querySelectorAll('input[type="checkbox"]');
+    var checkBoxesSelected = container.querySelectorAll('input[type="checkbox"]:checked');
+    console.log(checkBoxesSelected);
+}
 
 
 
