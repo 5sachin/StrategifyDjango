@@ -24,6 +24,39 @@ def home(response):
 def registration(request):
     return render(request, 'Strategify/registrationPage.html', {})
 
+
+def stockdata(request):
+    response_data = {}
+    try:
+        nse = NSE()
+        scrip = request.POST.get('scripname');
+        response_data['success'] = nse.getscripdata(scrip,"22-11-2021","22-02-2022")
+        return JsonResponse(response_data)
+    except Exception as e:
+        response_data['success'] = str(e)
+        print("Error: ",e)
+        return JsonResponse(response_data)
+
+
+
+def charts(request):
+    data = UserRegistration.objects.get(username=request.session['username'])
+    allscrip = []
+    try:
+        nse = NSE()
+        allscrip = nse.allscrip()
+    except Exception as e:
+        print("Connection Error NSE: ",e)
+        response_data['error'] = "Unable to Load"
+        return JsonResponse(response_data)
+        
+    userData = {
+    'username': request.session['username'],
+    'name': data.name,
+    'allscripname':allscrip,
+    }
+    return render(request,'Strategify/charts.html', {'data':userData})
+
 def signup(request):
     response_data = {}
     if request.method == 'POST':

@@ -19,8 +19,11 @@ class NSE:
                                    headers=self.header).json()
         allscrip = []
 
+        # for key in data.keys():
+        #     allscrip.append(str(key)+".NS")
+
         for key in data.keys():
-            allscrip.append(str(key)+".NS")
+            allscrip.append(str(key))
             
         return allscrip
 
@@ -36,5 +39,12 @@ class NSE:
 
     def allindex(self):
         data = self.session.get(f"https://www1.nseindia.com/live_market/dynaContent/live_watch/stock_watch/liveIndexWatchData.json",
+                                    headers=self.header).json()
+        return data
+
+    def getscripdata(self,symbol,start,end):
+        start = "22-11-2021"
+        end = "22-02-2022"
+        data = self.session.get(f" https://www.nseindia.com/api/historical/cm/equity?symbol="+symbol+"&series=[%22EQ%22]&from="+start+"&to="+end,
                                     headers=self.header).json()
         return data

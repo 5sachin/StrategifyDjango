@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     path('', views.home,name="home"),
     path('contactus/', views.contactus,name="contactus"),
+    path('charts/',views.charts,name="charts"),
     path('registration/', views.registration,name="registrationpage"),
     path('profilepage/', views.profilepage,name="profilepage"),
     path('deploypage/', views.deploypage,name="deploypage"),
@@ -20,4 +21,5 @@ urlpatterns = [
     path('toplosers',views.toplosers,name="toplosers"),
     path('indexdata',views.indexdata,name="indexdata"),
     path('openstrategy',views.openStrategy,name="openStrategy"),
+    path('getstockdata',views.stockdata,name="stockdata"),
 ]

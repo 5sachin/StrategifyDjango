@@ -174,10 +174,10 @@ body.fixed-nav {
 }
 
 .brand{
-
+font-family: 'Tourney', cursive;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   #mainNav .navbar-brand {
     width: 250px;
     font-family: 'Tourney', cursive;
@@ -237,7 +237,7 @@ body.fixed-nav {
   display: none;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   #mainNav.fixed-top .navbar-sidenav {
     height: calc(100vh - 112px);
   }
@@ -319,11 +319,12 @@ body.sidenav-toggled #mainNav.static-top #sidenavToggler i {
   background: white;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1192px) {
   .content-wrapper {
     margin-left: 250px;
   }
 }
+
 
 #sidenavToggler i {
   font-weight: 800;
@@ -392,7 +393,7 @@ body.sidenav-toggled .navbar-sidenav-tooltip.show {
   color: #adb5bd;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   #mainNav.navbar-dark .navbar-collapse .navbar-sidenav {
     background: #343a40;
   }
@@ -587,4 +588,42 @@ footer.sticky-footer {
     color: #fed85d;
     justify-content: center;
     align-items: center
+}
+
+
+.search-input .autocom-box{
+  padding: 10px 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 8px 30px 0 rgb(0 0 0 / 15%);
+  border-radius: 2px;
+  z-index: 2000;
+}
+
+.search-input .autocom-box li{
+  list-style: none;
+  padding: 8px 12px;
+  width: 100%;
+  cursor: default;
+  border-radius: 3px;
+  display: none;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.search-input .autocom-box li:hover{
+  background: #efefef;
+}
+
+.search-input.active .autocom-box{
+  padding-top: 10px 8px;
+  opacity: 1;
+  pointer-events: auto;
+  padding-bottom: 10px;
+}
+
+.search-input.active .autocom-box li{
+  color: black;
+  display: block;
 }
