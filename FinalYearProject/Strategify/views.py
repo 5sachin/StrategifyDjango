@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import io
 import yfinance as yf
-import base64,urllib
+import base64
 import matplotlib.pyplot as plt
 from .models import *
 import datetime
@@ -284,6 +284,7 @@ def dashboard(response):
         }
         allstrategydata.append(strategydata)
     return render(response,'Strategify/dashboard.html', {'data':userData,'strategydata':allstrategydata})
+
 
 
 def convertTime(time):
