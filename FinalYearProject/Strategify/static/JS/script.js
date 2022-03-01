@@ -83,8 +83,9 @@ function deploy(){
     var container = document.querySelector("#MAonTCS");
     var checkboxesAll = container.querySelectorAll('input[type="checkbox"]');
     var checkBoxesSelected = container.querySelectorAll('input[type="checkbox"]:checked');
-    console.log(checkBoxesSelected);
+    console.log(checkBoxesSelected[0].name);
 }
+
 
 
 

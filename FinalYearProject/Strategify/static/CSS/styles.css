@@ -2807,3 +2807,9 @@ hr.rounded {
   max-width: 100%;
 }
 
+.error-card{
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

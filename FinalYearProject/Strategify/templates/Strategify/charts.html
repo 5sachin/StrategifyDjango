@@ -24,7 +24,7 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="{% url 'dashboard' %}">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">Dashboard</span>
           </a>
@@ -123,30 +123,66 @@
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item active">Charts</li>
       </ol>
       <!-- Icon Cards-->
       <div class="row" id="indexData">
         
       </div>
-      <div class="row">
+
+      {% if status.error %}
+
+        <div class="error-card">
+            <div class="card text-center w-50">
+                <div class="card-header">
+                        Connection Error
+                </div>
+                <div class="card-body">
+                    <p class="card-text text-danger">{{status.error}}.</p>
+                    <a href="#" class="btn btn-primary">Need Help!</a>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+
+        <div class="row">
         <div class="col-lg-12">
           <!-- Example Bar Chart Card-->
           <div class="card mb-3">
             <div class="card-header">
               <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
               <div class="card-body search-input">
-                <div class="input-group col-lg-4 col-md-6 col-sm-8 col-xs-12">
-                    <input class="form-control" type="text" placeholder="Search Name..." id="searchstock" onkeyup="searchStockByName()">
-                    <span class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fa fa-search"></i>
-                      </button>
-                    </span>
+                <div class="row">
+                  <div class="col-lg-4 col-xs-12 col-sm-12">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search Name..." id="searchstock" onkeyup="searchStockByName()">
+                      <span class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                          <i class="fa fa-search"></i>
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-xs-6 col-sm-6">
+                    <div class="input-group">
+                      <span class="prev-date-label">From: </span>
+                      <input class="form-control" type="date" name="chartfromdate" id="chartfromdate" >
+                    </div>
+                  </div>
+                  <div class="col-lg-4 col-xs-6 col-sm-6">
+                    <div class="input-group">
+                      <span class="prev-date-label">To: </span>
+                      <input class="form-control" type="date" name="chartenddate" id="chartenddate">
+                    </div>
+                  </div>
                 </div>
-                  <ul class="autocom-box" id="autocom-box">
+                <div class="row">
+                  <ul class="autocom-box col-lg-4 col-xs-12 col-sm-12" id="autocom-box">
                     
                   </ul>
+                </div>
+                  
                 <div class="row">
                   <div class="col-12 my-auto">
                     <div id="chartContainer" style="height: 500px; width: 100%;"></div>
@@ -216,6 +252,9 @@
           <div class="card-columns">
           </div>
       </div>
+
+      {% endif %}
+
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
@@ -302,20 +341,39 @@
           suggBox.innerHTML = listData;
       }
 
+      function changeDateFormat(date){
+        date = date.split("-")
+        date.reverse();
+        newDate = ""
+        for(let i=0;i<date.length;i++){
+          newDate += date[i]+"-";
+        }
+        newDate = newDate.substring(0, newDate.length - 1);
+        console.log(newDate);
+        return newDate
+      }
+
       
       function searchStockName(element){
           console.log(element);
           searchWrapper.classList.remove("active");
-          
+          var fromdate = document.getElementById("chartfromdate").value;
+          var enddate = document.getElementById("chartenddate").value;
+          fromdate = changeDateFormat(fromdate);
+          enddate = changeDateFormat(enddate);
+          console.log(fromdate);
           $.ajax({
             type:"POST",
             url:'{% url 'stockdata' %}',
             data:{
               'csrfmiddlewaretoken': csrfmiddlewaretoken,
               'scripname': element,
+              'fromdate':fromdate,
+              'enddate':enddate,
             },
             success :function(data){
-            if(data.success){
+              console.log(data);
+            if(!data.success.error){
               var dataPoints = [];
               var stockChart = new CanvasJS.StockChart("chartContainer",{
                   title: {
@@ -334,7 +392,7 @@
                 stockChart.render();
                }
                else{
-               console.log(data.error);
+               console.log("Error Data: "+data.success.showMessage);
                }
             }
         })
@@ -425,6 +483,19 @@
                }
                else{
                console.log(data.error);
+               //document.getElementById("topgainers-updatetime").innerHTML = "Updated at "+data.success.time;
+
+                var topgainertable = document.querySelector(".topgainerstable");
+                topgainertable.innerHTML = "";
+                let tablerow = document.createElement('tr');
+                let error = document.createElement('td');
+                error.innerText = data.error;
+                error.setAttribute("colspan", "6");
+                tablerow.append(error);
+                topgainertable.append(tablerow);
+                console.log(error);
+                console.log(tablerow);
+                console.log(topgainertable);
                }
             }
         })
@@ -472,14 +543,17 @@
                }
                else{
                console.log(data.error);
+                let toplosertable = document.querySelector(".toploserstable");
+                toplosertable.innerText = "";
+                let tablerow = document.createElement('tr');
+                let error = document.createElement('td');
+                error.innerText = data.error;
+                error.setAttribute("colspan", "6");
+                tablerow.append(error);
+                toplosertable.append(tablerow);
                }
             }
         })
-      return false;
-    }
-
-    function openStrategy(arg){
-       window.location.href = "{% url 'openStrategy' %}" + "?strategyid="+"{{data.username}}"+arg;
       return false;
     }
     </script>

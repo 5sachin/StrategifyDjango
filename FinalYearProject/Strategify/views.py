@@ -1,3 +1,4 @@
+import urllib
 from django.http import JsonResponse
 from django.shortcuts import render
 from .StockData import *
@@ -24,22 +25,23 @@ def home(response):
 def registration(request):
     return render(request, 'Strategify/registrationPage.html', {})
 
-
 def stockdata(request):
     response_data = {}
     try:
         nse = NSE()
         scrip = request.POST.get('scripname');
-        response_data['success'] = nse.getscripdata(scrip,"22-11-2021","22-02-2022")
+        fromdate = request.POST.get('fromdate');
+        enddate = request.POST.get('enddate');
+        print(fromdate,enddate)
+        response_data['success'] = nse.getscripdata(scrip,fromdate,enddate)
         return JsonResponse(response_data)
     except Exception as e:
         response_data['success'] = str(e)
         print("Error: ",e)
         return JsonResponse(response_data)
 
-
-
 def charts(request):
+    response_data = {}
     data = UserRegistration.objects.get(username=request.session['username'])
     allscrip = []
     try:
@@ -47,15 +49,14 @@ def charts(request):
         allscrip = nse.allscrip()
     except Exception as e:
         print("Connection Error NSE: ",e)
-        response_data['error'] = "Unable to Load"
-        return JsonResponse(response_data)
+        response_data['error'] = "Connection Error"
         
     userData = {
     'username': request.session['username'],
     'name': data.name,
     'allscripname':allscrip,
     }
-    return render(request,'Strategify/charts.html', {'data':userData})
+    return render(request,'Strategify/charts.html', {'data':userData,'status':response_data})
 
 def signup(request):
     response_data = {}
@@ -163,6 +164,9 @@ def contactus(response):
 def profilepage(response):
     return render(response, 'Strategify/profilePage.html', {})
 
+def allindices(request):
+    return render(request,'Strategify/allindices.html',{})
+
 def checkstrategyName(request):
     response_data = {}
     if request.method == 'POST':
@@ -181,23 +185,31 @@ def openStrategy(response):
     response_data = {}
     showStrategyDetails(response)
     data = UserRegistration.objects.get(username=response.session['username'])
-
     strategydata = None
-    if response.method == "GET":
-        strategydata = StrategyRegistration.objects.get(strategyid=response.GET.get('strategyid'))
 
     try:
+        if response.method == "GET":
+            strategydata = StrategyRegistration.objects.get(strategyid=response.GET.get('strategyid'))
         nse = NSE()
-    except Exception as e:
-        print("Connection Error NSE: ", e)
-        response_data['error'] = "Unable to Load"
-        return JsonResponse(response_data)
-    userData = {
+        userData = {
         'username': USERNAME,
         'name': data.name,
         'scripdata': nse.allscrip(),
-    }
-    return render(response, 'Strategify/createStrategy.html', {'data': userData, 'strategydata': strategydata})
+        }
+        return render(response, 'Strategify/createStrategy.html', {'data': userData, 'strategydata': strategydata,'status':response_data})
+    except BrokenPipeError as e:
+        print("Connection Error NSE: ", e)
+        response_data['error'] = str("Broken Pipe Error")
+        return render(response, 'Strategify/createStrategy.html', {'status':response_data})
+    except ConnectionError as e:
+        print("Connection Error NSE: ", e)
+        response_data['error'] = str("Check your Connection")
+        return render(response, 'Strategify/createStrategy.html', {'status':response_data})
+    except Exception as e:
+        print("Connection Error NSE: ", e)
+        response_data['error'] = "Check your Connection"
+        return render(response, 'Strategify/createStrategy.html', {'status':response_data})
+    return render(response, 'Strategify/createStrategy.html', {'data': userData, 'strategydata': strategydata,'status':response_data})
 
 def createstrategy(response):
     response_data = {}
@@ -225,10 +237,12 @@ def topgainers(response):
         response_data['success'] = nse.topgainers()
         return JsonResponse(response_data)
     except ConnectionError as e:
+        response_data['error'] = "Failed to Load"
         print("Connection Error: ",e)
+        return JsonResponse(response_data)
     except Exception as e:
         print("Top Gainers Error: ",str(e))
-        response_data['error'] = str(e)
+        response_data['error'] = "Failed to Load"
         return JsonResponse(response_data)
 
 def toplosers(response):
@@ -238,10 +252,12 @@ def toplosers(response):
         response_data['success'] = nse.toplosers()
         return JsonResponse(response_data)
     except ConnectionError as e:
-        print("Connection Error: ",e)
+        response_data['error'] = "Failed to Load"
+        print("Connection Error: ", e)
+        return JsonResponse(response_data)
     except Exception as e:
         print("Top Losers Error: ",str(e))
-        response_data['error'] = str(e)
+        response_data['error'] = "Failed to Load"
         return JsonResponse(response_data)
 
 def indexdata(response):

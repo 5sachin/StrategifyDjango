@@ -627,3 +627,25 @@ footer.sticky-footer {
   color: black;
   display: block;
 }
+
+.error-card{
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.prev-date-label{
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.allindices-btn{
+  padding: 10px;
+  border-radius: 5px;
+  border: 2px solid darkgray;
+  text-decoration: none !important;
+  color: black;
+}

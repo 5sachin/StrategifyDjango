@@ -22,4 +22,5 @@ urlpatterns = [
     path('indexdata',views.indexdata,name="indexdata"),
     path('openstrategy',views.openStrategy,name="openStrategy"),
     path('getstockdata',views.stockdata,name="stockdata"),
+    path('allindices',views.allindices,name="allindices")
 ]
