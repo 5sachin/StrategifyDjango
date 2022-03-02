@@ -229,6 +229,7 @@
 
     topgainersrefresh();
 
+
     function topgainersrefresh(){
       $.ajax({
             type:"POST",
@@ -275,6 +276,8 @@
                   tablerow.append(symbol,current,open,high,low,perchange,prevClose);
                   topgainertable.append(tablerow);
                 }
+
+                
                }
                else{
                console.log(data.error);

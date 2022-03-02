@@ -35,5 +35,16 @@ class StrategyRegistrationAdmin(admin.ModelAdmin):
     'exitcondition', 'startdate', 'enddate', 'createDate')
 
 
+class Deploy(models.Model):
+    deployid = models.CharField(max_length=100, primary_key=True, blank=False)
+    strategyid= models.ForeignKey(StrategyRegistration, max_length=100, blank=False, on_delete=models.CASCADE)
+    scripname = models.CharField(max_length=100)
+    deploytime = models.CharField(max_length=100)
+
+class DeployAdmin(admin.ModelAdmin):
+    list_display = ('deployid','strategyid','scripname','deploytime')
+
+
 admin.site.register(UserRegistration, UserRegistrationAdmin)
 admin.site.register(StrategyRegistration, StrategyRegistrationAdmin)
+admin.site.register(Deploy, DeployAdmin)
