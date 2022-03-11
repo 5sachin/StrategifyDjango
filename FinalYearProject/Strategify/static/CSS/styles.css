@@ -296,7 +296,7 @@ footer.sticky-footer {
 }
 
 .otp-form{
-  display: none;
+  display: block;
 }
 
 .signup-form,.otp-form{
@@ -315,7 +315,18 @@ footer.sticky-footer {
   text-align: center;
 }
 
-.form-signup-container  form input{
+.otp-form-signup-container  form{
+  background-color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 50%;
+  text-align: center;
+}
+
+.form-signup-container  form input, .otp-form-signup-container form input{
   background-color: #e9ecef;
   border: none;
   padding: 12px 15px;
@@ -323,7 +334,7 @@ footer.sticky-footer {
   width: 100%;
 }
 
-.form-signup-container{
+.form-signup-container, .otp-form-signup-container{
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 14px 28px rgba(0,0,0,0.25),0 10px 10px rgba(0,0,0,0.22);
@@ -335,7 +346,7 @@ footer.sticky-footer {
 }
 
 
-.form-signup-container button {
+.form-signup-container button, .otp-form-signup-container button {
   border-radius: 20px;
   border: 1px solid #204669;
   background: -webkit-linear-gradient(to right, #4E575F, #343A40);
@@ -436,6 +447,25 @@ footer.sticky-footer {
     .overlay-panel {
         display: none;
     }
+}
+
+.account-connect-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.connection-circle img {
+  border-radius: 70%;
+  border: 2px solid black;
+  max-width: 60px;
+}
+
+@media (min-width: 1300px) {
+  .connection-circle img {
+    max-width: 70px;
+  }
 }
 
 /* -------------------- END REGISTRATION PAGE ---------------*/

@@ -534,7 +534,7 @@ footer.sticky-footer {
 }
 
 .mystrategy{
-  overflow: hidden;
+  overflow-x: auto;
   display: flex;
   scroll-behavior: smooth;
 }
@@ -628,7 +628,7 @@ footer.sticky-footer {
   display: block;
 }
 
-.error-card{
+.error-card,.activation-code{
     min-height: 80vh;
     display: flex;
     justify-content: center;
@@ -648,4 +648,67 @@ footer.sticky-footer {
   border: 2px solid darkgray;
   text-decoration: none !important;
   color: black;
+}
+
+#chartContainer{
+  overflow-x: scroll;
+}
+
+.delete-strategy{
+  right: 0;
+  margin: auto;
+}
+
+.delete-strategy-row{
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .previous-pointer{
+    display: none;
+  }
+
+  .next-pointer{
+    display: none;
+  }
+}
+
+.mystrategy .heading {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.error-box{
+    font-size: 1.3rem;
+    font-family: bold;
+}
+
+.activation-code-card input{
+  border-color: #343a40;
+  border-radius: 5px;
+}
+
+.activation-code-card input:focus{
+  border-color: #343a40;
+}
+
+
+@media (max-width: 600px) {
+  .activation-code-card{
+    width: 50%;
+  }
+}
+
+@media (max-width: 1300px) {
+  .activation-code-card{
+    width: 50%;
+  }
+}
+
+@media (min-width: 1300px) {
+  .activation-code-card{
+    width: 25%;
+  }
 }

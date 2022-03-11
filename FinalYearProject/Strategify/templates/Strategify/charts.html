@@ -10,14 +10,13 @@
   <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
   <link rel="stylesheet" href="{% static './CSS/dashboard.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script>
   <title>{{data.username}}</title>
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   {% csrf_token %}
   <nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand brand" href="index.html">Strategify</a>
+    <a class="navbar-brand brand" href="{% url 'home' %}">Strategify</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -30,13 +29,13 @@
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="{% url 'charts' %}">
+          <a class="nav-link" href="#">
             <i class="fa fa-fw fa-area-chart"></i>
             <span class="nav-link-text">Charts</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
-          <a class="nav-link" href="">
+          <a class="nav-link" href="{% url 'deploypage' %}">
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">Deployed</span>
           </a>
@@ -182,10 +181,9 @@
                     
                   </ul>
                 </div>
-                  
                 <div class="row">
                   <div class="col-12 my-auto">
-                    <div id="chartContainer" style="height: 500px; width: 100%;"></div>
+                    <div id="chartContainer"></div>
                   </div>
                 </div>
               </div>
@@ -292,13 +290,12 @@
     <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
     <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    
     <script src="{% static '././JS/dashboard.js' %}"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
     csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-
 
       const searchWrapper = document.querySelector(".search-input");
       const inputBox = searchWrapper.querySelector("input");
@@ -373,23 +370,40 @@
             },
             success :function(data){
               console.log(data);
-            if(!data.success.error){
-              var dataPoints = [];
-              var stockChart = new CanvasJS.StockChart("chartContainer",{
-                  title: {
-                      text: element,
-                    },
-                  charts: [{      
-                    data: [{        
-                      type: "line", //Change it to "spline", "area", "column"
-                      dataPoints : dataPoints
-                    }]
-                  }],
-                }); 
+            if(!data.success.error && data.success.data.length > 0){
+
+              google.charts.load('current', {'packages':['line']});
+              google.charts.setOnLoadCallback(drawChart);
+
+              function drawChart() {
+
+                var points = new google.visualization.DataTable();
+                points.addColumn('string', 'Day');
+                points.addColumn('number', 'Close');
+                var arr = []
+
                 for(let i =0;i<data.success.data.length;i++){
-                  dataPoints.push({x: new Date(data.success.data[i].mTIMESTAMP), y: Number(data.success.data[i].CH_CLOSING_PRICE)});
+                  var x = []
+                  x.push(data.success.data[i].mTIMESTAMP);
+                  x.push(data.success.data[i].CH_CLOSING_PRICE);
+                  arr.push(x);
                 }
-                stockChart.render();
+
+                points.addRows(arr);
+
+                var options = {
+                  chart: {
+                    title: element,
+                    /*subtitle: 'in millions of dollars (USD)'*/
+                  },
+                  width: 1500,
+                  height: 500
+                };
+
+                var chart = new google.charts.Line(document.getElementById('chartContainer'));
+
+                chart.draw(points, google.charts.Line.convertOptions(options));
+                }
                }
                else{
                console.log("Error Data: "+data.success.showMessage);

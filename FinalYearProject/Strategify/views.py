@@ -1,21 +1,19 @@
-import urllib
 from django.http import JsonResponse
 from django.shortcuts import render
 from .StockData import *
 import pandas as pd
 import numpy as np
-import io
 import yfinance as yf
-import base64
-import matplotlib.pyplot as plt
 from .models import *
 import datetime
 from django.core.mail import send_mail
 import math, random
 from django.core.exceptions import *
 from django.db import *
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 
-plt.style.use('fivethirtyeight')
+
 data = None
 USERNAME = None
 
@@ -165,7 +163,12 @@ def profilepage(response):
     return render(response, 'Strategify/profilePage.html', {})
 
 def allindices(request):
-    return render(request,'Strategify/allindices.html',{})
+    data = UserRegistration.objects.get(username=request.session['username'])
+    userData = {
+    'username': request.session['username'],
+    'name': data.name,
+    }
+    return render(request,'Strategify/allindices.html',{'data':userData,})
 
 def checkstrategyName(request):
     response_data = {}
@@ -190,11 +193,11 @@ def openStrategy(response):
     try:
         if response.method == "GET":
             strategydata = StrategyRegistration.objects.get(strategyid=response.GET.get('strategyid'))
-        nse = NSE()
+        #nse = NSE()
         userData = {
         'username': USERNAME,
         'name': data.name,
-        'scripdata': nse.allscrip(),
+        'scripdata': "nse.allscrip()",
         }
         return render(response, 'Strategify/createStrategy.html', {'data': userData, 'strategydata': strategydata,'status':response_data})
     except BrokenPipeError as e:
@@ -207,13 +210,29 @@ def openStrategy(response):
         return render(response, 'Strategify/createStrategy.html', {'status':response_data})
     except Exception as e:
         print("Connection Error NSE: ", e)
-        response_data['error'] = "Check your Connection"
+        response_data['error'] = str(e)
         return render(response, 'Strategify/createStrategy.html', {'status':response_data})
     return render(response, 'Strategify/createStrategy.html', {'data': userData, 'strategydata': strategydata,'status':response_data})
 
+def deletestrategy(request):
+    response_data = {}
+    if request.method == "GET":
+        try:
+            StrategyRegistration.objects.get(strategyid=str(request.session['username'])+str(request.GET.get('strategyname'))).delete()
+            print("Deleted Sucess")
+            return HttpResponse(dashboard(request))
+        except ObjectDoesNotExist as e:
+            response_data['error'] = str(e)
+            rendered = render_to_string('Strategify/error.html', {'error': str(e)})
+            return HttpResponse(rendered)
+        except Exception as e:
+            response_data['error'] = str(e)
+            rendered = render_to_string('Strategify/error.html', {'error': str(e)})
+            return HttpResponse(rendered)
+
 def createstrategy(response):
     response_data = {}
-    showStrategyDetails(response)
+    (response)
     data = UserRegistration.objects.get(username=response.session['username'])
 
     # try:
@@ -473,7 +492,7 @@ def WMA(condition,period):
     column = 'Close'
     weights = np.arange(1, period + 1)
     wmas = data[column].rolling(period).apply(lambda x: np.dot(x, weights) /weights.sum(), raw=True).to_list()
-    data[f'{condition}WMA{period}'] = wmas
+    data['{condition}WMA{period}'] = wmas
 
 def RSI(condition,period):
     ret = data['Close'].diff()
@@ -536,8 +555,11 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
     PL = 0
     streakP = 0
     streakL = 0
+    ltp = 0
+    graphdata = []
 
     for i in range(0, len(data['Position'])):
+        x = []
 
         if data['Position'][i] == 1.0 and enter == 0:
             a = data['Close'][i]
@@ -548,6 +570,9 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
                 'buysell': "buy",
                 'balance': balance,
             })
+            x.append(str(data.index[i]))
+            x.append("{:.2f}".format(data['Close'][i]))
+            graphdata.append(x)
             print("Buy:    Date: ", data.index[i], " Price: ", a)
         elif data['Position'][i] == -1.0 and enter == 1:
             balance += data['Close'][i] - a
@@ -562,6 +587,9 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
                     'buysell': "sell",
                     'balance': balance
                 })
+                x.append(str(data.index[i]))
+                x.append("{:.2f}".format(data['Close'][i]))
+                graphdata.append(x)
                 PS += 1
                 PL = 0
                 if PS > streakP:
@@ -579,6 +607,9 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
                     'buysell': "sell",
                     'balance': balance
                 })
+                x.append(str(data.index[i]))
+                x.append("{:.2f}".format(data['Close'][i]))
+                graphdata.append(x)
                 PL += 1
                 PS = 0
                 if PL > streakL:
@@ -599,6 +630,9 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
                         'buysell': "sell",
                         'balance': balance
                     })
+                    x.append(str(data.index[i]))
+                    x.append("{:.2f}".format(data['Close'][i]))
+                    graphdata.append(x)
                     PS += 1
                     PL = 0
                     if PS > streakP:
@@ -617,6 +651,9 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
                         'buysell': "sell",
                         'balance': balance
                     })
+                    x.append(str(data.index[i]))
+                    x.append("{:.2f}".format(data['Close'][i]))
+                    graphdata.append(x)
                     PL += 1
                     PS = 0
                     if PL > streakL:
@@ -630,12 +667,15 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
     if totP + totL > 0:
         status = 1
 
+    ltp = data['Close'][-1]
+
     pd.DataFrame(alllist).to_csv('Strategify/static/' + ''+username+''+scrip.replace('.NS', '')+'.csv')
     periodHigh = "{:.2f}".format(data['Close'].max())
     periodLow = "{:.2f}".format(data['Close'].min())
     balance = "{:.2f}".format(balance)
     totP = "{:.2f}".format(totP)
     totL = "{:.2f}".format(-totL)
+    ltp = "{:.2f}".format(float(ltp))
 
     if WinsCount == 0:
         AvgGain = 0
@@ -647,19 +687,6 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
         AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
         AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
 
-    x = plt.figure(figsize=(15, 7))
-    plt.title('Close Price History w/ Buy & Sell Signals', fontsize=18)
-    plt.plot(data['Close'], alpha=0.5, label='Close')
-    # plt.plot(data['{}'.format(period1)], alpha=1, label='shortAvg', color="green")
-    # plt.plot(data['{}'.format(period2)], alpha=1, label='longAvg', color="red")
-    plt.xlabel('Date', fontsize=18)
-    plt.ylabel('Close Price', fontsize=18)
-
-    buf = io.BytesIO()
-    x.savefig(buf, format="png")
-    buf.seek(0)
-    string = base64.b64encode(buf.read())
-    uri = urllib.parse.quote(string)
 
     percentBar = (float(totP) / (float(totP) + float(totL))) * 100
     alldata = {
@@ -668,6 +695,7 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
         'PL': "{:.2f}".format(float(balance) * int(quantity)),
         'Status': status,
         'Signal': WinsCount + LossCount,
+        'LTP': ltp,
         'WinStreak': streakP,
         'LossStreak': streakL,
         'Wins': WinsCount,
@@ -678,8 +706,8 @@ def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
         'PeriodLow': periodLow,
         'AvgGain': AvgGain,
         'AvgLoss': AvgLoss,
-        'Uri': uri,
         'PercentBar': percentBar,
+        'graphdata':graphdata,
     }
 
     return alldata
@@ -700,9 +728,11 @@ def ProfitLossCalculationWithoutExit(username,scrip,target,steploss,quantity):
     streakP = 0
     streakL = 0
     ltp = 0
+    graphdata = []
 
 
     for i in range(0, len(data['Position'])):
+        x = []
 
         if data['Position'][i] == 1.0 and enter == 0:
             a = data['Close'][i]
@@ -713,6 +743,11 @@ def ProfitLossCalculationWithoutExit(username,scrip,target,steploss,quantity):
                 'buysell': "buy",
                 'balance': balance,
             })
+
+            x.append(str(data.index[i]))
+            x.append("{:.2f}".format(data['Close'][i]))
+            graphdata.append(x)
+
             print("Buy:    Date: ",data.index[i]," Price: ",a)
 
         else:
@@ -734,6 +769,9 @@ def ProfitLossCalculationWithoutExit(username,scrip,target,steploss,quantity):
                         streakP = PS
                     a = 0
                     enter = 0
+                    x.append(str(data.index[i]))
+                    x.append("{:.2f}".format(data['Close'][i]))
+                    graphdata.append(x)
                 elif ((a - data['Close'][i]) / a) * 100 >= int(steploss):
                     balance += data['Close'][i] - a
                     print("Sell:   Loss   Price: ", data['Close'][i], " Date: ",data.index[i], " Net Loss: ", data['Close'][i] - a)
@@ -745,18 +783,22 @@ def ProfitLossCalculationWithoutExit(username,scrip,target,steploss,quantity):
                         'buysell': "sell",
                         'balance': balance
                     })
-                    ltp = data['Close'][i]
                     PL += 1
                     PS = 0
                     if PL > streakL:
                         streakL = PL
                     a = 0
                     enter = 0
+                    x.append(str(data.index[i]))
+                    x.append("{:.2f}".format(data['Close'][i]))
+                    graphdata.append(x)
 
     print("Balance: ",balance," Total Wins: ",WinsCount," Total Loss: ",LossCount," Total Profit:  ", totP," Total Loss: ",totL)
 
     if totP + totL > 0:
         status = 1
+
+    ltp = data['Close'][-1]
 
     pd.DataFrame(alllist).to_csv('Strategify/static/'+''+username+''+scrip.replace('.NS', '')+'.csv')
     periodHigh = "{:.2f}".format(data['Close'].max())
@@ -765,8 +807,6 @@ def ProfitLossCalculationWithoutExit(username,scrip,target,steploss,quantity):
     totP = "{:.2f}".format(totP)
     totL = "{:.2f}".format(-totL)
     ltp = "{:.2f}".format(float(ltp))
-
-
 
     if WinsCount != 0 and LossCount != 0:
         AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
@@ -780,23 +820,6 @@ def ProfitLossCalculationWithoutExit(username,scrip,target,steploss,quantity):
     else:
         AvgGain = 0
         AvgLoss = 0
-
-
-
-
-    x = plt.figure(figsize=(15, 7))
-    plt.title('Close Price History w/ Buy & Sell Signals', fontsize=18)
-    plt.plot(data['Close'], alpha=0.5, label='Close')
-    # plt.plot(data['{}'.format(period1)], alpha=1, label='shortAvg', color="green")
-    # plt.plot(data['{}'.format(period2)], alpha=1, label='longAvg', color="red")
-    plt.xlabel('Date', fontsize=18)
-    plt.ylabel('Close Price', fontsize=18)
-
-    buf = io.BytesIO()
-    x.savefig(buf, format="png")
-    buf.seek(0)
-    string = base64.b64encode(buf.read())
-    uri = urllib.parse.quote(string)
 
     print(type(totP))
     if float(totP) == 0.00 and float(totL) == 0.00:
@@ -821,7 +844,12 @@ def ProfitLossCalculationWithoutExit(username,scrip,target,steploss,quantity):
         'PeriodLow': periodLow,
         'AvgGain': AvgGain,
         'AvgLoss': AvgLoss,
-        'Uri': uri,
         'PercentBar': percentBar,
+        'graphdata':graphdata,
     }
     return alldata
+
+
+
+def admincode(request):
+    return render(request,'Strategify/admincode.html',{})

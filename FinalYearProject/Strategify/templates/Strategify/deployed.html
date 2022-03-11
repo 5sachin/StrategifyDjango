@@ -16,26 +16,26 @@
   <!-- Navigation-->
   {% csrf_token %}
   <nav class="navbar navbar-expand-xl navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand brand" href="index.html">Strategify</a>
+    <a class="navbar-brand brand" href="{% url 'home' %}">Strategify</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="{% url 'dashboard' %}">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">Dashboard</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="charts.html">
+          <a class="nav-link" href="{% url 'charts' %}">
             <i class="fa fa-fw fa-area-chart"></i>
             <span class="nav-link-text">Charts</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
-          <a class="nav-link" href="">
+          <a class="nav-link" href="{% url 'deploypage' %}">
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">Deployed</span>
           </a>
@@ -115,19 +115,6 @@
             <a class="dropdown-item small" href="#">View all alerts</a>
           </div>
         </li>
-        <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0 mr-lg-2">
-            {% csrf_token %}
-            <div class="input-group">
-              <input class="form-control" type="text" placeholder="Search Strategy..." id="searchStrategy" onkeyup="searchStrategyByName()">
-              <span class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-          </form>
-        </li>
       </ul>
     </div>
   </nav>
@@ -135,7 +122,7 @@
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
-        <li class="breadcrumb-item active">Dashboard</li>
+        <li class="breadcrumb-item active">Deploy Page</li>
       </ol>
       <!-- Icon Cards-->
       <!-- Icon Cards-->
@@ -222,129 +209,6 @@
         </div>
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
       </div>
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-table"></i> Today Market</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <div>
-                <label>Top Gainers</label>
-                <div class="float-right">
-                  <a href="" id="topgainersrefresh" onclick='return topgainersrefresh()'><i class="fa fa-refresh "></i></a>
-                </div>
-            </div>
-            <table class="table table-bordered" width="100%" cellspacing="0">
-              <thead class="bg-success1">
-                <tr>
-                  <th>SYMBOL</th>
-                  <th>OPEN</th>
-                  <th>HIGH</th>
-                  <th>CLOSE</th>
-                  <th>PREV. CLOSE</th>
-                  <th>VOLUME</th>
-                </tr>
-              </thead>
-              <tfoot>
-              <tbody id="topgainerstable" class="topgainerstable">
-
-              </tbody>
-            </table>
-            <div>
-              <label>Top Losers</label>
-              <div class="float-right">
-                <a href="" id="toplosersrefresh" onclick='return toplosersrefresh()'><i class="fa fa-refresh"></i></a>
-              </div>
-            </div>
-            <table class="table table-bordered" width="100%" cellspacing="0">
-              <thead class="bg-danger1">
-                <tr>
-                  <th>SYMBOL</th>
-                  <th>OPEN</th>
-                  <th>HIGH</th>
-                  <th>CLOSE</th>
-                  <th>PREV. CLOSE</th>
-                  <th>VOLUME</th>
-                </tr>
-              </thead>
-              <tfoot>
-              <tbody id="toploserstable" class="toploserstable">
-
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card-footer small text-muted"><span><label id="topgainers-updatetime"></label></span></div>
-      </div>
-      <div class="row">
-        <div class="col-lg-8">
-          <!-- Example Bar Chart Card-->
-          <div class="card mb-3">
-            <div class="card-header">
-              <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
-            <div class="card-body">
-              <div class="row">
-                <div class="col-sm-8 my-auto">
-                  <canvas id="myBarChart" width="100" height="50"></canvas>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-          </div>
-          <!-- Card Columns Example Social Feed-->
-          <div class="mb-0 mt-4">
-            <i class="fa fa-newspaper-o"></i>  News Feed</div>
-          <hr class="mt-2">
-          <div class="card-columns">
-          </div>
-          <!-- /Card Columns-->
-        </div>
-        <div class="col-lg-4">
-          <!-- Example Pie Chart Card-->
-          <!-- <div class="card mb-3">
-            <div class="card-header">
-              <i class="fa fa-dollar"></i>  My Balance</div>
-            <div class="card-body">
-                <div class="col-12 text-center my-auto">
-                  <div class="h4 mb-0 text-primary">$00,00</div>
-                  <div class="small text-muted">Balance</div>
-                  <hr>
-                  <div class="h4 mb-0 text-warning">$00,00</div>
-                  <div class="small text-muted">Loss</div>
-                  <hr>
-                  <div class="h4 mb-0 text-success">$00,00</div>
-                  <div class="small text-muted">Profit</div>
-                </div>
-            </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-          </div> -->
-          <!-- Example Notifications Card-->
-          <div class="card mb-3">
-            <div class="card-header">
-              <i class="fa fa-bell-o"></i>  Recent Activity</div>
-            <div class="list-group list-group-flush small">
-              <a class="list-group-item list-group-item-action" href="#">
-                <div class="media">
-                  <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
-                  <div class="media-body">
-                    You created a new Strategy
-                    <strong>MA on Reliance</strong>.
-                    <div class="text-muted smaller">Today at 5:43 PM</div>
-                  </div>
-                </div>
-              </a>
-              <a class="list-group-item list-group-item-action" href="#">
-                <div class="media">
-                  <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
-                  <div class="media-body">
-                    You updated a Strategy MA on Reliance
-                    <div class="text-muted smaller">Today at 6:37 PM</div>
-                  </div>
-                </div>
-              </a>
-              <a class="list-group-item list-group-item-action" href="#">View all activity...</a>
-            </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
-          </div>
         </div>
       </div>
     </div>
@@ -391,149 +255,6 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script>
     csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-
-    $.ajax({
-            type:"POST",
-            url:'{% url 'indexdata' %}',
-            data:{
-              'csrfmiddlewaretoken': csrfmiddlewaretoken,
-            },
-            success :function(data){
-            if(data.success){
-                const container = document.getElementById('indexData');
-                for(let i=0;i<4;i++){
-                  var change = "";
-                  var arrow = "";
-                  if(parseFloat(data.success.data[i].percChange)>0.00){
-                    change = "bg-success1";
-                    arrow = "fa-arrow-up";
-                  }else{
-                    change = "bg-danger1";
-                    arrow = "fa-arrow-down"
-                  }
-                  const content = `<div class="col-xl-3 col-sm-6 mb-3">
-                                      <div class="card text-white `+change+` o-hidden h-100">
-                                        <div class="card-body">
-                                          <div class="card-body-icon">
-                                            <i class="fa fa-fw fa-line-chart"></i>
-                                          </div>
-                                          <div class="mr-5">`+data.success.data[i].indexName+`</div>
-                                        </div>
-                                        <a class="card-footer text-white clearfix small z-1" href="#">
-                                          <span class="float-left">`+data.success.data[i].last+`  `+`</span>
-                                          <span><i class="fa `+arrow+` p-1"></i></span>
-                                        </a>
-                                      </div>
-                                    </div>`
-                        container.innerHTML += content;
-                }
-               }
-               else{
-               console.log(data.error);
-               }
-            }
-        })
-
-    topgainersrefresh();
-    toplosersrefresh();
-
-    function topgainersrefresh(){
-      $.ajax({
-            type:"POST",
-            url:'{% url 'topgainers' %}',
-            data:{
-              'csrfmiddlewaretoken': csrfmiddlewaretoken,
-            },
-            success :function(data){
-            if(data.success){
-                document.getElementById("topgainers-updatetime").innerHTML = "Updated at "+data.success.time;
-
-                var topgainertable = document.querySelector(".topgainerstable");
-                topgainertable.innerHTML = "";
-                for(let i=0;i<5;i++){
-                  let tablerow = document.createElement('tr');
-
-                  let symbol = document.createElement('td');
-                  symbol.innerText = data.success.data[i].symbol;
-
-                  let open = document.createElement('td');
-                  open.innerText = data.success.data[i].openPrice;
-
-                  let high = document.createElement('td');
-                  high.innerText = data.success.data[i].highPrice;
-
-                  let close = document.createElement('td');
-                  close.innerText = data.success.data[i].ltp;
-
-                  let prevClose = document.createElement('td');
-                  prevClose.innerText = data.success.data[i].previousPrice;
-
-                  let volume = document.createElement('td');
-                  volume.innerText = data.success.data[i].tradedQuantity;
-
-                  tablerow.append(symbol,open,high,close,prevClose,volume);
-                  topgainertable.append(tablerow);
-                }
-               }
-               else{
-               console.log(data.error);
-               }
-            }
-        })
-      return false;
-    }
-
-    function toplosersrefresh(){
-      $.ajax({
-            type:"POST",
-            url:'{% url 'toplosers' %}',
-            data:{
-              'csrfmiddlewaretoken': csrfmiddlewaretoken,
-            },
-            success :function(data){
-            if(data.success){
-
-                document.getElementById("topgainers-updatetime").innerHTML = "Updated at "+data.success.time;
-
-                let toplosertable = document.querySelector(".toploserstable");
-                toplosertable.innerText = "";
-                for(let i=0;i<5;i++){
-                  let tablerow = document.createElement('tr');
-
-                  let symbol = document.createElement('td');
-                  symbol.innerText = data.success.data[i].symbol;
-
-                  let open = document.createElement('td');
-                  open.innerText = data.success.data[i].openPrice;
-
-                  let high = document.createElement('td');
-                  high.innerText = data.success.data[i].highPrice;
-
-                  let close = document.createElement('td');
-                  close.innerText = data.success.data[i].ltp;
-
-                  let prevClose = document.createElement('td');
-                  prevClose.innerText = data.success.data[i].previousPrice;
-
-                  let volume = document.createElement('td');
-                  volume.innerText = data.success.data[i].tradedQuantity;
-
-                  tablerow.append(symbol,open,high,close,prevClose,volume);
-                  toplosertable.append(tablerow);
-                }
-               }
-               else{
-               console.log(data.error);
-               }
-            }
-        })
-      return false;
-    }
-
-    function openStrategy(arg){
-       window.location.href = "{% url 'openStrategy' %}" + "?strategyid="+"{{data.username}}"+arg;
-      return false;
-    }
     </script>
 </body>
 </html>

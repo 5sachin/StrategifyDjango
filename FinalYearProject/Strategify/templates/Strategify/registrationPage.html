@@ -108,7 +108,7 @@
 
     <div class="container otp-form" id="otpFormContainer">
         <div class="row mt-5 ">
-            <div class="col-md-6 col-xl-6 p-2 col-sm-12 col-xs-12 form-signup-container">
+            <div class="col-md-6 col-xl-6 p-2 col-sm-12 col-xs-12 otp-form-signup-container">
                 <form id="otpForm" method="POST">
                     {% csrf_token %}
                     <span id="otpmsgg">OTP is send on</span>
@@ -117,6 +117,14 @@
                     <button type="button" onclick="signup()">Validate OTP</button>
                     <a  id="resendotp"  class="ghost">Resend OTP</a>
                 </form>
+                <div class="account-connect-container">
+                    <label>Connect Your Account with</label>
+                    <div  class="connection-circle">
+                        <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/a/af/Kotak_Securities_Logo.PNG" class="kotak-connect"></a>
+                        <a href="#"><img src="https://digistatement.com/wp-content/uploads/2020/04/image_1587355288361.jpg" class="zerodha-connect"></a>
+                        
+                    </div>
+                </div>
             </div>
             <div class="col-6 d-sm-none d-md-block d-none d-sm-block align-content-center form-overlay">
                 <div class="overlay-panel">
