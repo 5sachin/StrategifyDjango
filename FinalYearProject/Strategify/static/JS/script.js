@@ -84,11 +84,23 @@ function deploy(){
     var container = document.querySelector("#MAonTCS");
     var checkboxesAll = container.querySelectorAll('input[type="checkbox"]');
     var checkBoxesSelected = container.querySelectorAll('input[type="checkbox"]:checked');
-    console.log(checkBoxesSelected[0].name);
+    if(checkBoxesSelected.length > 0){
+        var allscrip = "";
+        
+        for(let i =0;i<checkBoxesSelected.length;i++){
+            console.log(checkBoxesSelected[i].name);
+            allscrip += checkBoxesSelected[i].name+"/";
+        }
+
+        let x = document.getElementById('allscriplist');
+        x.value = allscrip;
+        x.innerHTML = allscrip;
+        console.log(allscrip);
+        
+        $('#deploymodal').modal();
+    }
+    
 }
-
-
-
 
 
 

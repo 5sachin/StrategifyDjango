@@ -12,6 +12,8 @@ from django.core.exceptions import *
 from django.db import *
 from django.http import HttpResponse
 from django.template.loader import render_to_string
+from .updatestrategy import *
+from .profitlosscalculation import *
 
 
 data = None
@@ -117,6 +119,9 @@ def deploypage(request):
         'name': data.name,
     }
     return render(request, 'Strategify/deployed.html', {'data': userData})
+
+def tradingviewsetup(request):
+    return render(request, 'Strategify/deployed.html', {})
 
 def generateotp(request):
     response_data = {}
@@ -232,7 +237,7 @@ def deletestrategy(request):
 
 def createstrategy(response):
     response_data = {}
-    (response)
+    print(response)
     data = UserRegistration.objects.get(username=response.session['username'])
 
     # try:
@@ -247,6 +252,16 @@ def createstrategy(response):
         'scripdata': "nse.allscrip()",
     }
     return render(response, 'Strategify/createStrategy.html', {'data':userData,'strategydata': None})
+
+
+def deploystrategy(request):
+    print(request.POST)
+    userData = {
+        'username': request.session['username'],
+        'name': "data.name",
+    }
+    return render(request, 'Strategify/deployed.html', {'data': userData})
+
 
 
 def topgainers(response):
@@ -415,15 +430,15 @@ def createStrategyForm(response):
                                 globals()[a[j]]("EXIT", int(b[1]))
                                 exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
                 if exitCondition:
-                    val = ProfitLossCalculationWithExit(response.session['username'],scriplist[i],response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
+                    val = ProfitLossCalculationWithExit(data,response.session['username'],scriplist[i],response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
                 else:
-                    val = ProfitLossCalculationWithoutExit(response.session['username'],scriplist[i], response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
+                    val = ProfitLossCalculationWithoutExit(data,response.session['username'],scriplist[i], response.POST.get('targetper'),response.POST.get('stoploss'),response.POST.get('quantityLots'))
                 alldata.append(val)
 
             if dataexitCondition == "":
                 dataexitCondition = "None"
             try:
-                insertStrategyData(response,dataentryCondition,dataexitCondition)
+                updateStrategyData(response,dataentryCondition,dataexitCondition)
             except IntegrityError as e:
                 response_data['error'] = "Strategy Name Already Exist Hence Not Saved. Use different Name"
             except Exception as e:
@@ -432,49 +447,8 @@ def createStrategyForm(response):
     except Exception as e:
         print("Error",e)
 
-
-def insertStrategyData(response,dataentryCondition,dataexitCondition):
-    try:
-        if StrategyRegistration.objects.filter(username=response.session['username'],strategyid=response.session['username'] + response.POST.get('strategyname')).exists():
-            user = UserRegistration.objects.get(username=response.session['username'])
-            StrategyRegistration.objects.filter(strategyid = response.session['username'] + response.POST.get('strategyname')).update(
-                strategyid=response.session['username'] + response.POST.get('strategyname'),
-                username=user,
-                strategyname=response.POST.get('strategyname'),
-                quantity=response.POST.get('quantityLots'),
-                scripname=response.POST.get('allscriplist'),
-                entrycondition=dataentryCondition,
-                stoploss=response.POST.get('stoploss'),
-                target=response.POST.get('targetper'),
-                exitcondition=dataexitCondition,
-                startdate=response.POST.get('startDate'),
-                enddate=response.POST.get('stopDate'),
-                createDate=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                )
-        else:
-            saveStrategyDetails(response,dataentryCondition,dataexitCondition)
-    except ObjectDoesNotExist as e:
-        saveStrategyDetails(response,dataentryCondition,dataexitCondition)
-
-def saveStrategyDetails(response,dataentryCondition,dataexitCondition):
-    user = UserRegistration.objects.get(username=response.session['username'])
-    StrategyRegistration.objects.create(
-            strategyid=response.session['username'] + response.POST.get('strategyname'),
-            username=user,
-            strategyname=response.POST.get('strategyname'),
-            quantity=response.POST.get('quantityLots'),
-            scripname=response.POST.get('allscriplist'),
-            entrycondition=dataentryCondition,
-            stoploss=response.POST.get('stoploss'),
-            target=response.POST.get('targetper'),
-            exitcondition=dataexitCondition,
-            startdate=response.POST.get('startDate'),
-            enddate=response.POST.get('stopDate'),
-            createDate=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            )
-
-def Value(period):
-    data['Value{}'.format(period)] = period
+def Value(condition,period):
+    data['{}Value{}'.format(condition,period)] = period
 
 def MA(condition,period):
     global data
@@ -492,7 +466,7 @@ def WMA(condition,period):
     column = 'Close'
     weights = np.arange(1, period + 1)
     wmas = data[column].rolling(period).apply(lambda x: np.dot(x, weights) /weights.sum(), raw=True).to_list()
-    data['{condition}WMA{period}'] = wmas
+    data['{}WMA{}'.format(condition,period)] = wmas
 
 def RSI(condition,period):
     ret = data['Close'].diff()
@@ -519,337 +493,27 @@ def entrySignalGeneration(period1,period2):
     global data
     data['EntrySignal'] = np.where(data['ENTRY{}'.format(period1)] > data['ENTRY{}'.format(period2)], 1, 0)
     data['ENTRYPosition{}'.format(str(period1)+str(period2))] = data['EntrySignal'].diff()
-
-
-    for i in range(0, len(data['ENTRYPosition{}'.format(str(period1)+str(period2))])):
-        if data['Position'][i] != 1.0:
-            data['Position'][i] = data['ENTRYPosition{}'.format(str(period1)+str(period2))][i]
+    x = data['ENTRYPosition{}'.format(str(period1)+str(period2))]
+    data.loc[data['Position'] != 1.0, ['Position']] = data['ENTRYPosition{}'.format(str(period1)+str(period2))]
     data['Position'] = data['Position'].replace([-1.0],[0.0])
+
+
+def myfunc(position, exit):
+    if position != -1.0:
+        if position == 1.0 and exit == -1.0:
+            position = 0.0
+        elif position == 1.0:
+            position = 1.0
+        else:
+            position = exit
+    return position
 
 def exitSignalGeneration(period1,period2):
     global data
     data['ExitSignal'] = np.where(data['EXIT{}'.format(period1)] > data['EXIT{}'.format(period2)], 0, 1)
     data['EXITPosition{}'.format(str(period1)+str(period2))] = data['ExitSignal'].diff()
-
-    for i in range(0, len(data['EXITPosition{}'.format(str(period1)+str(period2))])):
-        if data['Position'][i] != -1.0:
-            if data['Position'][i] == 1.0 and data['EXITPosition{}'.format(str(period1)+str(period2))][i] == -1.0:
-                data['Position'][i] = 0.0
-            elif data['Position'][i] == 1.0:
-                data['Position'][i] = 1.0
-            else:
-                data['Position'][i] = data['EXITPosition{}'.format(str(period1)+str(period2))][i]
-
-def ProfitLossCalculationWithExit(username,scrip,target,steploss,quantity):
-    global data
-    a = 0
-    status = 0
-    WinsCount = 0
-    LossCount = 0
-    totP = 0
-    totL = 0
-    balance = 0
-    enter = 0
-    alllist = []
-    PS = 0
-    PL = 0
-    streakP = 0
-    streakL = 0
-    ltp = 0
-    graphdata = []
-
-    for i in range(0, len(data['Position'])):
-        x = []
-
-        if data['Position'][i] == 1.0 and enter == 0:
-            a = data['Close'][i]
-            enter = 1
-            alllist.append({
-                'date': data.index[i],
-                'price': data['Close'][i],
-                'buysell': "buy",
-                'balance': balance,
-            })
-            x.append(str(data.index[i]))
-            x.append("{:.2f}".format(data['Close'][i]))
-            graphdata.append(x)
-            print("Buy:    Date: ", data.index[i], " Price: ", a)
-        elif data['Position'][i] == -1.0 and enter == 1:
-            balance += data['Close'][i] - a
-            if data['Close'][i]-a >= 0:
-                print("Sell:   Profit  Price: ", data['Close'][i], " Date: ", data.index[i], " Net Profit: ",
-                      data['Close'][i] - a)
-                WinsCount += 1
-                totP += data['Close'][i] - a
-                alllist.append({
-                    'date': data.index[i],
-                    'price': data['Close'][i],
-                    'buysell': "sell",
-                    'balance': balance
-                })
-                x.append(str(data.index[i]))
-                x.append("{:.2f}".format(data['Close'][i]))
-                graphdata.append(x)
-                PS += 1
-                PL = 0
-                if PS > streakP:
-                    streakP = PS
-                a = 0
-                enter = 0
-            else:
-                print("Sell:   Loss   Price: ", data['Close'][i], " Date: ", data.index[i], " Net Loss: ",
-                      data['Close'][i] - a)
-                LossCount += 1
-                totL += data['Close'][i] - a
-                alllist.append({
-                    'date': data.index[i],
-                    'price': data['Close'][i],
-                    'buysell': "sell",
-                    'balance': balance
-                })
-                x.append(str(data.index[i]))
-                x.append("{:.2f}".format(data['Close'][i]))
-                graphdata.append(x)
-                PL += 1
-                PS = 0
-                if PL > streakL:
-                    streakL = PL
-                a = 0
-                enter = 0
-        else:
-            if a > 0 and enter == 1:
-                if ((data['Close'][i] - a) / a) * 100 >= int(target):
-                    balance += data['Close'][i] - a
-                    print("Sell:   Profit  Price: ", data['Close'][i], " Date: ", data.index[i], " Net Profit: ",
-                          data['Close'][i] - a)
-                    WinsCount += 1
-                    totP += data['Close'][i] - a
-                    alllist.append({
-                        'date': data.index[i],
-                        'price': data['Close'][i],
-                        'buysell': "sell",
-                        'balance': balance
-                    })
-                    x.append(str(data.index[i]))
-                    x.append("{:.2f}".format(data['Close'][i]))
-                    graphdata.append(x)
-                    PS += 1
-                    PL = 0
-                    if PS > streakP:
-                        streakP = PS
-                    a = 0
-                    enter = 0
-                elif ((a - data['Close'][i]) / a) * 100 >= int(steploss):
-                    balance += data['Close'][i] - a
-                    print("Sell:   Loss   Price: ", data['Close'][i], " Date: ", data.index[i], " Net Loss: ",
-                          data['Close'][i] - a)
-                    LossCount += 1
-                    totL += data['Close'][i] - a
-                    alllist.append({
-                        'date': data.index[i],
-                        'price': data['Close'][i],
-                        'buysell': "sell",
-                        'balance': balance
-                    })
-                    x.append(str(data.index[i]))
-                    x.append("{:.2f}".format(data['Close'][i]))
-                    graphdata.append(x)
-                    PL += 1
-                    PS = 0
-                    if PL > streakL:
-                        streakL = PL
-                    a = 0
-                    enter = 0
-
-    print("Balance: ", balance, " Total Wins: ", WinsCount, " Total Loss: ", LossCount, " Total Profit:  ", totP,
-          " Total Loss: ", totL)
-
-    if totP + totL > 0:
-        status = 1
-
-    ltp = data['Close'][-1]
-
-    pd.DataFrame(alllist).to_csv('Strategify/static/' + ''+username+''+scrip.replace('.NS', '')+'.csv')
-    periodHigh = "{:.2f}".format(data['Close'].max())
-    periodLow = "{:.2f}".format(data['Close'].min())
-    balance = "{:.2f}".format(balance)
-    totP = "{:.2f}".format(totP)
-    totL = "{:.2f}".format(-totL)
-    ltp = "{:.2f}".format(float(ltp))
-
-    if WinsCount == 0:
-        AvgGain = 0
-        AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
-    elif LossCount == 0:
-        AvgLoss = 0
-        AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
-    else:
-        AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
-        AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
-
-
-    percentBar = (float(totP) / (float(totP) + float(totL))) * 100
-    alldata = {
-        'username': username,
-        'ScripName': scrip.replace('.NS', ''),
-        'PL': "{:.2f}".format(float(balance) * int(quantity)),
-        'Status': status,
-        'Signal': WinsCount + LossCount,
-        'LTP': ltp,
-        'WinStreak': streakP,
-        'LossStreak': streakL,
-        'Wins': WinsCount,
-        'Loss': LossCount,
-        'MaxGain': "{:.2f}".format(float(totP) * int(quantity)),
-        'MaxLoss': "{:.2f}".format(float(totL) * int(quantity)),
-        'PeriodHigh': periodHigh,
-        'PeriodLow': periodLow,
-        'AvgGain': AvgGain,
-        'AvgLoss': AvgLoss,
-        'PercentBar': percentBar,
-        'graphdata':graphdata,
-    }
-
-    return alldata
-
-def ProfitLossCalculationWithoutExit(username,scrip,target,steploss,quantity):
-    global data
-    a = 0
-    status = 0
-    WinsCount = 0
-    LossCount = 0
-    totP = 0
-    totL = 0
-    balance = 0
-    enter = 0
-    alllist = []
-    PS = 0
-    PL = 0
-    streakP = 0
-    streakL = 0
-    ltp = 0
-    graphdata = []
-
-
-    for i in range(0, len(data['Position'])):
-        x = []
-
-        if data['Position'][i] == 1.0 and enter == 0:
-            a = data['Close'][i]
-            enter = 1
-            alllist.append({
-                'date': data.index[i],
-                'price': data['Close'][i],
-                'buysell': "buy",
-                'balance': balance,
-            })
-
-            x.append(str(data.index[i]))
-            x.append("{:.2f}".format(data['Close'][i]))
-            graphdata.append(x)
-
-            print("Buy:    Date: ",data.index[i]," Price: ",a)
-
-        else:
-            if a > 0:
-                if ((data['Close'][i] - a) / a) * 100 >= int(target):
-                    balance += data['Close'][i] - a
-                    print("Sell:   Profit  Price: ", data['Close'][i], " Date: ", data.index[i], " Net Profit: ", data['Close'][i] - a)
-                    WinsCount += 1
-                    totP += data['Close'][i] - a
-                    alllist.append({
-                        'date': data.index[i],
-                        'price': data['Close'][i],
-                        'buysell': "sell",
-                        'balance': balance
-                    })
-                    PS += 1
-                    PL = 0
-                    if PS > streakP:
-                        streakP = PS
-                    a = 0
-                    enter = 0
-                    x.append(str(data.index[i]))
-                    x.append("{:.2f}".format(data['Close'][i]))
-                    graphdata.append(x)
-                elif ((a - data['Close'][i]) / a) * 100 >= int(steploss):
-                    balance += data['Close'][i] - a
-                    print("Sell:   Loss   Price: ", data['Close'][i], " Date: ",data.index[i], " Net Loss: ", data['Close'][i] - a)
-                    LossCount += 1
-                    totL += data['Close'][i] - a
-                    alllist.append({
-                        'date': data.index[i],
-                        'price': data['Close'][i],
-                        'buysell': "sell",
-                        'balance': balance
-                    })
-                    PL += 1
-                    PS = 0
-                    if PL > streakL:
-                        streakL = PL
-                    a = 0
-                    enter = 0
-                    x.append(str(data.index[i]))
-                    x.append("{:.2f}".format(data['Close'][i]))
-                    graphdata.append(x)
-
-    print("Balance: ",balance," Total Wins: ",WinsCount," Total Loss: ",LossCount," Total Profit:  ", totP," Total Loss: ",totL)
-
-    if totP + totL > 0:
-        status = 1
-
-    ltp = data['Close'][-1]
-
-    pd.DataFrame(alllist).to_csv('Strategify/static/'+''+username+''+scrip.replace('.NS', '')+'.csv')
-    periodHigh = "{:.2f}".format(data['Close'].max())
-    periodLow = "{:.2f}".format(data['Close'].min())
-    balance = "{:.2f}".format(balance)
-    totP = "{:.2f}".format(totP)
-    totL = "{:.2f}".format(-totL)
-    ltp = "{:.2f}".format(float(ltp))
-
-    if WinsCount != 0 and LossCount != 0:
-        AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
-        AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
-    elif WinsCount == 0 and LossCount != 0:
-        AvgGain = 0
-        AvgLoss = "{:.2f}".format(float(totL) * int(quantity) / LossCount)
-    elif LossCount == 0 and WinsCount != 0:
-        AvgLoss = 0
-        AvgGain = "{:.2f}".format(float(totP) * int(quantity) / WinsCount)
-    else:
-        AvgGain = 0
-        AvgLoss = 0
-
-    print(type(totP))
-    if float(totP) == 0.00 and float(totL) == 0.00:
-        print("Here 1")
-        percentBar = 0
-    else: 
-        percentBar = (float(totP) / (float(totP) + float(totL))) * 100
-    alldata = {
-        'username':username,
-        'ScripName': scrip.replace('.NS', ''),
-        'PL': "{:.2f}".format(float(balance) * int(quantity)),
-        'Status': status,
-        'LTP': ltp,
-        'Signal': WinsCount + LossCount,
-        'WinStreak': streakP,
-        'LossStreak': streakL,
-        'Wins': WinsCount,
-        'Loss': LossCount,
-        'MaxGain': "{:.2f}".format(float(totP) * int(quantity)),
-        'MaxLoss': "{:.2f}".format(float(totL) * int(quantity)),
-        'PeriodHigh': periodHigh,
-        'PeriodLow': periodLow,
-        'AvgGain': AvgGain,
-        'AvgLoss': AvgLoss,
-        'PercentBar': percentBar,
-        'graphdata':graphdata,
-    }
-    return alldata
-
-
+    data['Position'] = data.apply(lambda x: myfunc(x['Position'], x['EXITPosition{}'.format(str(period1)+str(period2))]), axis=1)
+    
 
 def admincode(request):
     return render(request,'Strategify/admincode.html',{})

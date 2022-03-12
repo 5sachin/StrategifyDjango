@@ -25,4 +25,6 @@ urlpatterns = [
     path('allindices',views.allindices,name="allindices"),
     path('deletestrategy',views.deletestrategy,name="deletestrategy"),
     path('admincode/',views.admincode,name="admin"),
+    path('tradingviewsetup/',views.tradingviewsetup,name="tradingviewsetup"),
+    path('deploystrategy',views.deploystrategy,name="deploystrategy")
 ]

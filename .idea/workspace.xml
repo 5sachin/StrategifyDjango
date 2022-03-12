@@ -5,24 +5,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/Strategify.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Strategify.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/JS/createStrategy.js" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/JS/createStrategy.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/JS/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/JS/script.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/sachinADANIPORTS.csv" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/sachinADANIPORTS.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/sachinTCS.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/allindices.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/allindices.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/sachinRELIANCE.csv" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/sachinRELIANCE.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/backtestHistory.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/backtestHistory.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/charts.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/charts.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/createStrategy.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/createStrategy.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/dashboard.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/deployed.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/deployed.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/registrationPage.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/registrationPage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/manage.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/manage.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,26 +147,26 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="652" height="466" key="DebuggerActiveHint/0.0.1536.824@0.0.1536.824" timestamp="1642328491418" />
-    <state x="233" y="141" key="FileChooserDialogImpl" timestamp="1646980584205">
+    <state x="233" y="141" key="FileChooserDialogImpl" timestamp="1647068222884">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="233" y="141" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1646980584205" />
-    <state width="1513" height="291" key="GridCell.Tab.0.bottom" timestamp="1646926780147">
+    <state x="233" y="141" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1647068222884" />
+    <state width="1513" height="10" key="GridCell.Tab.0.bottom" timestamp="1647071282338">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="291" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1646926780147" />
-    <state width="1513" height="291" key="GridCell.Tab.0.center" timestamp="1646926780147">
+    <state width="1513" height="10" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1647071282338" />
+    <state width="1513" height="10" key="GridCell.Tab.0.center" timestamp="1647071282338">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="291" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1646926780147" />
-    <state width="1513" height="291" key="GridCell.Tab.0.left" timestamp="1646926780146">
+    <state width="1513" height="10" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1647071282338" />
+    <state width="1513" height="10" key="GridCell.Tab.0.left" timestamp="1647071282337">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="291" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1646926780146" />
-    <state width="1513" height="291" key="GridCell.Tab.0.right" timestamp="1646926780147">
+    <state width="1513" height="10" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1647071282337" />
+    <state width="1513" height="10" key="GridCell.Tab.0.right" timestamp="1647071282338">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="291" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1646926780147" />
+    <state width="1513" height="10" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1647071282338" />
     <state width="1513" height="233" key="GridCell.Tab.1.bottom" timestamp="1645126137466">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -193,14 +183,14 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="1513" height="233" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1645126137466" />
-    <state x="183" y="41" width="1002" height="717" key="SettingsEditor" timestamp="1646981088233">
+    <state x="183" y="41" width="958" height="717" key="SettingsEditor" timestamp="1647068305876">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="183" y="41" width="1002" height="717" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1646981088233" />
-    <state x="463" y="234" key="com.intellij.ide.util.TipDialog" timestamp="1646976723696">
+    <state x="183" y="41" width="958" height="717" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1647068305876" />
+    <state x="463" y="234" key="com.intellij.ide.util.TipDialog" timestamp="1647067927618">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="463" y="234" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1646976723696" />
+    <state x="463" y="234" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1647067927618" />
     <state x="406" y="26" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1639826133867">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

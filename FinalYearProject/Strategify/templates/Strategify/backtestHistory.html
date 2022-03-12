@@ -288,6 +288,41 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="deploymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form method="post" action="{% url 'deploystrategy' %}" id="deploy-form">
+                        {% csrf_token %}
+                        <div class="modal-header">
+                            <h5 class="modal-title text-color" id="indicator2headingModal">Deploy</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            
+                                <div class="form-group row p-1">
+                                    <div class="col-6">
+                                        <label class="text-dark form-control">Algo Cycles</label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="number" name="indicatorperiod22" class="form-control">
+                                    </div>
+                                    <input type="hidden" name="allscriplist" id="allscriplist" class="form-control">
+                                </div>
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <input type="submit" class="btn btn-primary" name="deploy_submit" value="Done" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <footer class="sticky-footer">
             <div class="container">
                 <div class="text-center">
@@ -348,12 +383,6 @@
 
                     chart.draw(points, google.charts.Line.convertOptions(options));
 
-
-                    var el   = document.getElementById("{{e.ScripName}}graph");
-                    var rect = el.getBoundingClientRect();
-
-                    console.log( rect.width );
-                    console.log( rect.height);
                     {% endfor %}
                 }
 
