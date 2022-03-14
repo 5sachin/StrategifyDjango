@@ -3,8 +3,6 @@ from .views import *
 
 
 def ProfitLossCalculationWithoutExit(data, username, scrip, target, steploss, quantity):
-    print("Came Here")
-
     a = 0
     status = 0
     WinsCount = LossCount = 0               # TOTAL NO OF WINS AND LOSS
@@ -69,7 +67,10 @@ def ProfitLossCalculationWithoutExit(data, username, scrip, target, steploss, qu
     if totalProfit + totalLoss > 0:
         status = 1
 
-    LTP = data['Close'][-1]  # LAST TRADE PRICE
+
+    LTP = 0.0
+    if data['Close']:
+        LTP = data['Close'][-1]  # LAST TRADE PRICE
 
     pd.DataFrame(alllist).to_csv('Strategify/static/' + '' + username + '' + scrip.replace('.NS', '') + '.csv')
     periodHigh = "{:.2f}".format(data['Close'].max())
@@ -240,7 +241,9 @@ def ProfitLossCalculationWithExit(data, username, scrip, target, steploss, quant
     if totalProfit + totalLoss > 0:
         status = 1
 
-    LTP = data['Close'][-1]  # LAST TRADE PRICE
+    LTP = 0.0
+    if data['Close']:
+        LTP = data['Close'][-1]  # LAST TRADE PRICE
 
     pd.DataFrame(alllist).to_csv('Strategify/static/' + '' + username + '' + scrip.replace('.NS', '') + '.csv')
     periodHigh = "{:.2f}".format(data['Close'].max())

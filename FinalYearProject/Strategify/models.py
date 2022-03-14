@@ -38,11 +38,13 @@ class StrategyRegistrationAdmin(admin.ModelAdmin):
 class Deploy(models.Model):
     deployid = models.CharField(max_length=100, primary_key=True, blank=False)
     strategyid= models.ForeignKey(StrategyRegistration, max_length=100, blank=False, on_delete=models.CASCADE)
+    username = models.ForeignKey(UserRegistration, max_length=100, blank=False, on_delete=models.CASCADE)
     scripname = models.CharField(max_length=100)
     deploytime = models.CharField(max_length=100)
+    algocycles = models.CharField(max_length=100)
 
 class DeployAdmin(admin.ModelAdmin):
-    list_display = ('deployid','strategyid','scripname','deploytime')
+    list_display = ('deployid','strategyid','username','scripname','deploytime','algocycles')
 
 
 admin.site.register(UserRegistration, UserRegistrationAdmin)

@@ -132,70 +132,103 @@
             </div>
         </div>
         <div class="container-fluid mt-5">
-          <table class="table">
-            <thead class="table">
-              <tr>
-                <th scope="col">Strategy</th>
-                <th scope="col">Instrument</th>
-                <th scope="col">LTP</th>
-                <th scope="col">P&L</th>
-                <th scope="col">Position</th>
-                <th scope="col">Target</th>
-              </tr>
-            </thead>
+          <div class="active tabcontent" id="Waiting">
+            <table class="table">
+              <thead class="table">
+                <tr>
+                  <th scope="col">Strategy</th>
+                  <th scope="col">Instrument</th>
+                  <th scope="col">LTP</th>
+                  <th scope="col">P&L</th>
+                  <th scope="col">Position</th>
+                  <th scope="col">Target</th>
+                </tr>
+              </thead>
               <tbody>
-                <tr class="tabcontent active" id="Waiting">
-                  <td>MA on Reliance</td>
-                  <td>Reliance</td>
-                  <td>125</td>
-                  <td>25</td>
-                  <td>Waiting</td>
-                  <td>250</td>
-                </tr>
-                <tr class="tabcontent active" id="Waiting">
-                  <td>MA on TCS</td>
-                  <td>TCS</td>
-                  <td>225</td>
-                  <td>50</td>
-                  <td>Waiting</td>
-                  <td>20</td>
-                </tr>
-                <tr class="tabcontent" id="Entered">
-                  <td>WMA on Adani</td>
-                  <td>Adani</td>
-                  <td>125</td>
-                  <td>25</td>
-                  <td>Waiting</td>
-                  <td>250</td>
-                </tr>
-                <tr class="tabcontent" id="Stopped">
-                  <td>RSI on Wipro</td>
-                  <td>Wipro</td>
-                  <td>525</td>
-                  <td>50</td>
-                  <td>Stopped</td>
-                  <td>250</td>
-                </tr>
-                <tr class="tabcontent" id="Stopped">
-                  <td>EMA on SBIN</td>
-                  <td>TCS</td>
-                  <td>2225</td>
-                  <td>500</td>
-                  <td>Stopped</td>
-                  <td>20</td>
-                </tr>
-                <tr class="tabcontent" id="Stopped">
-                  <td>EMA on SBIN</td>
-                  <td>TCS</td>
-                  <td>2225</td>
-                  <td>500</td>
-                  <td>Stopped</td>
-                  <td>20</td>
-                </tr>
+                  <tr>
+                    <td>MA on Reliance</td>
+                    <td>Reliance</td>
+                    <td>125</td>
+                    <td>25</td>
+                    <td>Waiting</td>
+                    <td>250</td>
+                  </tr>
+                  <tr>
+                    <td>MA on TCS</td>
+                    <td>TCS</td>
+                    <td>225</td>
+                    <td>50</td>
+                    <td>Waiting</td>
+                    <td>20</td>
+                  </tr>
+                  <tr>
+                    <td>MA on TCS</td>
+                    <td>TCS</td>
+                    <td>225</td>
+                    <td>50</td>
+                    <td>Waiting</td>
+                    <td>20</td>
+                  </tr>
               </tbody>
-            </div>
-          </table>
-        </div>
+            </table>
+          </div>
+          <div class="tabcontent" id="Entered">
+            <table class="table">
+              <thead class="table">
+                <tr>
+                  <th scope="col">Strategy</th>
+                  <th scope="col">Instrument</th>
+                  <th scope="col">LTP</th>
+                  <th scope="col">P&L</th>
+                  <th scope="col">Position</th>
+                  <th scope="col">Target</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr >
+                    <td>WMA on SBIN</td>
+                    <td>SBIN</td>
+                    <td>125</td>
+                    <td>25</td>
+                    <td>Entered</td>
+                    <td>250</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tabcontent" id="Stopped">
+            <table class="table">
+              <thead class="table">
+                <tr>
+                  <th scope="col">Strategy</th>
+                  <th scope="col">Instrument</th>
+                  <th scope="col">LTP</th>
+                  <th scope="col">P&L</th>
+                  <th scope="col">Position</th>
+                  <th scope="col">Target</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr >
+                    <td>MA on Reliance</td>
+                    <td>Reliance</td>
+                    <td>125</td>
+                    <td>25</td>
+                    <td>Stopped</td>
+                    <td>250</td>
+                  </tr>
+                  <tr>
+                    <td>EMA on TCS</td>
+                    <td>TCS</td>
+                    <td>225</td>
+                    <td>50</td>
+                    <td>Stopped</td>
+                    <td>20</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
     </div>
   </div>
     <!-- /.container-fluid-->

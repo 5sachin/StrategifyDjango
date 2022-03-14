@@ -1,8 +1,5 @@
-from .models import *
-import datetime
 from .savestrategy import *
 from django.core.exceptions import *
-
 
 def updateStrategyData(response,dataentryCondition,dataexitCondition):
     try:

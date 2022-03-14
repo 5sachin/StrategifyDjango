@@ -131,7 +131,7 @@
 <div class="content-wrapper">
     <div class="container-fluid">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item active">{{strategyName}}</li>
+            <li class="breadcrumb-item active" id="strategyname">{{strategyName}}</li>
         </ol>
         <div class="container-fluid backtestHistory">
             <div class="section-25 section-md-55 section-lg-75 section-xl-75 mt-5">
@@ -142,7 +142,7 @@
                                 {{response.POST.startDate}} to {{response.POST.stopDate}}
                             </div>
                             <div class="col-6 ml-auto align-content-end text-end">
-                                <button class="ghost" id="deploy" onclick="deploy()">Deploy</button>
+                                <button class="ghost" id="deploy" data-toggle="modal" data-target="#deploymodal">Deploy</button>
                             </div>
                         </div>
                     </div>
@@ -204,7 +204,7 @@
                                                         <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.LossStreak}}</td>
                                                         <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">--</td>
                                                         <td data-label="Amount"><span><a href="static/{{e.username}}{{e.ScripName}}.csv"><i class="fa fa-download"></i></a></span></td>
-                                                        <td data-label="Period"><input type="checkbox" name="{{strategyName}}_{{e.ScripName}}"></td>
+                                                        <td data-label="Period"><input type="checkbox" name="{{e.ScripName}}"></td>
                                                     </tr>
                                                     <tr>
                                                         <td colspan="12" class="hiddenRow">
@@ -293,7 +293,6 @@
         <div class="modal fade" id="deploymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <form method="post" action="{% url 'deploystrategy' %}" id="deploy-form">
                         {% csrf_token %}
                         <div class="modal-header">
                             <h5 class="modal-title text-color" id="indicator2headingModal">Deploy</h5>
@@ -308,7 +307,7 @@
                                         <label class="text-dark form-control">Algo Cycles</label>
                                     </div>
                                     <div class="col-6">
-                                        <input type="number" name="indicatorperiod22" class="form-control">
+                                        <input type="number" name="algocycles" id="algocycles" class="form-control">
                                     </div>
                                     <input type="hidden" name="allscriplist" id="allscriplist" class="form-control">
                                 </div>
@@ -316,9 +315,8 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <input type="submit" class="btn btn-primary" name="deploy_submit" value="Done" />
+                            <button class="btn btn-primary" name="deploy_submit" value="Done" onclick="return deploystrategy()">Done</button>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -335,6 +333,7 @@
 
     
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
+    
     <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
     <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
@@ -342,13 +341,13 @@
     <script src="{% static 'JS/script.js' %}"></script>
     <script src="{% static 'JS/dailychart.js' %}"></script>
     <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script>
+    csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
         console.log({{error|safe}});
 
                 google.charts.load('current', {'packages':['line']});
                 google.charts.setOnLoadCallback(drawChart);
-
-
 
                 function drawChart() {
 
@@ -385,6 +384,57 @@
 
                     {% endfor %}
                 }
+
+
+                function deploystrategy(){
+                    var container = document.querySelector("#MAonTCS");
+                    var checkboxesAll = container.querySelectorAll('input[type="checkbox"]');
+                    var checkBoxesSelected = container.querySelectorAll('input[type="checkbox"]:checked');
+                    var strategyname = document.getElementById('strategyname').innerHTML;
+                    if(checkBoxesSelected.length > 0){
+                    var allscrip = "";
+                    allscrip += strategyname+"/";
+                    
+                    for(let i =0;i<checkBoxesSelected.length;i++){
+                        console.log(checkBoxesSelected[i].name);
+                        allscrip += checkBoxesSelected[i].name+"/";
+                    }
+
+                    let x = document.getElementById('allscriplist');
+                    x.value = allscrip;
+                    x.innerHTML = allscrip;
+                    console.log(allscrip);
+
+                    var allscriplist = document.getElementById("allscriplist");
+                    var algocycles = document.getElementById("algocycles");
+
+                    $.ajax({
+                        type:"POST",
+                        url:'{% url 'deploystrategy' %}',
+                        data:{
+                          'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                          'allscriplist': allscriplist,
+                          'algocycles': algocycles,
+                        },
+                        success :function(data){
+                        console.log(data)
+                            if(data.success){
+                                console.log(data.success);
+                               }
+                               else{
+                               console.log(data.error);
+                               }
+                            }
+                    })
+
+           return false
+         }
+
+    
+}
+
+
+
 
     </script>
 </body>

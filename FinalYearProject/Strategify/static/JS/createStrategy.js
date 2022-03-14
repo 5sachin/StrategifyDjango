@@ -9,10 +9,11 @@ var todayDate = document.getElementById('stopDate');
 prevDate.defaultValue  = parseInt(yyyy)-5+"-"+mm+"-"+dd;
 todayDate.defaultValue  = yyyy+"-"+mm+"-"+dd;
 
-let indicatorsuggestions = [["MA","Moving Average"],["EMA","Exponential Moving Average"],["WMA","Weighted Moving Average"],["RSI","Relative Strength Index"],["Value","Value"]];
+let indicatorsuggestions = [["MA","Moving Average"],["EMA","Exponential Moving Average"],["WMA","Weighted Moving Average"],["RSI","Relative Strength Index"],["Value","Value"],["Close","Close"]];
+
 var indicatorWrapper = document.querySelector(".indicator-search");
 var indicatorInputBox = indicatorWrapper.querySelector("input");
-var indicatorSuggBox;
+var indicatorSuggBox, indicatorSuggBox2, indicatorSuggBox3, indicatorSuggBox4;
 
 function lookup(arg){
     var id = arg.getAttribute('id');
@@ -31,7 +32,7 @@ function lookup(arg){
         emptyArray = emptyArray.map((data)=>{
             return data = `<li></li>`;
         });
-        indicatorWrapper.classList.add("active");
+        indicatorSuggBox.classList.add("active");
         showIndicatorSuggestions(emptyArray);
         let allList = indicatorSuggBox.querySelectorAll("li");
         for (let i = 0; i < allList.length; i++) {
@@ -47,7 +48,7 @@ function lookup(arg){
             allList[i].setAttribute("onclick", "openIndicatorDetails('"+dataArray[i][0]+"',"+no+")");
         }
     }else{
-        indicatorWrapper.classList.remove("active");
+        indicatorSuggBox.classList.remove("active");
         dataArray = [];
     }
 }
@@ -78,24 +79,22 @@ function saveIndicatordetails(id){
     var z = document.getElementById('indicatorheadingModal').innerHTML;
     document.getElementsByName("entryfirindicator"+id.toString())[0].value = z+","+x;
     document.getElementsByName("entrysecindicator"+id.toString())[0].value = z+","+y;
-    indicatorWrapper.classList.remove("active");
+    indicatorSuggBox.classList.remove("active");
+    document.getElementById('firindicatorBox'+id.toString()).innerHTML = "";
     $('#indicatorModal').modal('hide');
+
 }
 
-var indicatorWrapper2 = document.querySelector(".indicator-search2");
-var indicatorInputBox2 = indicatorWrapper2.querySelector("input");
-var indicatorSuggBox2;
-
 function lookup2(arg){
+
     var id = arg.getAttribute('id');
     var no = id.charAt(id.length-1);
     var value = arg.value;
     let userData = value;
     let emptyArray = [];
     let dataArray = [];
-    
     var string = "#secindicatorBox"+no.toString();
-    indicatorSuggBox2 = indicatorWrapper2.querySelector(string);
+    indicatorSuggBox2 = indicatorWrapper.querySelector(string);
     if(userData){
         emptyArray = indicatorsuggestions.filter((data)=>{
             return data[0].toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
@@ -104,7 +103,7 @@ function lookup2(arg){
         emptyArray = emptyArray.map((data)=>{
             return data = `<li></li>`;
         });
-        indicatorWrapper2.classList.add("active");
+        indicatorSuggBox2.classList.add("active");
         showIndicatorSuggestions2(emptyArray);
         let allList = indicatorSuggBox2.querySelectorAll("li");
         for (let i = 0; i < allList.length; i++) {
@@ -120,7 +119,7 @@ function lookup2(arg){
             allList[i].setAttribute("onclick", "openIndicator2Details('"+dataArray[i][0]+"',"+no+")");
         }
     }else{
-        indicatorWrapper2.classList.remove("active");
+        indicatorSuggBox2.classList.remove("active");
         dataArray = [];
     }
 }
@@ -128,7 +127,7 @@ function lookup2(arg){
 function showIndicatorSuggestions2(list){
     let listData;
     if(!list.length){
-        userValue = indicatorInputBox2.value;
+        userValue = indicatorInputBox.value;
         listData = `<li>${userValue}</li>`;
     }else{
       listData = list.join('');
@@ -150,15 +149,21 @@ function saveIndicatordetails2(id){
     var z = document.getElementById('indicator2headingModal').innerHTML
 
     document.getElementsByName("entrysecindicator"+id.toString())[0].value = z+","+y;
-    indicatorWrapper2.classList.remove("active");
+    indicatorSuggBox2.classList.remove("active");
     $('#indicator2Modal').modal('hide');
 }
 
-var indicatorWrapper3 = document.querySelector(".exitConditionRow");
-var indicatorInputBox3 = indicatorWrapper3.querySelector("input");
-var indicatorSuggBox3;
+
+
+
+var indicatorWrapper2;
+var indicatorInputBox2;
+
 
 function lookup3(arg){
+    indicatorWrapper2 = document.querySelector(".indicator-search3");
+    indicatorInputBox2 = indicatorWrapper2.querySelector("input");
+
     var id = arg.getAttribute('id');
     var no = id.charAt(id.length-1);
     var value = arg.value;
@@ -166,9 +171,7 @@ function lookup3(arg){
     let emptyArray = [];
     let dataArray = [];
     var string = "#exitfirindicatorBox"+no.toString();
-    indicatorSuggBox3 = indicatorWrapper3.querySelector(string);
-    console.log(indicatorWrapper3);
-    console.log(indicatorSuggBox3);
+    indicatorSuggBox3 = indicatorWrapper2.querySelector(string);
     if(userData){
         emptyArray = indicatorsuggestions.filter((data)=>{
             return data[0].toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
@@ -177,7 +180,7 @@ function lookup3(arg){
         emptyArray = emptyArray.map((data)=>{
             return data = `<li></li>`;
         });
-        indicatorWrapper3.classList.add("active");
+        indicatorSuggBox3.classList.add("active");
         showIndicatorSuggestions3(emptyArray);
         let allList = indicatorSuggBox3.querySelectorAll("li");
         for (let i = 0; i < allList.length; i++) {
@@ -193,7 +196,7 @@ function lookup3(arg){
             allList[i].setAttribute("onclick", "openIndicator3Details('"+dataArray[i][0]+"',"+no+")");
         }
     }else{
-        indicatorWrapper3.classList.remove("active");
+        indicatorSuggBox3.classList.remove("active");
         dataArray = [];
     }
 }
@@ -201,7 +204,7 @@ function lookup3(arg){
 function showIndicatorSuggestions3(list){
     let listData;
     if(!list.length){
-        userValue = indicatorInputBox3.value;
+        userValue = indicatorInputBox.value;
         listData = `<li>${userValue}</li>`;
     }else{
       listData = list.join('');
@@ -225,13 +228,9 @@ function saveIndicatordetails3(id){
     var z = document.getElementById('indicatorheadingModal').innerHTML;
     document.getElementsByName("exitfirindicator"+id.toString())[0].value = z+","+x;
     document.getElementsByName("exitsecindicator"+id.toString())[0].value = z+","+y;
-    indicatorWrapper3.classList.remove("active");
+    indicatorSuggBox3.classList.remove("active");
     $('#indicatorModal').modal('hide');
 }
-
-var indicatorWrapper4 = document.querySelector(".exitConditionRow");
-var indicatorInputBox4 = indicatorWrapper3.querySelector("input");
-var indicatorSuggBox4;
 
 function lookup4(arg){
     var id = arg.getAttribute('id');
@@ -241,9 +240,7 @@ function lookup4(arg){
     let emptyArray = [];
     let dataArray = [];
     var string = "#exitsecindicatorBox"+no.toString();
-    indicatorSuggBox4 = indicatorWrapper4.querySelector(string);
-    console.log(indicatorWrapper4);
-    console.log(indicatorSuggBox4);
+    indicatorSuggBox4 = indicatorWrapper2.querySelector(string);
     if(userData){
         emptyArray = indicatorsuggestions.filter((data)=>{
             return data[0].toLocaleLowerCase().startsWith(userData.toLocaleLowerCase());
@@ -252,7 +249,7 @@ function lookup4(arg){
         emptyArray = emptyArray.map((data)=>{
             return data = `<li></li>`;
         });
-        indicatorWrapper4.classList.add("active");
+        indicatorSuggBox4.classList.add("active");
         showIndicatorSuggestions4(emptyArray);
         let allList = indicatorSuggBox4.querySelectorAll("li");
         for (let i = 0; i < allList.length; i++) {
@@ -268,7 +265,7 @@ function lookup4(arg){
             allList[i].setAttribute("onclick", "openIndicator4Details('"+dataArray[i][0]+"',"+no+")");
         }
     }else{
-        indicatorWrapper4.classList.remove("active");
+        indicatorSuggBox4.classList.remove("active");
         dataArray = [];
     }
 }
@@ -276,7 +273,7 @@ function lookup4(arg){
 function showIndicatorSuggestions4(list){
     let listData;
     if(!list.length){
-        userValue = indicatorInputBox4.value;
+        userValue = indicatorInputBox.value;
         listData = `<li>${userValue}</li>`;
     }else{
       listData = list.join('');
@@ -298,6 +295,6 @@ function saveIndicatordetails4(id){
     var z = document.getElementById('indicator2headingModal').innerHTML
 
     document.getElementsByName("exitsecindicator"+id.toString())[0].value = z+","+y;
-    indicatorWrapper4.classList.remove("active");
+    indicatorSuggBox4.classList.remove("active");
     $('#indicator2Modal').modal('hide');
 }

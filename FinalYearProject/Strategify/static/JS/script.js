@@ -37,10 +37,8 @@ $(document).ready(function() {
         e.preventDefault();
             $(wrapper2).append('<div class="row fadeIn" id="inputExitFormRow">'+
                                 '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
-                                    '<div class="indicator-search">'+
                                         '<input type="text" name="exitfirindicator'+y+'" placeholder="Indicator" class="form-control" autocomplete="off" id="exitfirindicator'+y+'" onkeyup="lookup3(this);" required>'+
                                         '<ul class="indicatorsuggest-box3" id="exitfirindicatorBox'+y+'"></ul>'+
-                                    '</div>'+
                                 '</div>'+
                                 '<div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">'+
                                     '<select class="form-select form-control" name="exitcomparator'+y+'" aria-label="Default select example">'+
@@ -80,27 +78,6 @@ function closeNav() {
   document.getElementById("mySidenav").style.display = "none";
 }
 
-function deploy(){
-    var container = document.querySelector("#MAonTCS");
-    var checkboxesAll = container.querySelectorAll('input[type="checkbox"]');
-    var checkBoxesSelected = container.querySelectorAll('input[type="checkbox"]:checked');
-    if(checkBoxesSelected.length > 0){
-        var allscrip = "";
-        
-        for(let i =0;i<checkBoxesSelected.length;i++){
-            console.log(checkBoxesSelected[i].name);
-            allscrip += checkBoxesSelected[i].name+"/";
-        }
-
-        let x = document.getElementById('allscriplist');
-        x.value = allscrip;
-        x.innerHTML = allscrip;
-        console.log(allscrip);
-        
-        $('#deploymodal').modal();
-    }
-    
-}
 
 
 

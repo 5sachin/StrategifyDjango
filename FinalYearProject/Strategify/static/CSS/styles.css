@@ -707,7 +707,7 @@ body > div.contact-us.container.p-5 > div{
   background: #efefef;
 }
 
-.indicator-search.active .indicatorsuggest-box, .indicator-search2.active .indicatorsuggest-box2, .exitConditionRow.active .indicatorsuggest-box3, .exitConditionRow.active .indicatorsuggest-box4{
+.indicator-search .indicatorsuggest-box.active, .indicator-search2 .indicatorsuggest-box2.active, .exitConditionRow .indicatorsuggest-box3.active, .exitConditionRow .indicatorsuggest-box4.active{
   padding-top: 10px 8px;
   opacity: 1;
   pointer-events: auto;
@@ -715,7 +715,7 @@ body > div.contact-us.container.p-5 > div{
   color: black;
 }
 
-.indicator-search.active .indicatorsuggest-box li, .indicator-search2.active .indicatorsuggest-box2 li, .exitConditionRow.active .indicatorsuggest-box3 li, .exitConditionRow.active .indicatorsuggest-box4 li{
+.indicator-search .indicatorsuggest-box.active li, .indicator-search2 .indicatorsuggest-box2.active li, .exitConditionRow .indicatorsuggest-box3.active li, .exitConditionRow .indicatorsuggest-box4.active li{
   color: black;
   display: block;
 }
