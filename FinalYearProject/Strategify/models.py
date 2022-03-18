@@ -47,6 +47,15 @@ class DeployAdmin(admin.ModelAdmin):
     list_display = ('deployid','strategyid','username','scripname','deploytime','algocycles')
 
 
+class Configure(models.Model):
+    username = models.CharField(max_length=100, primary_key=True, blank=False)
+    accesstoken = models.CharField(max_length=200, blank=False)
+    userid = models.CharField(max_length=200,blank=False)
+    consumerkey = models.CharField(max_length=200,blank=False)
+    configureid = models.CharField(max_length=200,blank=False)
+    appid = models.CharField(max_length=200,blank=False)
+
+
 admin.site.register(UserRegistration, UserRegistrationAdmin)
 admin.site.register(StrategyRegistration, StrategyRegistrationAdmin)
 admin.site.register(Deploy, DeployAdmin)

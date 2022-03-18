@@ -47,7 +47,7 @@
             <span class="nav-link-text">Paper Trades</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-user"></i>
             <span class="nav-link-text">{{data.name}}</span>
@@ -63,6 +63,12 @@
               <a href="blank.html">Delete Account</a>
             </li>
           </ul>
+        </li>
+        <li class="nav-item" data-toggle="tooltip" data-placement="right">
+          <a class="nav-link" href="{% url 'configure' %}">
+            <i class="fa fa-fw fa-link"></i>
+            <span class="nav-link-text">Configure Bot</span>
+          </a>
         </li>
       </ul>
       <ul class="navbar-nav sidenav-toggler">

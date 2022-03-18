@@ -769,3 +769,52 @@ footer.sticky-footer {
 #Waiting{
   display: block;
 }
+
+.deploy-status-icon{
+  display: none;
+}
+
+.ghost{
+  border-radius: 20px;
+  border: 1px solid #FFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.kotak-connect{
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.primary-color{
+  color: #343a40;
+}
+
+.bg-primary-color{
+  background-color: #343a40;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+  background-color: #343a40;
+}
+
+.nav-pills .nav-link.active a{
+  color: #343a40;
+}
+
+#configureaccess{
+  display: none;
+}
+
+#configureurl{
+  display: none;
+}
+
+#configure-alert{
+  display: none;
+}

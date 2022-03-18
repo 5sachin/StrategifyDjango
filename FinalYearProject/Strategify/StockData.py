@@ -1,6 +1,5 @@
 import requests
 
-
 class NSE:
     def __init__(self):
         self.header = {

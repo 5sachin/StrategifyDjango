@@ -66,22 +66,41 @@ function showIndicatorSuggestions(list){
 }
 
 function openIndicatorDetails(element,id){
-    $('#indicatorModal').modal();
-    let x = document.getElementById('indicatorheadingModal');
-    x.innerHTML = element;
-    let y = document.getElementById('modalIndicator');
-    y.setAttribute("onclick","saveIndicatordetails("+id+");")
+    if(element == "Close"){
+        $('#indicatorCloseModal').modal();
+        let x = document.getElementById('indicatorheadingModal');
+        x.innerHTML = element;
+        let y = document.getElementById('closemodalIndicator');
+        y.setAttribute("onclick","saveIndicatordetails("+id+");")
+    }else{
+        $('#indicatorModal').modal();
+        let x = document.getElementById('indicatorheadingModal');
+        x.innerHTML = element;
+        let y = document.getElementById('modalIndicator');
+        y.setAttribute("onclick","saveIndicatordetails("+id+");")
+    }
+    
 }
 
 function saveIndicatordetails(id){
-    var x = document.getElementsByName("period1")[0].value;
-    var y = document.getElementsByName("period2")[0].value;
+    console.log(id);
     var z = document.getElementById('indicatorheadingModal').innerHTML;
-    document.getElementsByName("entryfirindicator"+id.toString())[0].value = z+","+x;
-    document.getElementsByName("entrysecindicator"+id.toString())[0].value = z+","+y;
-    indicatorSuggBox.classList.remove("active");
-    document.getElementById('firindicatorBox'+id.toString()).innerHTML = "";
-    $('#indicatorModal').modal('hide');
+    if(z == "Close"){
+        var x = 0;
+        document.getElementsByName("entryfirindicator"+id.toString())[0].value = z+","+x;
+        document.getElementById('firindicatorBox'+id.toString()).innerHTML = "";    
+        indicatorSuggBox.classList.remove("active");
+        $('#indicatorCloseModal').modal('hide');
+    }else{
+        var x = document.getElementsByName("period1")[0].value;
+        var y = document.getElementsByName("period2")[0].value;
+        document.getElementsByName("entryfirindicator"+id.toString())[0].value = z+","+x;
+        document.getElementsByName("entrysecindicator"+id.toString())[0].value = z+","+y;
+        document.getElementById('firindicatorBox'+id.toString()).innerHTML = "";    
+        indicatorSuggBox.classList.remove("active");
+        $('#indicatorModal').modal('hide');
+    }
+    
 
 }
 
@@ -136,18 +155,32 @@ function showIndicatorSuggestions2(list){
 }
 
 function openIndicator2Details(element,id){
-    $('#indicator2Modal').modal('show')
-    let x = document.getElementById('indicator2headingModal');
-    x.innerHTML = element;
-    let y = document.getElementById('modalIndicator2');
-    y.setAttribute("onclick","saveIndicatordetails2("+id+");");
+    if(element == "Close"){
+        $('#indicatorCloseModal').modal('show')
+        let y = document.getElementById('closemodalIndicator');
+        y.setAttribute("onclick","saveIndicatordetails2("+id+");");
+        let x = document.getElementById('indicator2headingModal');
+        x.innerHTML = element;
+    }else{
+        $('#indicator2Modal').modal('show')
+        let y = document.getElementById('modalIndicator2');
+        y.setAttribute("onclick","saveIndicatordetails2("+id+");");
+        let x = document.getElementById('indicator2headingModal');
+        x.innerHTML = element;
+    }
+    
 }
 
 
 function saveIndicatordetails2(id){
     var y = document.getElementsByName("indicatorperiod22")[0].value;
     var z = document.getElementById('indicator2headingModal').innerHTML
-
+    if(z == "Close"){
+        y = 0;
+        document.getElementsByName("entrysecindicator"+id.toString())[0].value = z+","+y;
+        indicatorSuggBox2.classList.remove("active");
+        $('#indicatorCloseModal').modal('hide');
+    }
     document.getElementsByName("entrysecindicator"+id.toString())[0].value = z+","+y;
     indicatorSuggBox2.classList.remove("active");
     $('#indicator2Modal').modal('hide');
@@ -214,22 +247,38 @@ function showIndicatorSuggestions3(list){
 
 
 function openIndicator3Details(element,id){
-    $('#indicatorModal').modal();
-    let x = document.getElementById('indicatorheadingModal');
-    x.innerHTML = element;
-    let y = document.getElementById('modalIndicator');
-    y.setAttribute("onclick","saveIndicatordetails3("+id+");")
+    if(element == "Close"){
+        $('#indicatorCloseModal').modal();
+        let x = document.getElementById('indicatorheadingModal');
+        x.innerHTML = element;
+        let y = document.getElementById('closemodalIndicator');
+        y.setAttribute("onclick","saveIndicatordetails3("+id+");")
+    }else{
+        $('#indicatorModal').modal();
+        let x = document.getElementById('indicatorheadingModal');
+        x.innerHTML = element;
+        let y = document.getElementById('modalIndicator');
+        y.setAttribute("onclick","saveIndicatordetails3("+id+");")
+    }
+    
 }
 
 function saveIndicatordetails3(id){
-
-    var x = document.getElementsByName("period1")[0].value;
-    var y = document.getElementsByName("period2")[0].value;
     var z = document.getElementById('indicatorheadingModal').innerHTML;
-    document.getElementsByName("exitfirindicator"+id.toString())[0].value = z+","+x;
-    document.getElementsByName("exitsecindicator"+id.toString())[0].value = z+","+y;
-    indicatorSuggBox3.classList.remove("active");
-    $('#indicatorModal').modal('hide');
+    if(z == "Close"){
+        var x = "0";
+        document.getElementsByName("exitfirindicator"+id.toString())[0].value = z+","+x;
+        indicatorSuggBox3.classList.remove("active");
+        $('#indicatorCloseModal').modal('hide');
+    }else{
+        var x = document.getElementsByName("period1")[0].value;
+        var y = document.getElementsByName("period2")[0].value;
+        document.getElementsByName("exitfirindicator"+id.toString())[0].value = z+","+x;
+        document.getElementsByName("exitsecindicator"+id.toString())[0].value = z+","+y;
+        indicatorSuggBox3.classList.remove("active");
+        $('#indicatorModal').modal('hide');
+    }
+    
 }
 
 function lookup4(arg){

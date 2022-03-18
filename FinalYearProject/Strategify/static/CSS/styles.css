@@ -2843,3 +2843,10 @@ hr.rounded {
     justify-content: center;
     align-items: center;
 }
+
+.kotak-connect{
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

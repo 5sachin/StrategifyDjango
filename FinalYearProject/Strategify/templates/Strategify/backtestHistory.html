@@ -142,7 +142,7 @@
                                 {{response.POST.startDate}} to {{response.POST.stopDate}}
                             </div>
                             <div class="col-6 ml-auto align-content-end text-end">
-                                <button class="ghost" id="deploy" data-toggle="modal" data-target="#deploymodal">Deploy</button>
+                                <button class="ghost" id="deploy" data-toggle="modal" data-target="#deploymodal">Deploy <i class="fa fa-check text-success deploy-status-icon" id="deploy-status-icon"></i></button>
                             </div>
                         </div>
                     </div>
@@ -293,30 +293,30 @@
         <div class="modal fade" id="deploymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                        {% csrf_token %}
-                        <div class="modal-header">
-                            <h5 class="modal-title text-color" id="indicator2headingModal">Deploy</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            
-                                <div class="form-group row p-1">
-                                    <div class="col-6">
-                                        <label class="text-dark form-control">Algo Cycles</label>
-                                    </div>
-                                    <div class="col-6">
-                                        <input type="number" name="algocycles" id="algocycles" class="form-control">
-                                    </div>
-                                    <input type="hidden" name="allscriplist" id="allscriplist" class="form-control">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title text-color" id="indicator2headingModal">Deploy</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        
+                            <div class="form-group row p-1">
+                                <div class="col-6">
+                                    <label class="text-dark form-control">Algo Cycles</label>
                                 </div>
-                            
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button class="btn btn-primary" name="deploy_submit" value="Done" onclick="return deploystrategy()">Done</button>
-                        </div>
+                                <div class="col-6">
+                                    <input type="number" name="algocycles" id="algocycles" class="form-control">
+                                </div>
+                                <input type="hidden" name="allscriplist" id="allscriplist" class="form-control">
+                            </div>
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" name="deploy_submit" value="Done" onclick="return deploystrategy()">Done</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -343,99 +343,94 @@
     <script src="https://www.gstatic.com/charts/loader.js"></script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script>
-    csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-        console.log({{error|safe}});
+        csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+        google.charts.load('current', {'packages':['line']});
+        google.charts.setOnLoadCallback(drawChart);
 
-                google.charts.load('current', {'packages':['line']});
-                google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
 
-                function drawChart() {
+            {% for e in data %}
 
-                    {% for e in data %}
+            var points = new google.visualization.DataTable();
+            points.addColumn('string', 'Day');
+            points.addColumn('number', 'Close');
+            var arr = []
 
-                    var points = new google.visualization.DataTable();
-                    points.addColumn('string', 'Day');
-                    points.addColumn('number', 'Close');
-                    var arr = []
-
-                    var graphdata = {{e.graphdata|safe}}
+            var graphdata = {{e.graphdata|safe}}
 
 
-                    for(let i =0;i<graphdata.length;i++){
-                        var x = []
-                        x.push(graphdata[i][0].toString());
-                        x.push(parseFloat(graphdata[i][1]));
-                        arr.push(x);
-                    }
+            for(let i =0;i<graphdata.length;i++){
+                var x = []
+                x.push(graphdata[i][0].toString());
+                x.push(parseFloat(graphdata[i][1]));
+                arr.push(x);
+            }
 
-                    points.addRows(arr);
+            points.addRows(arr);
 
-                    var options = {
-                      chart: {
-                        title: "{{e.ScripName}}",
-                      },
-                      width: 700,
-                      height: 500
-                    };
+            var options = {
+              chart: {
+                title: "{{e.ScripName}}",
+              },
+              width: 700,
+              height: 500
+            };
 
-                    var chart = new google.charts.Line(document.getElementById('{{e.ScripName}}graph'));
+            var chart = new google.charts.Line(document.getElementById('{{e.ScripName}}graph'));
 
-                    chart.draw(points, google.charts.Line.convertOptions(options));
+            chart.draw(points, google.charts.Line.convertOptions(options));
 
-                    {% endfor %}
+            {% endfor %}
+        }
+
+
+        function deploystrategy(){
+            var container = document.querySelector("#MAonTCS");
+            var checkboxesAll = container.querySelectorAll('input[type="checkbox"]');
+            var checkBoxesSelected = container.querySelectorAll('input[type="checkbox"]:checked');
+            var strategyname = document.getElementById('strategyname').innerHTML;
+            if(checkBoxesSelected.length > 0){
+                var allscrip = "";
+                allscrip += strategyname+"/";
+                
+                for(let i =0;i<checkBoxesSelected.length;i++){
+                    console.log(checkBoxesSelected[i].name);
+                    allscrip += checkBoxesSelected[i].name+"/";
                 }
 
+                let x = document.getElementById('allscriplist');
+                x.value = allscrip;
+                x.innerHTML = allscrip;
+                console.log(allscrip);
+                console.log(strategyname)
 
-                function deploystrategy(){
-                    var container = document.querySelector("#MAonTCS");
-                    var checkboxesAll = container.querySelectorAll('input[type="checkbox"]');
-                    var checkBoxesSelected = container.querySelectorAll('input[type="checkbox"]:checked');
-                    var strategyname = document.getElementById('strategyname').innerHTML;
-                    if(checkBoxesSelected.length > 0){
-                    var allscrip = "";
-                    allscrip += strategyname+"/";
-                    
-                    for(let i =0;i<checkBoxesSelected.length;i++){
-                        console.log(checkBoxesSelected[i].name);
-                        allscrip += checkBoxesSelected[i].name+"/";
+                var allscriplist = document.getElementById("allscriplist").value;
+                var algocycles = document.getElementById("algocycles").value;
+
+                $.ajax({
+                    type:"POST",
+                    url:'{% url 'deploystrategy' %}',
+                    data:{
+                      'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                      'allscriplist': allscriplist,
+                      'algocycles': algocycles,
+                    },
+                    success :function(data){
+                        if(data.success){
+                            var element = document.createElement("i");
+                            element.classList.add("fa-check","fa","text-success");
+                            document.getElementById('deploy').appendChild(element);                               }
+                        else{
+                            var element = document.createElement("i");
+                            element.classList.add("fa-times","fa","text-danger");
+                            document.getElementById('deploy').appendChild(element);  
+                        }
                     }
+                })
 
-                    let x = document.getElementById('allscriplist');
-                    x.value = allscrip;
-                    x.innerHTML = allscrip;
-                    console.log(allscrip);
-
-                    var allscriplist = document.getElementById("allscriplist");
-                    var algocycles = document.getElementById("algocycles");
-
-                    $.ajax({
-                        type:"POST",
-                        url:'{% url 'deploystrategy' %}',
-                        data:{
-                          'csrfmiddlewaretoken': csrfmiddlewaretoken,
-                          'allscriplist': allscriplist,
-                          'algocycles': algocycles,
-                        },
-                        success :function(data){
-                        console.log(data)
-                            if(data.success){
-                                console.log(data.success);
-                               }
-                               else{
-                               console.log(data.error);
-                               }
-                            }
-                    })
-
-           return false
-         }
-
-    
-}
-
-
-
-
+                return false
+            }
+        }
     </script>
 </body>
 </html>

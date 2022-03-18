@@ -132,102 +132,108 @@
             </div>
         </div>
         <div class="container-fluid mt-5">
-          <div class="active tabcontent" id="Waiting">
-            <table class="table">
-              <thead class="table">
+        <div class="active tabcontent" id="Waiting">
+          <table class="table">
+            <thead class="table">
+              <tr>
+                <th scope="col">Strategy</th>
+                <th scope="col">Instrument</th>
+                <th scope="col">LTP</th>
+                <th scope="col">P&L</th>
+                <th scope="col">Position</th>
+                <th scope="col">Target</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for e in deploydata %}
+                {% if e.waitenter == "WAIT" %}
                 <tr>
-                  <th scope="col">Strategy</th>
-                  <th scope="col">Instrument</th>
-                  <th scope="col">LTP</th>
-                  <th scope="col">P&L</th>
-                  <th scope="col">Position</th>
-                  <th scope="col">Target</th>
+                  <td>{{e.strategyname}}</td>
+                  <td>{{e.ScripName}}</td>
+                  <td>{{e.LTP}}</td>
+                  {% if e.Status == 1 %}
+                    <td class="text-success">{{e.PL}}</td>
+                  {% elif e.Status == -1 %}
+                    <td class="text-danger">{{e.PL}}</td>
+                  {% elif e.Status == 0 %}
+                    <td>{{e.PL}}</td>
+                  {% endif %}
+                  <td>{{e.waitenter}}</td>
+                  <td>{{e.target}}%</td>
                 </tr>
-              </thead>
-              <tbody>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="tabcontent" id="Entered">
+          <table class="table">
+            <thead class="table">
+              <tr>
+                <th scope="col">Strategy</th>
+                <th scope="col">Instrument</th>
+                <th scope="col">LTP</th>
+                <th scope="col">P&L</th>
+                <th scope="col">Position</th>
+                <th scope="col">Target</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for e in deploydata %}
+                {% if e.waitenter == "ENTER" %}
                   <tr>
-                    <td>MA on Reliance</td>
-                    <td>Reliance</td>
-                    <td>125</td>
-                    <td>25</td>
-                    <td>Waiting</td>
-                    <td>250</td>
+                    <td>{{e.strategyname}}</td>
+                    <td>{{e.ScripName}}</td>
+                    <td>{{e.LTP}}</td>
+                    {% if e.Status == 1 %}
+                      <td class="text-success">{{e.PL}}</td>
+                    {% elif e.Status == -1 %}
+                      <td class="text-danger">{{e.PL}}</td>
+                    {% elif e.Status == 0 %}
+                      <td>{{e.PL}}</td>
+                    {% endif %}
+                    <td>{{e.waitenter}}</td>
+                    <td>{{e.target}}%</td>
                   </tr>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="tabcontent" id="Stopped">
+          <table class="table">
+            <thead class="table">
+              <tr>
+                <th scope="col">Strategy</th>
+                <th scope="col">Instrument</th>
+                <th scope="col">LTP</th>
+                <th scope="col">P&L</th>
+                <th scope="col">Position</th>
+                <th scope="col">Target</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for e in deploydata %}
+                {% if e.waitenter == "STOP" %}
                   <tr>
-                    <td>MA on TCS</td>
-                    <td>TCS</td>
-                    <td>225</td>
-                    <td>50</td>
-                    <td>Waiting</td>
-                    <td>20</td>
+                    <td>{{e.strategyname}}</td>
+                    <td>{{e.ScripName}}</td>
+                    <td>{{e.LTP}}</td>
+                    {% if e.Status == 1 %}
+                      <td class="text-success">{{e.PL}}</td>
+                    {% elif e.Status == -1 %}
+                      <td class="text-danger">{{e.PL}}</td>
+                    {% elif e.Status == 0 %}
+                      <td>{{e.PL}}</td>
+                    {% endif %}
+                    <td>{{e.waitenter}}</td>
+                    <td>{{e.target}}%</td>
                   </tr>
-                  <tr>
-                    <td>MA on TCS</td>
-                    <td>TCS</td>
-                    <td>225</td>
-                    <td>50</td>
-                    <td>Waiting</td>
-                    <td>20</td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="tabcontent" id="Entered">
-            <table class="table">
-              <thead class="table">
-                <tr>
-                  <th scope="col">Strategy</th>
-                  <th scope="col">Instrument</th>
-                  <th scope="col">LTP</th>
-                  <th scope="col">P&L</th>
-                  <th scope="col">Position</th>
-                  <th scope="col">Target</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr >
-                    <td>WMA on SBIN</td>
-                    <td>SBIN</td>
-                    <td>125</td>
-                    <td>25</td>
-                    <td>Entered</td>
-                    <td>250</td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="tabcontent" id="Stopped">
-            <table class="table">
-              <thead class="table">
-                <tr>
-                  <th scope="col">Strategy</th>
-                  <th scope="col">Instrument</th>
-                  <th scope="col">LTP</th>
-                  <th scope="col">P&L</th>
-                  <th scope="col">Position</th>
-                  <th scope="col">Target</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr >
-                    <td>MA on Reliance</td>
-                    <td>Reliance</td>
-                    <td>125</td>
-                    <td>25</td>
-                    <td>Stopped</td>
-                    <td>250</td>
-                  </tr>
-                  <tr>
-                    <td>EMA on TCS</td>
-                    <td>TCS</td>
-                    <td>225</td>
-                    <td>50</td>
-                    <td>Stopped</td>
-                    <td>20</td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
+                {% endif %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -273,6 +279,9 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script>
       csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+      {% for e in  deploydata %}
+        console.log("{{e.waitenter}}");
+      {% endfor %}
     </script>
 </body>
 </html>

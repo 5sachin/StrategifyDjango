@@ -69,7 +69,7 @@ def ProfitLossCalculationWithoutExit(data, username, scrip, target, steploss, qu
 
 
     LTP = 0.0
-    if data['Close']:
+    if len(data['Close']) > 0:
         LTP = data['Close'][-1]  # LAST TRADE PRICE
 
     pd.DataFrame(alllist).to_csv('Strategify/static/' + '' + username + '' + scrip.replace('.NS', '') + '.csv')
@@ -80,18 +80,20 @@ def ProfitLossCalculationWithoutExit(data, username, scrip, target, steploss, qu
     totalLoss = "{:.2f}".format(-totalLoss)
     LTP = "{:.2f}".format(float(LTP))
 
+    print("Here")
+
     if WinsCount != 0 and LossCount != 0:
         AvgGain = "{:.2f}".format(float(totalProfit) * int(quantity) / WinsCount)
         AvgLoss = "{:.2f}".format(float(totalLoss) * int(quantity) / LossCount)
     elif WinsCount == 0 and LossCount != 0:
         AvgGain = 0
         AvgLoss = "{:.2f}".format(float(totalLoss) * int(quantity) / LossCount)
-    elif LossCount == 0 and WinsCount != 0:
-        AvgLoss = 0
+    elif WinsCount != 0 and LossCount != 0 and totalProfit != 0.0 and totalLoss != 0.0:
         AvgGain = "{:.2f}".format(float(totalProfit) * int(quantity) / WinsCount)
+        AvgLoss = "{:.2f}".format(float(totalLoss) * int(quantity) / LossCount)
     else:
-        AvgGain = 0
         AvgLoss = 0
+        AvgGain = 0
 
     if float(totalProfit) == 0.00 and float(totalLoss) == 0.00:
         percentBar = 0
@@ -121,6 +123,7 @@ def ProfitLossCalculationWithoutExit(data, username, scrip, target, steploss, qu
 
 
 def ProfitLossCalculationWithExit(data, username, scrip, target, steploss, quantity):
+    print(len(data))
     a = 0
     status = 0
     WinsCount = LossCount = 0  # TOTAL NO OF WINS AND LOSS
@@ -242,7 +245,7 @@ def ProfitLossCalculationWithExit(data, username, scrip, target, steploss, quant
         status = 1
 
     LTP = 0.0
-    if data['Close']:
+    if len(data['Close']) > 0:
         LTP = data['Close'][-1]  # LAST TRADE PRICE
 
     pd.DataFrame(alllist).to_csv('Strategify/static/' + '' + username + '' + scrip.replace('.NS', '') + '.csv')
@@ -253,15 +256,22 @@ def ProfitLossCalculationWithExit(data, username, scrip, target, steploss, quant
     totalLoss = "{:.2f}".format(-totalLoss)
     LTP = "{:.2f}".format(float(LTP))
 
+    print("Here",WinsCount,LossCount,totalLoss,totalProfit)
+
     if WinsCount == 0:
         AvgGain = 0
         AvgLoss = "{:.2f}".format(float(totalLoss) * int(quantity) / LossCount)
     elif LossCount == 0:
         AvgLoss = 0
         AvgGain = "{:.2f}".format(float(totalProfit) * int(quantity) / WinsCount)
-    else:
+    elif WinsCount != 0 and LossCount != 0 and totalProfit != 0.0 and totalLoss != 0.0:
         AvgGain = "{:.2f}".format(float(totalProfit) * int(quantity) / WinsCount)
         AvgLoss = "{:.2f}".format(float(totalLoss) * int(quantity) / LossCount)
+    else:
+        AvgLoss = 0
+        AvgGain = 0
+
+    print("Here")
 
     percentBar = (float(totalProfit) / (float(totalProfit) + float(totalLoss))) * 100
     alldata = {
