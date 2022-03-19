@@ -818,3 +818,11 @@ footer.sticky-footer {
 #configure-alert{
   display: none;
 }
+
+#dailyconfigureaccess{
+    display: none;
+}
+
+.copy-bar{
+    cursor: pointer;
+}

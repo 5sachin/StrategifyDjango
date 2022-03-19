@@ -52,10 +52,17 @@ class Configure(models.Model):
     accesstoken = models.CharField(max_length=200, blank=False)
     userid = models.CharField(max_length=200,blank=False)
     consumerkey = models.CharField(max_length=200,blank=False)
-    configureid = models.CharField(max_length=200,blank=False)
+    password = models.CharField(max_length=200,blank=False)
     appid = models.CharField(max_length=200,blank=False)
+    accesscode = models.CharField(max_length=200,blank=False)
+    url = models.CharField(max_length=300,blank=False)
+
+
+class ConfigureAdmin(admin.ModelAdmin):
+    list_display = ('username', 'accesstoken', 'userid', 'consumerkey', 'password', 'appid','accesscode','url')
 
 
 admin.site.register(UserRegistration, UserRegistrationAdmin)
 admin.site.register(StrategyRegistration, StrategyRegistrationAdmin)
 admin.site.register(Deploy, DeployAdmin)
+admin.site.register(Configure,ConfigureAdmin)

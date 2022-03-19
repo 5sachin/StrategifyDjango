@@ -113,81 +113,58 @@ def generateOTP():
 
 
 def configure(request):
-    return render(request,'Strategify/configurebot.html',{})
+    userdata = UserRegistration.objects.get(username=request.session['username'])
+    if request.session['config_status']:
+        data = True
+        botdata = Configure.objects.get(username=request.session['username'])
+    else:
+        data = False
+        botdata = None
 
 
-def deploypage(request):
-    global data
-    userdatainfo = UserRegistration.objects.get(username=request.session['username'])
-    userData = {
+    data = {
         'username': request.session['username'],
-        'name': userdatainfo.name,
+        'name': userdata.name,
+        'isconfigured': data,
+        'url': botdata,
     }
-    alldata = []
-    deployedstrategy = Deploy.objects.filter(username = request.session['username'])
-    for i in deployedstrategy:
-        deploystrategydata = StrategyRegistration.objects.get(strategyid=i.strategyid.strategyid)
-        entryCondition = str(deploystrategydata.entrycondition).split("/")
-        exitCondition = deploystrategydata.exitcondition.split("/")
-        days = 0
+    print("https://"+generateRandomURL())
+    return render(request,'Strategify/configurebot.html',{'data':data})
+
+
+def configurebotdetails(request):
+    response_data = {}
+    if request.method == "POST":
+        print(request.POST.get("access_token"))
+        response_data['success'] = "Error Occurred"
+        return JsonResponse(response_data)
+    return JsonResponse(response_data)
+
+
+def savebotdetails(request):
+    response_data = {}
+    if request.method == "POST":
         try:
-            days = extractMaximum(deploystrategydata.entrycondition)
-            startDate = subtarctdays(i.deploytime, days)
-            stopDate = date.today().strftime('%Y-%m-%d')
-
-            try:
-                print("Scrip Name: ",i.scripname)
-                data = yf.download(i.scripname+".NS", start=startDate, end=stopDate)
-                data['Position'] = None
-            except ConnectionError as e:
-                print("Error Fetch Stock Data: ", e)
-
-            for k in range(len(entryCondition)-1):
-                a = entryCondition[k].split("-")[0].split(",")
-                b = entryCondition[k].split("-")[1].split(",")
-                x = b[0]
-                b[0] = a[1]
-                a[1] = x
-
-                for j in range(0, 2):
-                    globals()[a[j]]("ENTRY", int(b[0]))
-                    if j == 1:
-                        globals()[a[j]]("ENTRY", int(b[1]))
-                        entrySignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
-                        deploystrategyprevdaysremoval(b[0], b[1],days)
-            if exitCondition:
-                for k in range(len(exitCondition)-1):
-                    a = exitCondition[k].split("-")[0].split(",")
-                    b = exitCondition[k].split("-")[1].split(",")
-                    x = b[0]
-                    b[0] = a[1]
-                    a[1] = x
-                    for j in range(0, 2):
-                        globals()[a[j]]("EXIT", int(b[0]))
-                        if j == 1:
-                            globals()[a[j]]("EXIT", int(b[1]))
-                            exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
-                            deploystrategyprevdaysremoval(b[0], b[1],days)
-            if exitCondition:
-                val = deployprofitLossCalculationWithExit(data, deploystrategydata.strategyname, i.scripname,
-                                                    deploystrategydata.target,
-                                                    deploystrategydata.stoploss,
-                                                    deploystrategydata.quantity,i.algocycles)
-            else:
-                val = deployprofitLossCalculationWithoutExit(data, deploystrategydata.strategyname, i.scripname,
-                                                       deploystrategydata.target,
-                                                       deploystrategydata.stoploss,
-                                                       deploystrategydata.quantity,i.algocycles)
-            alldata.append(val)
-
+            randomURL = HTTPS+generateRandomURL()
+            Configure.objects.create(
+                username = request.session['username'],
+                accesstoken = request.POST.get("access_token"),
+                userid = request.POST.get("user_id"),
+                consumerkey = request.POST.get("consumer_key"),
+                password = request.POST.get("password"),
+                appid = ".1",
+                accesscode = request.POST.get("access_code"),
+                url = randomURL,
+            )
+            request.session['config_status'] = True
+            response_data['success'] = REGISTERED_SUCCESS
+            response_data['data'] = randomURL
+        except IntegrityError as e:
+            response_data['error'] = ALREADY_ACCOUNT_CREATED
         except Exception as e:
-            print("Error", e)
-
-    return render(request, 'Strategify/deployed.html', {'data': userData,'deploydata':alldata})
-
-
-def tradingviewsetup(request):
-    return render(request, 'Strategify/deployed.html', {})
+            response_data['error'] = str(e)
+        return JsonResponse(response_data)
+    return JsonResponse(response_data)
 
 
 def generateotp(request):
@@ -215,7 +192,17 @@ def signIn(request):
         password = request.POST.get('password')
         try:
             user_data = UserRegistration.objects.get(username=username, password=password)
-            if (user_data):
+            if user_data:
+                try:
+                    data = Configure.objects.get(username=user_data.username)
+                    if data.username == user_data.username:
+                        request.session['config_status'] = True
+                except ObjectDoesNotExist as e:
+                    print("Config Status: ", str(e))
+                    request.session['config_status'] = False
+                except Exception as e:
+                    print("Config Status: ", str(e))
+                    request.session['config_status'] = False
                 response_data['success'] = LOGGED_IN
                 request.session['username'] = user_data.username
                 dashboard(request)
@@ -263,10 +250,8 @@ def checkstrategyName(request):
 
 def openStrategy(request):
     response_data = {}
-    showStrategyDetails(request)
     data = UserRegistration.objects.get(username=request.session['username'])
     strategydata = None
-
     try:
         if request.method == "GET":
             strategydata = StrategyRegistration.objects.get(strategyid=request.GET.get('strategyid'))
@@ -351,9 +336,77 @@ def deploystrategy(request):
         except Exception as e:
             print("Depoy Error: ",str(e))
             response_data['error'] = ERROR_OCCURRED
-
-    print(response_data)
     return JsonResponse(response_data)
+
+
+def deploypage(request):
+    global data
+    userdatainfo = UserRegistration.objects.get(username=request.session['username'])
+    userData = {
+        'username': request.session['username'],
+        'name': userdatainfo.name,
+    }
+    alldata = []
+    deployedstrategy = Deploy.objects.filter(username = request.session['username'])
+    for i in deployedstrategy:
+        deploystrategydata = StrategyRegistration.objects.get(strategyid=i.strategyid.strategyid)
+        entryCondition = str(deploystrategydata.entrycondition).split("/")
+        exitCondition = deploystrategydata.exitcondition.split("/")
+        days = 0
+        try:
+            days = extractMaximum(deploystrategydata.entrycondition)
+            startDate = subtarctdays(i.deploytime, days)
+            stopDate = date.today().strftime('%Y-%m-%d')
+
+            try:
+                print("Scrip Name: ",i.scripname)
+                data = yf.download(i.scripname+".NS", start=startDate, end=stopDate)
+                data['Position'] = None
+            except ConnectionError as e:
+                print("Error Fetch Stock Data: ", e)
+
+            for k in range(len(entryCondition)-1):
+                a = entryCondition[k].split("-")[0].split(",")
+                b = entryCondition[k].split("-")[1].split(",")
+                x = b[0]
+                b[0] = a[1]
+                a[1] = x
+
+                for j in range(0, 2):
+                    globals()[a[j]]("ENTRY", int(b[0]))
+                    if j == 1:
+                        globals()[a[j]]("ENTRY", int(b[1]))
+                        entrySignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
+                        deploystrategyprevdaysremoval(b[0], b[1],days)
+            if exitCondition:
+                for k in range(len(exitCondition)-1):
+                    a = exitCondition[k].split("-")[0].split(",")
+                    b = exitCondition[k].split("-")[1].split(",")
+                    x = b[0]
+                    b[0] = a[1]
+                    a[1] = x
+                    for j in range(0, 2):
+                        globals()[a[j]]("EXIT", int(b[0]))
+                        if j == 1:
+                            globals()[a[j]]("EXIT", int(b[1]))
+                            exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
+                            deploystrategyprevdaysremoval(b[0], b[1],days)
+            if exitCondition:
+                val = deployprofitLossCalculationWithExit(data, deploystrategydata.strategyname, i.scripname,
+                                                    deploystrategydata.target,
+                                                    deploystrategydata.stoploss,
+                                                    deploystrategydata.quantity,i.algocycles)
+            else:
+                val = deployprofitLossCalculationWithoutExit(data, deploystrategydata.strategyname, i.scripname,
+                                                       deploystrategydata.target,
+                                                       deploystrategydata.stoploss,
+                                                       deploystrategydata.quantity,i.algocycles)
+            alldata.append(val)
+
+        except Exception as e:
+            print("Error", e)
+
+    return render(request, 'Strategify/deployed.html', {'data': userData,'deploydata':alldata})
 
 
 def topgainers(request):
@@ -429,20 +482,6 @@ def dashboard(response):
         }
         allstrategydata.append(strategydata)
     return render(response, 'Strategify/dashboard.html', {'data': userData, 'strategydata': allstrategydata})
-
-
-def convertTime(time):
-    time = str(time).split(":")
-    if (time[0] == "0" and time[1] == "00" and time[2] == "00"):
-        return "0 sec ago"
-    elif time[0] == "0" and time[1] == "00" and time[2] != "00":
-        return str(time[2]) + " sec ago"
-    elif time[0] == "0" and time[1] != "00":
-        return str(time[1]) + " min ago"
-    elif time[0] != "0":
-        return str(time[0]) + " hours ago"
-    else:
-        print(ERROR)
 
 
 def showStrategyDetails(response):
@@ -521,7 +560,7 @@ def createStrategyForm(response):
                         b[0] = a[1]
                         a[1] = x
                         globals()[a[0]]("EXIT", int(b[0]))
-                        globals()[a[4]]("EXIT", int(b[1]))
+                        globals()[a[1]]("EXIT", int(b[1]))
                         exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
 
                 if exitCondition:
@@ -609,7 +648,6 @@ def entrySignalGeneration(period1, period2):
     data['ENTRYPosition{}'.format(str(period1) + str(period2))] = data['EntrySignal'].diff()
     data.loc[data['Position'] != 1.0, ['Position']] = data['ENTRYPosition{}'.format(str(period1) + str(period2))]
     data['Position'] = data['Position'].replace([-1.0], [0.0])
-    print(data.columns)
 
 
 def myfunc(position, exit):
