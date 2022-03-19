@@ -133,9 +133,24 @@
             {% if data.isconfigured %}
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-12 mx-auto">
-                        <p>{{data.url.url}}</p>
-                    <hr>
+                    <div class="col-md-6 col-lg-6 col-xl-6 col-12 d-flex flex-row align-items-baseline">
+                        <label class="font-weight-bold p-4 h6">URL: </label>
+                        <div class="form-control input-group flex-column">
+                            <p class="align-self-start">{{data.botdata.url}}</p>
+                            <span class="align-self-end"><i class="fa fa-clone"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-xl-6 col-12 d-flex flex-row align-items-baseline">
+                        <label class="font-weight-bold p-4 h6">Id: </label>
+                        <div class="form-control input-group flex-column">
+                            <p class="">{{data.botdata.userid}}</p>
+                            <span class="align-self-end"><i class="fa fa-clone"></i></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <hr>
                     </div>
                 </div>
             </div>
@@ -258,6 +273,9 @@
                     if(data.success){
                         document.getElementById("configuredetails").style.display = "none";
                         document.getElementById("configureaccess").style.display = "block";
+                        config_error.innerHTML = data.success;
+                        config_error.classList.add("alert-success");
+                        document.getElementById("configure-alert").style.display = "block";
 
                     }else{
                         config_error.innerHTML = data.error;

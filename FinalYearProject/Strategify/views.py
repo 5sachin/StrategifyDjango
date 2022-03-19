@@ -18,6 +18,7 @@ from django.contrib import messages
 from .backtestprofitlosscalculation import *
 from .deploybacktestprofitlosscalculation import *
 from .utils import *
+from .kotakservice import *
 
 data = None
 
@@ -114,19 +115,27 @@ def generateOTP():
 
 def configure(request):
     userdata = UserRegistration.objects.get(username=request.session['username'])
-    if request.session['config_status']:
-        data = True
-        botdata = Configure.objects.get(username=request.session['username'])
-    else:
-        data = False
+    error = ""
+    if not request.session['config_status']:
+        configstatus = False
         botdata = None
-
-
+        error = NOT_CONFIGURED
+    else:
+        configstatus = True
+        botdata = Configure.objects.get(username=request.session['username'])
+        kotak = Kotak(botdata.accesstoken,botdata.userid,botdata.consumerkey,botdata.appid,botdata.password)
+        try:
+            kotak.configure()
+        except Exception as e:
+            configstatus = False
+            error = str(e.reason)
+            print("Kotak Exception: ",e.status,e.reason)
     data = {
         'username': request.session['username'],
         'name': userdata.name,
-        'isconfigured': data,
-        'url': botdata,
+        'isconfigured': configstatus,
+        'botdata': botdata,
+        'error': error,
     }
     print("https://"+generateRandomURL())
     return render(request,'Strategify/configurebot.html',{'data':data})
@@ -135,37 +144,63 @@ def configure(request):
 def configurebotdetails(request):
     response_data = {}
     if request.method == "POST":
-        print(request.POST.get("access_token"))
-        response_data['success'] = "Error Occurred"
-        return JsonResponse(response_data)
+        kotak = Kotak(request.POST.get("access_token"), request.POST.get("access_token"), request.POST.get("access_token"),
+                      request.POST.get("access_token"), request.POST.get("access_token"))
+        try:
+            kotak.configure()
+            response_data['success'] = CONFIGURED_SUCCESS
+        except Exception as e:
+            response_data['error'] = str(e.reason)
+            print("Kotak Exception: ", e.status, e.reason)
     return JsonResponse(response_data)
 
+
+def configure_acess_code(request):
+    response_data = {}
+    if request.method == "POST":
+        kotak = Kotak(request.POST.get("access_token"), request.POST.get("user_id"),
+                      request.POST.get("consumer_key"),
+                      "1", request.POST.get("password"))
+        try:
+            kotak.session_login()
+            response_data['success'] = SESSION_LOGGED_IN
+        except Exception as e:
+            response_data['error'] = str(e.reason)
+            print("Kotak Exception: ", e.status, e.reason)
+    return JsonResponse(response_data)
 
 def savebotdetails(request):
     response_data = {}
     if request.method == "POST":
+        kotak = Kotak(request.POST.get("access_token"), request.POST.get("user_id"),
+                      request.POST.get("consumer_key"),
+                      "1", request.POST.get("password"))
         try:
-            randomURL = HTTPS+generateRandomURL()
-            Configure.objects.create(
-                username = request.session['username'],
-                accesstoken = request.POST.get("access_token"),
-                userid = request.POST.get("user_id"),
-                consumerkey = request.POST.get("consumer_key"),
-                password = request.POST.get("password"),
-                appid = ".1",
-                accesscode = request.POST.get("access_code"),
-                url = randomURL,
-            )
-            request.session['config_status'] = True
-            response_data['success'] = REGISTERED_SUCCESS
-            response_data['data'] = randomURL
-        except IntegrityError as e:
-            response_data['error'] = ALREADY_ACCOUNT_CREATED
+            kotak.session_login()
+            response_data['success'] = SESSION_LOGGED_IN
+            try:
+                randomURL = HTTPS + generateRandomURL()
+                Configure.objects.create(
+                    username=request.session['username'],
+                    accesstoken=request.POST.get("access_token"),
+                    userid=request.POST.get("user_id"),
+                    consumerkey=request.POST.get("consumer_key"),
+                    password=request.POST.get("password"),
+                    appid="1",
+                    accesscode=request.POST.get("access_code"),
+                    url=randomURL,
+                )
+                request.session['config_status'] = True
+                response_data['success'] = REGISTERED_SUCCESS
+                response_data['data'] = randomURL
+            except IntegrityError as e:
+                response_data['error'] = ALREADY_ACCOUNT_CREATED
+            except Exception as e:
+                response_data['error'] = str(e)
         except Exception as e:
-            response_data['error'] = str(e)
-        return JsonResponse(response_data)
+            response_data['error'] = str(e.reason)
+            print("Kotak Exception: ", e.status, e.reason)
     return JsonResponse(response_data)
-
 
 def generateotp(request):
     response_data = {}
