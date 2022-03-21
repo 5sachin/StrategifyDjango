@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
   <link rel="stylesheet" href="{% static './CSS/dashboard.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <title>{{data.username}}</title>
+  <title>{{userdata.username}}</title>
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
@@ -24,7 +24,7 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="{% url 'dashboard' %}">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">Dashboard</span>
           </a>
@@ -41,18 +41,18 @@
             <span class="nav-link-text">Deployed</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
+        <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
           <a class="nav-link" href="#">
             <i class="fa fa-fw fa-link"></i>
             <span class="nav-link-text">Paper Trades</span>
           </a>
-        </li>
+        </li> -->
         <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-user"></i>
-            <span class="nav-link-text">{{data.name}}</span>
+            <span class="nav-link-text">{{userdata.name}}</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+          <!-- <ul class="sidenav-second-level collapse" id="collapseExamplePages">
             <li>
               <a href="login.html">Profile</a>
             </li>
@@ -62,7 +62,7 @@
             <li>
               <a href="blank.html">Delete Account</a>
             </li>
-          </ul>
+          </ul> -->
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right">
           <a class="nav-link" href="{% url 'configure' %}">
@@ -242,7 +242,7 @@
           <!-- Example Bar Chart Card-->
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-bar-chart"></i> Discover Strategies</div>
+              <i class="fa fa-file"></i> Discover Strategies</div>
             <div class="card-body">
               <div class="row">
                 <div class="col-12 my-auto">
@@ -253,10 +253,10 @@
 
                     <div class="col-xl-10 mb-3 col-sm-12 col-xs-12 ">
                       <div class="mystrategy" id="mystrategy">
-                        {% if strategydata %}
-                        {% for e in strategydata %}
+                        {% if sampleStrategy %}
+                        {% for e in sampleStrategy %}
                           <div class="col-xl-3 col-sm-8 mb-3 animate__animated animate__zoomIn strategyCard">
-                            <div class="card o-hidden h-100" onclick="return openStrategy('{{e.strategyname}}')">
+                            <div class="card o-hidden h-100" onclick="return opensampleStrategy('{{e.strategyname}}')">
                               <div class="card-body">
                                 <div class="d-flex justify-content-between">
                                   <div class="d-flex flex-row align-items-center">
@@ -267,9 +267,6 @@
                                 </div>
                                 <div class="mt-2">
                                   <h6 class="heading">{{e.scripname}}</h6>
-                                </div>
-                                <div class="mt-5">
-                                  <div class="mt-2"> <span class="text1">Last Modified: {{e.createDate}}</span> </div>
                                 </div>
                               </div>
                               <a class="card-footer clearfix small z-1" href="#">
@@ -589,9 +586,15 @@
     }
 
     function openStrategy(arg){
-       window.location.href = "{% url 'openStrategy' %}" + "?strategyid="+"{{data.username}}"+arg;
+       window.location.href = "{% url 'openStrategy' %}" + "?strategyid="+"{{userdata.username}}"+arg;
       return false;
     }
+
+    function opensampleStrategy(arg){
+       window.location.href = "{% url 'opensampleStrategy' %}" + "?strategyid="+arg;
+        return false;
+    }
+
     </script>
 </body>
 </html>

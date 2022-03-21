@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
   <link rel="stylesheet" href="{% static './CSS/dashboard.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-  <title>{{data.username}}</title>
+  <title>{{userdata.username}}</title>
 </head>
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
@@ -40,16 +40,16 @@
             <span class="nav-link-text">Deployed</span>
           </a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
+        <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
           <a class="nav-link" href="#">
             <i class="fa fa-fw fa-link"></i>
             <span class="nav-link-text">Paper Trades</span>
           </a>
-        </li>
+        </li> -->
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
           <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-user"></i>
-            <span class="nav-link-text">{{data.name}}</span>
+            <span class="nav-link-text">{{userdata.name}}</span>
           </a>
           <ul class="sidenav-second-level collapse" id="collapseExamplePages">
             <li>

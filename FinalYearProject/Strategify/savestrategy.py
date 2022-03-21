@@ -17,3 +17,4 @@ def saveStrategyDetails(response,dataentryCondition,dataexitCondition):
         enddate=response.POST.get('stopDate'),
         createDate=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     )
+

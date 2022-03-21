@@ -46,7 +46,6 @@ def stockdata(request):
 
 def charts(request):
     response_data = {}
-    data = UserRegistration.objects.get(username=request.session['username'])
     allscrip = []
     try:
         nse = NSE()
@@ -55,12 +54,12 @@ def charts(request):
         print("Connection Error NSE: ", e)
         response_data['error'] = CONNECTION_ERROR
 
-    userData = {
+    userdata = {
         'username': request.session['username'],
-        'name': data.name,
+        'name': request.session['name'],
         'allscripname': allscrip,
     }
-    return render(request, 'Strategify/charts.html', {'data': userData, 'status': response_data})
+    return render(request, 'Strategify/charts.html', {'userdata': userdata, 'status': response_data})
 
 
 def signup(request):
@@ -114,7 +113,6 @@ def generateOTP():
 
 
 def configure(request):
-    userdata = UserRegistration.objects.get(username=request.session['username'])
     error = ""
     if not request.session['config_status']:
         configstatus = False
@@ -122,23 +120,25 @@ def configure(request):
         error = NOT_CONFIGURED
     else:
         configstatus = True
-        botdata = Configure.objects.get(username=request.session['username'])
-        kotak = Kotak(botdata.accesstoken,botdata.userid,botdata.consumerkey,botdata.appid,botdata.password)
         try:
-            kotak.configure()
+            botdata = Configure.objects.get(username=request.session['username'])
+            kotak = Kotak(botdata.accesstoken,botdata.userid,botdata.consumerkey,botdata.appid,botdata.password)
+            kotak.session_login(botdata.accesscode)
         except Exception as e:
-            configstatus = False
             error = str(e.reason)
             print("Kotak Exception: ",e.status,e.reason)
-    data = {
+
+    userdata = {
         'username': request.session['username'],
-        'name': userdata.name,
+        'name': request.session['name'],
+    }
+    data = {
         'isconfigured': configstatus,
         'botdata': botdata,
         'error': error,
     }
     print("https://"+generateRandomURL())
-    return render(request,'Strategify/configurebot.html',{'data':data})
+    return render(request,'Strategify/configurebot.html',{'userdata':userdata,'data':data})
 
 
 def configurebotdetails(request):
@@ -240,6 +240,7 @@ def signIn(request):
                     request.session['config_status'] = False
                 response_data['success'] = LOGGED_IN
                 request.session['username'] = user_data.username
+                request.session['name'] = user_data.name
                 dashboard(request)
             else:
                 response_data['error'] = INVALID_LOGIN
@@ -259,12 +260,11 @@ def profilepage(response):
 
 
 def allindices(request):
-    data = UserRegistration.objects.get(username=request.session['username'])
-    userData = {
+    userdata = {
         'username': request.session['username'],
-        'name': data.name,
+        'name': request.session['username'],
     }
-    return render(request, 'Strategify/allindices.html', {'data': userData})
+    return render(request, 'Strategify/allindices.html', {'data': userdata})
 
 
 def checkstrategyName(request):
@@ -291,13 +291,13 @@ def openStrategy(request):
         if request.method == "GET":
             strategydata = StrategyRegistration.objects.get(strategyid=request.GET.get('strategyid'))
         # nse = NSE()
-        userData = {
+        userdata = {
             'username': request.session['username'],
-            'name': data.name,
+            'name': request.session['name'],
             'scripdata': "nse.allscrip()",
         }
         return render(request, 'Strategify/createStrategy.html',
-                      {'data': userData, 'strategydata': strategydata, 'status': response_data})
+                      {'userdata': userdata, 'strategydata': strategydata, 'status': response_data})
     except BrokenPipeError as e:
         print("Connection Error NSE: ", e)
         response_data['error'] = BROKEN_PIPE_ERROR
@@ -311,6 +311,33 @@ def openStrategy(request):
         response_data['error'] = str(e)
         return render(request, 'Strategify/createStrategy.html', {'status': response_data})
 
+def opensampleStrategy(request):
+    response_data = {}
+    data = UserRegistration.objects.get(username=request.session['username'])
+    strategydata = None
+    try:
+        if request.method == "GET":
+            strategydata = SampleStrategy.objects.get(strategyid=request.GET.get('strategyid'))
+        # nse = NSE()
+        userdata = {
+            'username': request.session['username'],
+            'name': request.session['name'],
+            'scripdata': "nse.allscrip()",
+        }
+        return render(request, 'Strategify/createStrategy.html',
+                      {'userdata': userdata, 'strategydata': strategydata, 'status': response_data})
+    except BrokenPipeError as e:
+        print("Connection Error NSE: ", e)
+        response_data['error'] = BROKEN_PIPE_ERROR
+        return render(request, 'Strategify/createStrategy.html', {'status': response_data})
+    except ConnectionError as e:
+        print("Connection Error NSE: ", e)
+        response_data['error'] = CHECK_CONNECTION
+        return render(request, 'Strategify/createStrategy.html', {'status': response_data})
+    except Exception as e:
+        print("Connection Error NSE: ", e)
+        response_data['error'] = str(e)
+        return render(request, 'Strategify/createStrategy.html', {'status': response_data})
 
 def deletestrategy(request):
     response_data = {}
@@ -340,16 +367,15 @@ def createstrategy(request):
     #     print("Connection Error NSE: ",e)
     #     response_data['error'] = "Unable to Load"
     #     return JsonResponse(response_data)
-    userData = {
+    userdata = {
         'username': request.session['username'],
-        'name': data.name,
+        'name': request.session['name'],
         'scripdata': "nse.allscrip()",
     }
-    return render(request, 'Strategify/createStrategy.html', {'data': userData, 'strategydata': None})
+    return render(request, 'Strategify/createStrategy.html', {'userdata': userdata, 'strategydata': None})
 
 
 def deploystrategy(request):
-    print("Came Here")
     response_data = {}
     scriplist = request.POST.get('allscriplist').split("/")
     strategyname = scriplist[0]
@@ -377,9 +403,9 @@ def deploystrategy(request):
 def deploypage(request):
     global data
     userdatainfo = UserRegistration.objects.get(username=request.session['username'])
-    userData = {
+    userdata = {
         'username': request.session['username'],
-        'name': userdatainfo.name,
+        'name': request.session['name'],
     }
     alldata = []
     deployedstrategy = Deploy.objects.filter(username = request.session['username'])
@@ -403,6 +429,7 @@ def deploypage(request):
             for k in range(len(entryCondition)-1):
                 a = entryCondition[k].split("-")[0].split(",")
                 b = entryCondition[k].split("-")[1].split(",")
+                c = entryCondition[k].split("-")[2]
                 x = b[0]
                 b[0] = a[1]
                 a[1] = x
@@ -411,7 +438,7 @@ def deploypage(request):
                     globals()[a[j]]("ENTRY", int(b[0]))
                     if j == 1:
                         globals()[a[j]]("ENTRY", int(b[1]))
-                        entrySignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
+                        entrySignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),str(c))
                         deploystrategyprevdaysremoval(b[0], b[1],days)
             if exitCondition:
                 for k in range(len(exitCondition)-1):
@@ -424,7 +451,7 @@ def deploypage(request):
                         globals()[a[j]]("EXIT", int(b[0]))
                         if j == 1:
                             globals()[a[j]]("EXIT", int(b[1]))
-                            exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
+                            exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),str(c))
                             deploystrategyprevdaysremoval(b[0], b[1],days)
             if exitCondition:
                 val = deployprofitLossCalculationWithExit(data, deploystrategydata.strategyname, i.scripname,
@@ -441,7 +468,7 @@ def deploypage(request):
         except Exception as e:
             print("Error", e)
 
-    return render(request, 'Strategify/deployed.html', {'data': userData,'deploydata':alldata})
+    return render(request, 'Strategify/deployed.html', {'userdata': userdata,'deploydata':alldata})
 
 
 def topgainers(request):
@@ -492,13 +519,15 @@ def indexdata(request):
 
 
 def dashboard(response):
-    data = UserRegistration.objects.get(username=response.session['username'])
-    userData = {
+    userdata = {
         'username': response.session['username'],
-        'name': data.name,
+        'name': response.session['name'],
     }
+    print(response.session['name'])
 
-    allstrategydata = []
+    allstrategydata  =  []
+    samplestrategy = []
+
     for i in showStrategyDetails(response):
         current = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         ends = datetime.strptime(i.createDate, '%Y-%m-%d %H:%M:%S')
@@ -516,11 +545,31 @@ def dashboard(response):
             'createDate': convertTime(start - ends),
         }
         allstrategydata.append(strategydata)
-    return render(response, 'Strategify/dashboard.html', {'data': userData, 'strategydata': allstrategydata})
+
+    for i in showSampleStrategy(response):
+        current = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        samplestrategydata = {
+            'strategyname': i.strategyname,
+            'quantity': i.quantity,
+            'scripname': i.scripname,
+            'entrycondition': i.entrycondition,
+            'stoploss': i.stoploss,
+            'target': i.target,
+            'exitcondition': i.exitcondition,
+            'startdate': i.startdate,
+            'enddate': i.enddate,
+        }
+        samplestrategy.append(samplestrategydata)
+
+    return render(response, 'Strategify/dashboard.html', {'userdata': userdata, 'strategydata': allstrategydata,'sampleStrategy':samplestrategy})
 
 
 def showStrategyDetails(response):
     data = StrategyRegistration.objects.filter(username=response.session['username'])
+    return data
+
+def showSampleStrategy(request):
+    data = SampleStrategy.objects.all()
     return data
 
 
@@ -577,26 +626,29 @@ def createStrategyForm(response):
                 for k in range(len(entryCondition)):
                     a = entryCondition[k][0].split(",")
                     b = entryCondition[k][2].split(",")
+                    c = entryCondition[k][1]
                     x = b[0]
                     b[0] = a[1]
                     a[1] = x
 
-                    print(a,b)
+                    print(c)
 
                     globals()[a[0]]("ENTRY", int(b[0]))
                     globals()[a[1]]("ENTRY", int(b[1]))
-                    entrySignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
+                    entrySignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),str(c))
 
                 if exitCondition:
                     for k in range(len(exitCondition)):
                         a = exitCondition[k][0].split(",")
                         b = exitCondition[k][2].split(",")
+                        c = exitCondition[k][1]
+                        print("Exit: ",c)
                         x = b[0]
                         b[0] = a[1]
                         a[1] = x
                         globals()[a[0]]("EXIT", int(b[0]))
                         globals()[a[1]]("EXIT", int(b[1]))
-                        exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]))
+                        exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),str(c))
 
                 if exitCondition:
                     val = ProfitLossCalculationWithExit(data, response.session['username'], scriplist[i],
@@ -676,10 +728,14 @@ def RSI(condition, period):
     data['{}RSI{}'.format(condition, period)] = rsi_df[3:]
 
 
-def entrySignalGeneration(period1, period2):
+def entrySignalGeneration(period1, period2, operator):
     global data
-
-    data['EntrySignal'] = np.where(data['ENTRY{}'.format(period1)] > data['ENTRY{}'.format(period2)], 1, 0)
+    if operator == "0":
+        data['EntrySignal'] = np.where(data['ENTRY{}'.format(period1)] < data['ENTRY{}'.format(period2)], 1, 0)
+    elif operator == "1":
+        data['EntrySignal'] = np.where(data['ENTRY{}'.format(period1)] == data['ENTRY{}'.format(period2)], 1, 0)
+    elif operator == "2":
+        data['EntrySignal'] = np.where(data['ENTRY{}'.format(period1)] > data['ENTRY{}'.format(period2)], 1, 0)
     data['ENTRYPosition{}'.format(str(period1) + str(period2))] = data['EntrySignal'].diff()
     data.loc[data['Position'] != 1.0, ['Position']] = data['ENTRYPosition{}'.format(str(period1) + str(period2))]
     data['Position'] = data['Position'].replace([-1.0], [0.0])
@@ -695,16 +751,17 @@ def myfunc(position, exit):
             position = exit
     return position
 
-def exitSignalGeneration(period1, period2):
+def exitSignalGeneration(period1, period2, operator):
     global data
-    data['ExitSignal'] = np.where(data['EXIT{}'.format(period1)] > data['EXIT{}'.format(period2)], 0, 1)
+    if operator == "0":
+        data['ExitSignal'] = np.where(data['EXIT{}'.format(period1)] < data['EXIT{}'.format(period2)], 0, 1)
+    elif operator == "1":
+        data['ExitSignal'] = np.where(data['EXIT{}'.format(period1)] == data['EXIT{}'.format(period2)], 0, 1)
+    elif operator == "2":
+        data['ExitSignal'] = np.where(data['EXIT{}'.format(period1)] > data['EXIT{}'.format(period2)], 0, 1)
     data['EXITPosition{}'.format(str(period1) + str(period2))] = data['ExitSignal'].diff()
     data['Position'] = data.apply(
         lambda x: myfunc(x['Position'], x['EXITPosition{}'.format(str(period1) + str(period2))]), axis=1)
-
-
-def admincode(request):
-    return render(request, 'Strategify/admincode.html', {})
 
 
 def deploystrategyprevdaysremoval(period1,period2,totaldays):

@@ -38,18 +38,18 @@
                         <span class="nav-link-text">Deployed</span>
                     </a>
                 </li>
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
+                <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
                     <a class="nav-link" href="#">
                         <i class="fa fa-fw fa-link"></i>
                         <span class="nav-link-text">Paper Trades</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
                     <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
                         <i class="fa fa-fw fa-user"></i>
-                        <span class="nav-link-text">{{response.session.username}}</span>
+                        <span class="nav-link-text">{{response.session.name}}</span>
                     </a>
-                    <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+                    <!-- <ul class="sidenav-second-level collapse" id="collapseExamplePages">
                         <li>
                             <a href="login.html">Profile</a>
                         </li>
@@ -59,7 +59,7 @@
                         <li>
                             <a href="blank.html">Delete Account</a>
                         </li>
-                    </ul>
+                    </ul> -->
                 </li>
             </ul>
             <ul class="navbar-nav sidenav-toggler">
@@ -142,7 +142,7 @@
                                 {{response.POST.startDate}} to {{response.POST.stopDate}}
                             </div>
                             <div class="col-6 ml-auto align-content-end text-end">
-                                <button class="ghost" id="deploy" data-toggle="modal" data-target="#deploymodal">Deploy <i class="fa fa-check text-success deploy-status-icon" id="deploy-status-icon"></i></button>
+                                <button class="ghost" data-toggle="modal" data-target="#deploymodal">Deploy</button>
                             </div>
                         </div>
                     </div>
@@ -310,6 +310,10 @@
                                     <input type="number" name="algocycles" id="algocycles" class="form-control">
                                 </div>
                                 <input type="hidden" name="allscriplist" id="allscriplist" class="form-control">
+                                <div class="col-12 align-self-center">
+                                    <label id="deploy"><i class="fa fa-check text-success deploy-status-icon" id="deploy-status-icon"></i></label>
+                                    <!--<input type="number" name="algocycles" id="algocycles" class="form-control">-->
+                                </div>
                             </div>
                         
                     </div>
@@ -417,10 +421,12 @@
                     },
                     success :function(data){
                         if(data.success){
+                            document.getElementById('deploy').innerHTML = "Success Deployed";
                             var element = document.createElement("i");
                             element.classList.add("fa-check","fa","text-success");
                             document.getElementById('deploy').appendChild(element);                               }
                         else{
+                            document.getElementById('deploy').innerHTML = "Fail Deployed"
                             var element = document.createElement("i");
                             element.classList.add("fa-times","fa","text-danger");
                             document.getElementById('deploy').appendChild(element);  

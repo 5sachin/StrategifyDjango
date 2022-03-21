@@ -29,10 +29,30 @@ class StrategyRegistration(models.Model):
     createDate = models.CharField(max_length=50)
 
 
+
 class StrategyRegistrationAdmin(admin.ModelAdmin):
     list_display = (
     'strategyid', 'username', 'strategyname', 'quantity', 'scripname', 'entrycondition', 'stoploss', 'target',
     'exitcondition', 'startdate', 'enddate', 'createDate')
+
+
+class SampleStrategy(models.Model):
+    strategyid = models.CharField(max_length=100, primary_key=True, blank=False)
+    strategyname = models.CharField(max_length=100)
+    quantity = models.CharField(max_length=100)
+    scripname = models.CharField(max_length=100)
+    entrycondition = models.CharField(max_length=100)
+    stoploss = models.CharField(max_length=100)
+    target = models.CharField(max_length=100)
+    exitcondition = models.CharField(max_length=100)
+    startdate = models.CharField(max_length=100)
+    enddate = models.CharField(max_length=100)
+
+class SampleStrategyAdmin(admin.ModelAdmin):
+    list_display = (
+    'strategyid', 'strategyname', 'quantity', 'scripname', 'entrycondition', 'stoploss', 'target',
+    'exitcondition', 'startdate', 'enddate')
+
 
 
 class Deploy(models.Model):
@@ -64,5 +84,6 @@ class ConfigureAdmin(admin.ModelAdmin):
 
 admin.site.register(UserRegistration, UserRegistrationAdmin)
 admin.site.register(StrategyRegistration, StrategyRegistrationAdmin)
+admin.site.register(SampleStrategy, SampleStrategyAdmin)
 admin.site.register(Deploy, DeployAdmin)
 admin.site.register(Configure,ConfigureAdmin)

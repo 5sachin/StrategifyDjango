@@ -24,10 +24,10 @@ urlpatterns = [
     path('getstockdata',views.stockdata,name="stockdata"),
     path('allindices',views.allindices,name="allindices"),
     path('deletestrategy',views.deletestrategy,name="deletestrategy"),
-    path('admincode/',views.admincode,name="admin"),
     path('deploystrategy',views.deploystrategy,name="deploystrategy"),
     path('configure',views.configure,name="configure"),
     path('configurebotdetails/',views.configurebotdetails,name="configurebotdetails"),
     path('savebotdetails/',views.savebotdetails,name="savebotdetails"),
+    path('opensampleStrategy/',views.opensampleStrategy,name="opensampleStrategy")
 
 ]

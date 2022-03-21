@@ -282,6 +282,11 @@ function saveIndicatordetails3(id){
 }
 
 function lookup4(arg){
+
+    indicatorWrapper2 = document.querySelector(".indicator-search3");
+    indicatorInputBox2 = indicatorWrapper2.querySelector("input");
+
+
     var id = arg.getAttribute('id');
     var no = id.charAt(id.length-1);
     var value = arg.value;
@@ -289,6 +294,7 @@ function lookup4(arg){
     let emptyArray = [];
     let dataArray = [];
     var string = "#exitsecindicatorBox"+no.toString();
+    console.log(string);
     indicatorSuggBox4 = indicatorWrapper2.querySelector(string);
     if(userData){
         emptyArray = indicatorsuggestions.filter((data)=>{
@@ -331,11 +337,19 @@ function showIndicatorSuggestions4(list){
 }
 
 function openIndicator4Details(element,id){
-    $('#indicator2Modal').modal('show')
-    let x = document.getElementById('indicator2headingModal');
-    x.innerHTML = element;
-    let y = document.getElementById('modalIndicator2');
-    y.setAttribute("onclick","saveIndicatordetails4("+id+");");
+    if(element == "Close"){
+        $('#indicatorCloseModal').modal('show');
+        let x = document.getElementById('indicator2headingModal');
+        x.innerHTML = element;
+        let y = document.getElementById('closemodalIndicator');
+        y.setAttribute("onclick","saveIndicatordetails4("+id+");");
+    }else{
+        $('#indicator2Modal').modal('show')
+        let x = document.getElementById('indicator2headingModal');
+        x.innerHTML = element;
+        let y = document.getElementById('modalIndicator2');
+        y.setAttribute("onclick","saveIndicatordetails4("+id+");");
+    }
 }
 
 function saveIndicatordetails4(id){
@@ -343,7 +357,16 @@ function saveIndicatordetails4(id){
     var y = document.getElementsByName("indicatorperiod22")[0].value;
     var z = document.getElementById('indicator2headingModal').innerHTML
 
-    document.getElementsByName("exitsecindicator"+id.toString())[0].value = z+","+y;
-    indicatorSuggBox4.classList.remove("active");
-    $('#indicator2Modal').modal('hide');
+    if(z == "Close"){
+        var x = "0";
+        console.log("here1");
+        document.getElementsByName("exitsecindicator"+id.toString())[0].value = z+","+x;
+        console.log("here2");
+        indicatorSuggBox4.classList.remove("active");
+        $('#indicatorCloseModal').modal('hide');
+    }else{
+        document.getElementsByName("exitsecindicator"+id.toString())[0].value = z+","+y;
+        indicatorSuggBox4.classList.remove("active");
+        $('#indicator2Modal').modal('hide');
+    }
 }
