@@ -79,13 +79,15 @@
 
 import config
 import json
-from flask import Flask
-from flask import render_template, request
 from ks_api_client import ks_api
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
-app = Flask(__name__)
 
+URL = ""
 class Kotak:
+	global URL
 	def __init__(self, access_token, userid, consumer_key, app_id, password):
 		self.access_token = access_token
 		self.userid = userid
@@ -96,18 +98,26 @@ class Kotak:
 	def configure(self):
 		self.client = ks_api.KSTradeApi(access_token=self.access_token, userid=self.userid,
 										consumer_key=self.consumer_key, ip="127.0.0.1", app_id=self.app_id)
+		print("Before Login")
 		self.client.login(password=self.password)
+		print("After Login")
 
 	def session_login(self,acess_code):
 		self.client.session_2fa(access_code=acess_code)
 
+	def set_webhookurl(self,url):
+		self.url = url
+		URL = url
+		print(self.url)
 
 
-	@app.route('/')
-	def dashboard(self):
-		orders = self.client.order_report();
-		return render_template('Strategify/dashboard.html', kotak_orders=orders)
+@csrf_exempt
+@require_POST
+def webhook_call(request,URL):
+	print("URL: ",URL)
+	jsondata = request.body
+	data = json.loads(jsondata)
+	print("Data: ",data)
+	return HttpResponse(status=200)
 
 
-if __name__ == "_main_":
-    app.run(host='0.0.0.0')

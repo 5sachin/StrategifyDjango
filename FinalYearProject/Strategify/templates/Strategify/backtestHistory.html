@@ -162,7 +162,7 @@
                                                 <th scope="col">Losses</th>
                                                 <th scope="col">WS</th>
                                                 <th scope="col">LS</th>
-                                                <th scope="col">Max DD</th>
+                                                <!-- <th scope="col">Max DD</th> -->
                                                 <th scope="col"></th>
                                                 <th scope="col">CheckBox</th>
                                             </tr>
@@ -202,7 +202,7 @@
                                                         <td data-label="Amount" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.Loss}}</td>
                                                         <td data-label="Period" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.WinStreak}}</td>
                                                         <td data-label="Account" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">{{e.LossStreak}}</td>
-                                                        <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">--</td>
+                                                        <!-- <td data-label="Due Date" data-toggle="collapse" data-target="#{{e.ScripName}}" class="accordion-toggle">--</td> -->
                                                         <td data-label="Amount"><span><a href="static/{{e.username}}{{e.ScripName}}.csv"><i class="fa fa-download"></i></a></span></td>
                                                         <td data-label="Period"><input type="checkbox" name="{{e.ScripName}}"></td>
                                                     </tr>
@@ -212,7 +212,7 @@
                                                                 <div class="container-fluid">
                                                                     <div class="row">
                                                                         <div class="col-6">
-                                                                            <div class="col-12 my-auto" id="graph-show">
+                                                                            <div class="col-12 my-auto overflow-auto" id="graph-show">
                                                                                 <div id="{{e.ScripName}}graph"></div>
                                                                               </div>
                                                                         </div>
@@ -253,10 +253,10 @@
                                                                                 <span class="backtestHistorySecondCF1">Average Loss</span>
                                                                                 <span class="backtestHistorySecondCF2">-{{e.AvgLoss}}</span>
                                                                             </div>
-                                                                            <div class="backtestHistorySecondCF">
+                                                                            <!-- <div class="backtestHistorySecondCF">
                                                                                 <span class="backtestHistorySecondCF1">Max Drawdown</span>
                                                                                 <span class="backtestHistorySecondCF2">--</span>
-                                                                            </div>
+                                                                            </div> -->
                                                                         </div>
                                                                         <div class="col-3 backtestHistoryThirdC">
                                                                             <div class="backtestHistoryThirdCF">
@@ -267,10 +267,10 @@
                                                                                 <span class="backtestHistoryThirdCF1">Period Low</span>
                                                                                 <span class="backtestHistoryThirdCF2">{{e.PeriodLow}}</span>
                                                                             </div>
-                                                                            <div class="backtestHistoryThirdCF">
+                                                                            <!-- <div class="backtestHistoryThirdCF">
                                                                                 <span class="backtestHistoryThirdCF1">Period Return</span>
                                                                                 <span class="backtestHistoryThirdCF2">--%</span>
-                                                                            </div>
+                                                                            </div> -->
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -363,9 +363,11 @@
             var graphdata = {{e.graphdata|safe}}
 
 
+
             for(let i =0;i<graphdata.length;i++){
                 var x = []
-                x.push(graphdata[i][0].toString());
+                var removed = graphdata[i][0].toString().split(' ')[0]
+                x.push(removed.toString());
                 x.push(parseFloat(graphdata[i][1]));
                 arr.push(x);
             }
@@ -376,7 +378,7 @@
               chart: {
                 title: "{{e.ScripName}}",
               },
-              width: 700,
+              width: 2200,
               height: 500
             };
 
@@ -386,6 +388,7 @@
 
             {% endfor %}
         }
+
 
 
         function deploystrategy(){

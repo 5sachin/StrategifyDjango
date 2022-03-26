@@ -814,7 +814,7 @@ body > div.contact-us.container.p-5 > div{
     position: relative;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1640px) {
     .timeline .event {
         padding-top: 30px;
     }
@@ -841,7 +841,7 @@ body > div.contact-us.container.p-5 > div{
     margin-bottom: 10px;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1640px) {
     .timeline .event:before {
         left: 0px;
         text-align: left;

@@ -153,22 +153,38 @@
                     <div class="input-group">
                       <input type="text" class="form-control" placeholder="Search Name..." id="searchstock" onkeyup="searchStockByName()">
                       <span class="input-group-append">
-                        <button class="btn btn-primary" type="button">
+                        <button class="btn btn-primary" type="button" onclick="return searchStockName()">
                           <i class="fa fa-search"></i>
                         </button>
                       </span>
                     </div>
                   </div>
-                  <div class="col-lg-4 col-xs-6 col-sm-6">
-                    <div class="input-group">
-                      <span class="prev-date-label">From: </span>
-                      <input class="form-control" type="date" name="chartfromdate" id="chartfromdate" >
-                    </div>
-                  </div>
-                  <div class="col-lg-4 col-xs-6 col-sm-6">
-                    <div class="input-group">
-                      <span class="prev-date-label">To: </span>
-                      <input class="form-control" type="date" name="chartenddate" id="chartenddate">
+                  <div class="col-lg-8 col-xs-12 col-sm-12">
+                    <div class="selector">
+                        <div class="selecotr-item">
+                            <input type="radio" value="5d" id="radio2" name="period" class="selector-item_radio" onclick="searchStockName()">
+                            <label for="radio2" class="selector-item_label">5d</label>
+                        </div>
+                        <div class="selecotr-item">
+                            <input type="radio" value="1mo" id="radio3" name="period" class="selector-item_radio"onclick="searchStockName()">
+                            <label for="radio3" class="selector-item_label">1mo</label>
+                        </div>
+                        <div class="selecotr-item">
+                            <input type="radio" value="6mo" id="radio4" name="period" class="selector-item_radio" checked onclick="searchStockName()">
+                            <label for="radio4" class="selector-item_label">6mo</label>
+                        </div>
+                        <div class="selecotr-item">
+                            <input type="radio" value="1y" id="radio5" name="period" class="selector-item_radio" onclick="searchStockName()">
+                            <label for="radio5" class="selector-item_label">1y</label>
+                        </div>
+                        <div class="selecotr-item">
+                            <input type="radio" value="5y" id="radio6" name="period" class="selector-item_radio" onclick="searchStockName()">
+                            <label for="radio6" class="selector-item_label">5y</label>
+                        </div>
+                        <div class="selecotr-item">
+                            <input type="radio" value="max" id="radio7" name="period" class="selector-item_radio"onclick="searchStockName()">
+                            <label for="radio7" class="selector-item_label">max</label>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -281,13 +297,13 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
-    csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+      csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
       const searchWrapper = document.querySelector(".search-input");
       const inputBox = searchWrapper.querySelector("input");
       const suggBox = searchWrapper.querySelector(".autocom-box");
       let scripList = {{userdata.allscripname|safe}};
-      console.log(suggBox);
+      var selectedscrip = ""
 
       function searchStockByName(){
           
@@ -306,7 +322,7 @@
               let allList = suggBox.querySelectorAll("li");
               for (let i = 0; i < allList.length; i++) {
                   allList[i].setAttribute("name", "this.innerText");
-                  allList[i].setAttribute("onclick", "searchStockName(this.innerText)");
+                  allList[i].setAttribute("onclick", "selectscrip(this.innerText)");
               }
           }else{
               searchWrapper.classList.remove("active");
@@ -332,31 +348,33 @@
           newDate += date[i]+"-";
         }
         newDate = newDate.substring(0, newDate.length - 1);
-        console.log(newDate);
         return newDate
       }
 
+      function selectscrip(element){
+        selectedscrip = element;
+        document.getElementById("searchstock").value = element;
+        searchStockName();
+      }
+
       
-      function searchStockName(element){
-          console.log(element);
+      function searchStockName(){
+          element = document.getElementById("searchstock").value;
           searchWrapper.classList.remove("active");
-          var fromdate = document.getElementById("chartfromdate").value;
-          var enddate = document.getElementById("chartenddate").value;
-          fromdate = changeDateFormat(fromdate);
-          enddate = changeDateFormat(enddate);
-          console.log(fromdate);
-          $.ajax({
+          period = document.querySelector('input[name="period"]:checked').value;
+
+          if(element != ""){
+            $.ajax({
             type:"POST",
             url:'{% url 'stockdata' %}',
             data:{
               'csrfmiddlewaretoken': csrfmiddlewaretoken,
               'scripname': element,
-              'fromdate':fromdate,
-              'enddate':enddate,
+              'period':period,
             },
             success :function(data){
-              console.log(data);
-            if(!data.success.error && data.success.data.length > 0){
+
+            if(data.success && data.success.length > 0){
 
               google.charts.load('current', {'packages':['line']});
               google.charts.setOnLoadCallback(drawChart);
@@ -367,11 +385,10 @@
                 points.addColumn('string', 'Day');
                 points.addColumn('number', 'Close');
                 var arr = []
-
-                for(let i =0;i<data.success.data.length;i++){
+                for(let i =0;i<data.success.length;i++){
                   var x = []
-                  x.push(data.success.data[i].mTIMESTAMP);
-                  x.push(data.success.data[i].CH_CLOSING_PRICE);
+                  x.push(data.success[i][1]);
+                  x.push(data.success[i][0]);
                   arr.push(x);
                 }
 
@@ -380,7 +397,6 @@
                 var options = {
                   chart: {
                     title: element,
-                    /*subtitle: 'in millions of dollars (USD)'*/
                   },
                   width: 1500,
                   height: 500
@@ -392,10 +408,11 @@
                 }
                }
                else{
-               console.log("Error Data: "+data.success.showMessage);
+               console.log("Error Data: "+data.error);
                }
-            }
-        })
+              }
+            })
+          }
       }
 
     $.ajax({

@@ -264,6 +264,7 @@ function openIndicator3Details(element,id){
 }
 
 function saveIndicatordetails3(id){
+    console.log(id);
     var z = document.getElementById('indicatorheadingModal').innerHTML;
     if(z == "Close"){
         var x = "0";

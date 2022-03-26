@@ -19,8 +19,23 @@ from .backtestprofitlosscalculation import *
 from .deploybacktestprofitlosscalculation import *
 from .utils import *
 from .kotakservice import *
+from .yfinance import *
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 data = None
+
+
+
+# @csrf_exempt
+# @require_POST
+# def webhook(request,URL):
+#     jsondata = request.body
+#     print(URL)
+#     data = json.loads(jsondata)
+#     print(data)
+#     return HttpResponse(status=200)
+
 
 
 def home(response):
@@ -34,9 +49,8 @@ def registration(request):
 def stockdata(request):
     response_data = {}
     try:
-        nse = NSE()
-        response_data['success'] = nse.getscripdata(request.POST.get('scripname'), request.POST.get('fromdate'),
-                                                    request.POST.get('enddate'))
+        chartsdata = getScripChartsData(request.POST.get('scripname'), request.POST.get('period'))
+        response_data['success'] = chartsdata.values.tolist()
         return JsonResponse(response_data)
     except Exception as e:
         response_data['success'] = str(e)
@@ -47,17 +61,11 @@ def stockdata(request):
 def charts(request):
     response_data = {}
     allscrip = []
-    try:
-        nse = NSE()
-        allscrip = nse.allscrip()
-    except Exception as e:
-        print("Connection Error NSE: ", e)
-        response_data['error'] = CONNECTION_ERROR
 
     userdata = {
         'username': request.session['username'],
         'name': request.session['name'],
-        'allscripname': allscrip,
+        'allscripname': request.session['allscrip'],
     }
     return render(request, 'Strategify/charts.html', {'userdata': userdata, 'status': response_data})
 
@@ -114,6 +122,7 @@ def generateOTP():
 
 def configure(request):
     error = ""
+    access = None
     if not request.session['config_status']:
         configstatus = False
         botdata = None
@@ -123,8 +132,11 @@ def configure(request):
         try:
             botdata = Configure.objects.get(username=request.session['username'])
             kotak = Kotak(botdata.accesstoken,botdata.userid,botdata.consumerkey,botdata.appid,botdata.password)
-            kotak.session_login(botdata.accesscode)
+            #kotak.session_login(botdata.accesscode)
+            kotak.set_webhookurl(botdata.url)
+            access = True
         except Exception as e:
+            access = False
             error = str(e.reason)
             print("Kotak Exception: ",e.status,e.reason)
 
@@ -136,18 +148,18 @@ def configure(request):
         'isconfigured': configstatus,
         'botdata': botdata,
         'error': error,
+        'access':access,
     }
-    print("https://"+generateRandomURL())
     return render(request,'Strategify/configurebot.html',{'userdata':userdata,'data':data})
 
 
 def configurebotdetails(request):
     response_data = {}
     if request.method == "POST":
-        kotak = Kotak(request.POST.get("access_token"), request.POST.get("access_token"), request.POST.get("access_token"),
-                      request.POST.get("access_token"), request.POST.get("access_token"))
+        kotak = Kotak(request.POST.get("access_token"), request.POST.get("user_id"), request.POST.get("consumer_key"),"1",
+                      request.POST.get("password"))
         try:
-            kotak.configure()
+            # kotak.configure()
             response_data['success'] = CONFIGURED_SUCCESS
         except Exception as e:
             response_data['error'] = str(e.reason)
@@ -162,7 +174,7 @@ def configure_acess_code(request):
                       request.POST.get("consumer_key"),
                       "1", request.POST.get("password"))
         try:
-            kotak.session_login()
+            # kotak.session_login(request.POST.get("access_code"))
             response_data['success'] = SESSION_LOGGED_IN
         except Exception as e:
             response_data['error'] = str(e.reason)
@@ -176,7 +188,7 @@ def savebotdetails(request):
                       request.POST.get("consumer_key"),
                       "1", request.POST.get("password"))
         try:
-            kotak.session_login()
+            # kotak.session_login(request.POST.get("access_code"))
             response_data['success'] = SESSION_LOGGED_IN
             try:
                 randomURL = HTTPS + generateRandomURL()
@@ -290,11 +302,10 @@ def openStrategy(request):
     try:
         if request.method == "GET":
             strategydata = StrategyRegistration.objects.get(strategyid=request.GET.get('strategyid'))
-        # nse = NSE()
         userdata = {
             'username': request.session['username'],
             'name': request.session['name'],
-            'scripdata': "nse.allscrip()",
+            'scripdata': request.session['allscrip'],
         }
         return render(request, 'Strategify/createStrategy.html',
                       {'userdata': userdata, 'strategydata': strategydata, 'status': response_data})
@@ -318,11 +329,10 @@ def opensampleStrategy(request):
     try:
         if request.method == "GET":
             strategydata = SampleStrategy.objects.get(strategyid=request.GET.get('strategyid'))
-        # nse = NSE()
         userdata = {
             'username': request.session['username'],
             'name': request.session['name'],
-            'scripdata': "nse.allscrip()",
+            'scripdata': request.session['allscrip'],
         }
         return render(request, 'Strategify/createStrategy.html',
                       {'userdata': userdata, 'strategydata': strategydata, 'status': response_data})
@@ -360,17 +370,10 @@ def deletestrategy(request):
 def createstrategy(request):
     print(request)
     data = UserRegistration.objects.get(username=request.session['username'])
-
-    # try:
-    #     nse = NSE()
-    # except Exception as e:
-    #     print("Connection Error NSE: ",e)
-    #     response_data['error'] = "Unable to Load"
-    #     return JsonResponse(response_data)
     userdata = {
         'username': request.session['username'],
         'name': request.session['name'],
-        'scripdata': "nse.allscrip()",
+        'scripdata': request.session['allscrip'],
     }
     return render(request, 'Strategify/createStrategy.html', {'userdata': userdata, 'strategydata': None})
 
@@ -421,7 +424,7 @@ def deploypage(request):
 
             try:
                 print("Scrip Name: ",i.scripname)
-                data = yf.download(i.scripname+".NS", start=startDate, end=stopDate)
+                data = getScripData(i.scripname,startDate,stopDate)
                 data['Position'] = None
             except ConnectionError as e:
                 print("Error Fetch Stock Data: ", e)
@@ -518,17 +521,16 @@ def indexdata(request):
     return JsonResponse(response_data)
 
 
-def dashboard(response):
+def dashboard(request):
     userdata = {
-        'username': response.session['username'],
-        'name': response.session['name'],
+        'username': request.session['username'],
+        'name': request.session['name'],
     }
-    print(response.session['name'])
 
     allstrategydata  =  []
     samplestrategy = []
 
-    for i in showStrategyDetails(response):
+    for i in showStrategyDetails(request):
         current = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         ends = datetime.strptime(i.createDate, '%Y-%m-%d %H:%M:%S')
         start = datetime.strptime(current, '%Y-%m-%d %H:%M:%S')
@@ -546,7 +548,7 @@ def dashboard(response):
         }
         allstrategydata.append(strategydata)
 
-    for i in showSampleStrategy(response):
+    for i in showSampleStrategy(request):
         current = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         samplestrategydata = {
             'strategyname': i.strategyname,
@@ -561,7 +563,11 @@ def dashboard(response):
         }
         samplestrategy.append(samplestrategydata)
 
-    return render(response, 'Strategify/dashboard.html', {'userdata': userdata, 'strategydata': allstrategydata,'sampleStrategy':samplestrategy})
+    if not request.session['allscrip']:
+        nse = NSE()
+        request.session['allscrip'] = nse.allscrip()
+
+    return render(request, 'Strategify/dashboard.html', {'userdata': userdata, 'strategydata': allstrategydata,'sampleStrategy':samplestrategy})
 
 
 def showStrategyDetails(response):
@@ -618,7 +624,7 @@ def createStrategyForm(response):
             alldata = []
             for i in range(0, len(scriplist) - 1):
                 try:
-                    data = yf.download(scriplist[i]+".NS", start=startDate, end=stopDate)
+                    data = getScripData(scriplist[i],startDate,stopDate)
                     data['Position'] = None
                 except ConnectionError as e:
                     print(e)
@@ -630,8 +636,6 @@ def createStrategyForm(response):
                     x = b[0]
                     b[0] = a[1]
                     a[1] = x
-
-                    print(c)
 
                     globals()[a[0]]("ENTRY", int(b[0]))
                     globals()[a[1]]("ENTRY", int(b[1]))

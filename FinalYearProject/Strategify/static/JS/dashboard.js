@@ -24,3 +24,6 @@ function searchStrategyByName(){
         }
     }
 }
+
+
+

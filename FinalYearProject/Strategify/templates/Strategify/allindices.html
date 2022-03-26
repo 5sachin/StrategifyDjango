@@ -119,7 +119,7 @@
           <form class="form-inline my-2 my-lg-0 mr-lg-2">
             {% csrf_token %}
             <div class="input-group">
-              <input class="form-control" type="text" placeholder="Search Indices.." id="searchStrategy" onkeyup="searchStrategyByName()">
+              <input class="form-control" type="text" placeholder="Search Indices.." id="searchindices" onkeyup="searchIndices()">
               <span class="input-group-append">
                 <button class="btn btn-primary" type="button">
                   <i class="fa fa-search"></i>
@@ -228,6 +228,28 @@
     csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     topgainersrefresh();
+
+
+    function searchIndices() {
+      var input, filter, table, tr, td, i, txtValue;
+      input = document.getElementById("searchindices");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("topgainerstable");
+      tr = table.getElementsByTagName("tr");
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[0];
+        if (td) {
+          txtValue = td.textContent || td.innerText;
+          if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+          } else {
+            tr[i].style.display = "none";
+          }
+        }
+      }
+    }
 
 
     function topgainersrefresh(){

@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import *
 from . import views
+from . import kotakservice
 
 
 urlpatterns = [
@@ -28,6 +29,7 @@ urlpatterns = [
     path('configure',views.configure,name="configure"),
     path('configurebotdetails/',views.configurebotdetails,name="configurebotdetails"),
     path('savebotdetails/',views.savebotdetails,name="savebotdetails"),
-    path('opensampleStrategy/',views.opensampleStrategy,name="opensampleStrategy")
+    path('opensampleStrategy/',views.opensampleStrategy,name="opensampleStrategy"),
+    path('webhook/<URL>', kotakservice.webhook_call, name='webhook'),
 
 ]
