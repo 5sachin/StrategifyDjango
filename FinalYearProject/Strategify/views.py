@@ -562,10 +562,14 @@ def dashboard(request):
             'enddate': i.enddate,
         }
         samplestrategy.append(samplestrategydata)
+        allscrip = []
+        scrip = ScripList.objects.all()
+        for i in scrip:
+            allscrip.append(i.symbol)
+        
+        request.session['allscrip'] = allscrip
 
-    if not request.session['allscrip']:
-        nse = NSE()
-        request.session['allscrip'] = nse.allscrip()
+        print(request.session['allscrip'])
 
     return render(request, 'Strategify/dashboard.html', {'userdata': userdata, 'strategydata': allstrategydata,'sampleStrategy':samplestrategy})
 

@@ -82,8 +82,21 @@ class ConfigureAdmin(admin.ModelAdmin):
     list_display = ('username', 'accesstoken', 'userid', 'consumerkey', 'password', 'appid','accesscode','url')
 
 
+
+
+class ScripList(models.Model):
+    symbol = models.CharField(max_length=100, primary_key=True, blank=False)
+    scrip = models.CharField(max_length=400, blank=False)
+    instrumenttoken = models.CharField(max_length=200, blank=False)
+    index = models.CharField(max_length=200, blank=False)
+
+class ScripListAdmin(admin.ModelAdmin):
+    list_display = ('symbol', 'scrip', 'instrumenttoken', 'index')
+
+
 admin.site.register(UserRegistration, UserRegistrationAdmin)
 admin.site.register(StrategyRegistration, StrategyRegistrationAdmin)
 admin.site.register(SampleStrategy, SampleStrategyAdmin)
 admin.site.register(Deploy, DeployAdmin)
 admin.site.register(Configure,ConfigureAdmin)
+admin.site.register(ScripList,ScripListAdmin)

@@ -759,11 +759,13 @@ body > div.contact-us.container.p-5 > div{
 }
 
 .stoploss{
+  font-weight: 700;
   color: #f43b51;
   background: #fae2e5;
 }
 
 .targetper{
+  font-weight: 700;
   color: #06d092;
   background-color: #d7f7ed;
 }
@@ -788,6 +790,10 @@ body > div.contact-us.container.p-5 > div{
   padding: 50px;
   list-style: none;
   text-align: left;
+}
+
+.timeline li input{
+  font-weight: 500;
 }
 
 @media (max-width: 767px) {
