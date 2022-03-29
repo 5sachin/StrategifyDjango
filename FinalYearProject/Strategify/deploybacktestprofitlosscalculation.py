@@ -1,6 +1,6 @@
 from .views import *
 
-def deployprofitLossCalculationWithoutExit(data, startegyname, scrip, target, steploss, quantity,algocycles):
+def deployprofitLossCalculationWithoutExit(data, startegyname, scrip, target, steploss, quantity, algocycles, deploydate):
     a = 0
     status = 0                              # TOTAL NO OF WINS AND LOSS
     totalProfit = totalLoss = 0             # TOTAL PROFIT AND LOSS
@@ -63,10 +63,11 @@ def deployprofitLossCalculationWithoutExit(data, startegyname, scrip, target, st
         'LTP': LTP,
         'target':target,
         'waitenter':waitenter,
+        'deploydate':deploydate
     }
     return alldata
 
-def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, steploss, quantity,algocycles):
+def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, steploss, quantity, algocycles, deploydate):
     a = 0
     status = 0
     totalProfit = totalLoss = 0     # TOTAL PROFIT AND LOSS
@@ -174,5 +175,6 @@ def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, stepl
         'LTP': LTP,
         'target':target,
         'waitenter':waitenter,
+        'deploydate': deploydate,
     }
     return alldata

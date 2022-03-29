@@ -138,6 +138,7 @@
               <tr>
                 <th scope="col">Strategy</th>
                 <th scope="col">Instrument</th>
+                <th scope="col">Date</th>
                 <th scope="col">LTP</th>
                 <th scope="col">P&L</th>
                 <th scope="col">Position</th>
@@ -150,6 +151,7 @@
                 <tr>
                   <td>{{e.strategyname}}</td>
                   <td>{{e.ScripName}}</td>
+                  <td>{{e.deploydate}}</td>
                   <td>{{e.LTP}}</td>
                   {% if e.Status == 1 %}
                     <td class="text-success">{{e.PL}}</td>

@@ -6,6 +6,7 @@ from . import kotakservice
 urlpatterns = [
     path('', views.home,name="home"),
     path('contactus/', views.contactus,name="contactus"),
+    path('aboutus/', views.aboutus,name="aboutus"),
     path('charts/',views.charts,name="charts"),
     path('registration/', views.registration,name="registrationpage"),
     path('profilepage/', views.profilepage,name="profilepage"),

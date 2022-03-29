@@ -20,21 +20,9 @@ from .deploybacktestprofitlosscalculation import *
 from .utils import *
 from .kotakservice import *
 from .yfinance import *
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
 
 data = None
 
-
-
-# @csrf_exempt
-# @require_POST
-# def webhook(request,URL):
-#     jsondata = request.body
-#     print(URL)
-#     data = json.loads(jsondata)
-#     print(data)
-#     return HttpResponse(status=200)
 
 
 
@@ -45,6 +33,9 @@ def home(response):
 def registration(request):
     return render(request, 'Strategify/registrationPage.html', {})
 
+
+def aboutus(request):
+    return render(request, 'Strategify/aboutus.html', {})
 
 def stockdata(request):
     response_data = {}
@@ -222,7 +213,7 @@ def generateotp(request):
         request.session['otp'] = otp
         print(otp)
         htmlgen = '<p>Dear Customer, We thank you for registration at Strategify.</p><br><p>Your OTP is <strong>' + otp + '</strong></p>'
-        # send_mail('OTP request', otp, 'Strategify', [email], fail_silently=False, html_message=htmlgen)
+        send_mail('OTP request', otp, 'Strategify', [email], fail_silently=False, html_message=htmlgen)
         print("OTP has been SENT")
         response_data['success'] = OTP_SENT
     except Exception as e:
@@ -437,12 +428,9 @@ def deploypage(request):
                 b[0] = a[1]
                 a[1] = x
 
-                for j in range(0, 2):
-                    globals()[a[j]]("ENTRY", int(b[0]))
-                    if j == 1:
-                        globals()[a[j]]("ENTRY", int(b[1]))
-                        entrySignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),str(c))
-                        deploystrategyprevdaysremoval(b[0], b[1],days)
+                globals()[a[0]]("ENTRY", int(b[0]))
+                globals()[a[1]]("ENTRY", int(b[1]))
+                entrySignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),str(c))
             if exitCondition:
                 for k in range(len(exitCondition)-1):
                     a = exitCondition[k].split("-")[0].split(",")
@@ -450,22 +438,23 @@ def deploypage(request):
                     x = b[0]
                     b[0] = a[1]
                     a[1] = x
-                    for j in range(0, 2):
-                        globals()[a[j]]("EXIT", int(b[0]))
-                        if j == 1:
-                            globals()[a[j]]("EXIT", int(b[1]))
-                            exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),str(c))
-                            deploystrategyprevdaysremoval(b[0], b[1],days)
+
+                    globals()[a[0]]("EXIT", int(b[0]))
+                    globals()[a[1]]("EXIT", int(b[1]))
+                    exitSignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),str(c))
+
+
+            deploystrategyprevdaysremoval(i.deploytime)
             if exitCondition:
                 val = deployprofitLossCalculationWithExit(data, deploystrategydata.strategyname, i.scripname,
                                                     deploystrategydata.target,
                                                     deploystrategydata.stoploss,
-                                                    deploystrategydata.quantity,i.algocycles)
+                                                    deploystrategydata.quantity,i.algocycles,i.deploytime)
             else:
                 val = deployprofitLossCalculationWithoutExit(data, deploystrategydata.strategyname, i.scripname,
                                                        deploystrategydata.target,
                                                        deploystrategydata.stoploss,
-                                                       deploystrategydata.quantity,i.algocycles)
+                                                       deploystrategydata.quantity,i.algocycles, i.deploytime)
             alldata.append(val)
 
         except Exception as e:
@@ -517,7 +506,6 @@ def indexdata(request):
     except Exception as e:
         print("Top Losers Error: ", str(e))
         response_data['error'] = str(e)
-    
     return JsonResponse(response_data)
 
 
@@ -549,7 +537,6 @@ def dashboard(request):
         allstrategydata.append(strategydata)
 
     for i in showSampleStrategy(request):
-        current = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         samplestrategydata = {
             'strategyname': i.strategyname,
             'quantity': i.quantity,
@@ -566,11 +553,7 @@ def dashboard(request):
         scrip = ScripList.objects.all()
         for i in scrip:
             allscrip.append(i.symbol)
-        
         request.session['allscrip'] = allscrip
-
-        print(request.session['allscrip'])
-
     return render(request, 'Strategify/dashboard.html', {'userdata': userdata, 'strategydata': allstrategydata,'sampleStrategy':samplestrategy})
 
 
@@ -704,7 +687,7 @@ def MA(condition, period):
 
 def EMA(condition, days):
     global data
-    data['{}EMA{}'.format(condition, days)] = data['Close'].ewm(span=days, adjust=False).mean();
+    data['{}EMA{}'.format(condition, days)] = data['Close'].ewm(span=days, adjust=False).mean()
 
 
 def WMA(condition, period):
@@ -772,7 +755,6 @@ def exitSignalGeneration(period1, period2, operator):
         lambda x: myfunc(x['Position'], x['EXITPosition{}'.format(str(period1) + str(period2))]), axis=1)
 
 
-def deploystrategyprevdaysremoval(period1,period2,totaldays):
-    period = max(period1,period2)
-    data['Position'].iloc[0:totaldays-int(period)] = 0.0
+def deploystrategyprevdaysremoval(date):
+    data['Position'] = np.where(data.index < date,0.0,data['Position'])
 
