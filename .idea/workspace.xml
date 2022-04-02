@@ -3,20 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="3fad8172-af2d-4027-b0e3-d42adf7c0941" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/backtestprofitlosscalculation.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/backtestprofitlosscalculation.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/kotakservice.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/kotakservice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/CSS/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/static/GeneratedFile/sachinRELIANCE.csv" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/static/GeneratedFile/sachinRELIANCE.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/backtestHistory.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/backtestHistory.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/charts.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/charts.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/configurebot.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/configurebot.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/contactus.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/contactus.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/dashboard.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/deployed.html" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/templates/Strategify/deployed.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/Strategify/yfinance.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/Strategify/yfinance.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/FinalYearProject/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -152,46 +140,46 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="233" y="141" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1647068222884" />
-    <state width="1513" height="235" key="GridCell.Tab.0.bottom" timestamp="1648895580261">
+    <state width="1513" height="179" key="GridCell.Tab.0.bottom" timestamp="1648910655378">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="235" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1648895580261" />
-    <state width="1513" height="235" key="GridCell.Tab.0.center" timestamp="1648895580261">
+    <state width="1513" height="179" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1648910655378" />
+    <state width="1513" height="179" key="GridCell.Tab.0.center" timestamp="1648910655378">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="235" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1648895580261" />
-    <state width="1513" height="235" key="GridCell.Tab.0.left" timestamp="1648895580260">
+    <state width="1513" height="179" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1648910655378" />
+    <state width="1513" height="179" key="GridCell.Tab.0.left" timestamp="1648910655377">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="235" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1648895580260" />
-    <state width="1513" height="235" key="GridCell.Tab.0.right" timestamp="1648895580261">
+    <state width="1513" height="179" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1648910655377" />
+    <state width="1513" height="179" key="GridCell.Tab.0.right" timestamp="1648910655378">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="235" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1648895580261" />
-    <state width="1513" height="235" key="GridCell.Tab.1.bottom" timestamp="1648895580262">
+    <state width="1513" height="179" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1648910655378" />
+    <state width="1513" height="179" key="GridCell.Tab.1.bottom" timestamp="1648910655379">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="235" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1648895580262" />
-    <state width="1513" height="235" key="GridCell.Tab.1.center" timestamp="1648895580261">
+    <state width="1513" height="179" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1648910655379" />
+    <state width="1513" height="179" key="GridCell.Tab.1.center" timestamp="1648910655378">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="235" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1648895580261" />
-    <state width="1513" height="235" key="GridCell.Tab.1.left" timestamp="1648895580261">
+    <state width="1513" height="179" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1648910655378" />
+    <state width="1513" height="179" key="GridCell.Tab.1.left" timestamp="1648910655378">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="235" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1648895580261" />
-    <state width="1513" height="235" key="GridCell.Tab.1.right" timestamp="1648895580262">
+    <state width="1513" height="179" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1648910655378" />
+    <state width="1513" height="179" key="GridCell.Tab.1.right" timestamp="1648910655379">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1513" height="235" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1648895580262" />
+    <state width="1513" height="179" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1648910655379" />
     <state x="183" y="41" width="958" height="717" key="SettingsEditor" timestamp="1647068305876">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="183" y="41" width="958" height="717" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1647068305876" />
-    <state x="463" y="234" key="com.intellij.ide.util.TipDialog" timestamp="1648894986449">
+    <state x="463" y="234" key="com.intellij.ide.util.TipDialog" timestamp="1648910407045">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="463" y="234" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1648894986449" />
+    <state x="463" y="234" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1648910407045" />
     <state x="463" y="144" width="609" height="536" key="find.popup" timestamp="1648840015714">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -210,32 +198,32 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/FinalYearProject/Strategify/views.py</url>
-          <line>215</line>
+          <line>221</line>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/FinalYearProject/Strategify/views.py</url>
-          <line>137</line>
+          <line>136</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/FinalYearProject/Strategify/views.py</url>
-          <line>175</line>
+          <line>177</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/FinalYearProject/Strategify/views.py</url>
-          <line>176</line>
+          <line>181</line>
           <option name="timeStamp" value="16" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/FinalYearProject/Strategify/views.py</url>
-          <line>179</line>
+          <line>185</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/FinalYearProject/Strategify/views.py</url>
-          <line>183</line>
+          <line>189</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
       </breakpoints>

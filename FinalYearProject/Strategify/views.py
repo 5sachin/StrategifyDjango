@@ -146,7 +146,7 @@ def configure(request):
         'error': error,
         'access':access,
     }
-    print("Kotak Account Configured Status Acess Status: ",access,configstatus)
+    print("Kotak Account Configured Status Acess Status: ",access)
     return render(request,'Strategify/configurebot.html',{'userdata':userdata,'data':data})
 
 
