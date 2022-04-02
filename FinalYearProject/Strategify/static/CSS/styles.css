@@ -737,21 +737,22 @@ body > div.contact-us.container.p-5 > div{
   cursor: pointer;
 }
 
-#contact img {
+#contact i {
+  color: white;
   width: 45px;
   height: 45px;
-  filter: 
+  /*filter: 
     hue-rotate(220deg)
-    drop-shadow(2px 4px 4px #0006);
+    drop-shadow(2px 4px 4px #0006);*/
   transition: 0.2s;
   user-select: none;
 }
 
-#contact img:hover {
+#contact i:hover {
   transform: scale(1.1, 1.1);
 }
 
-#contact img:active {
+#contact i:active {
   transform: scale(1.1, 1.1);
   filter: 
     hue-rotate(220deg)
@@ -798,7 +799,7 @@ body > div.contact-us.container.p-5 > div{
 }
 
 #contact .submit-btn {
-  background-color: #fd917e;
+  background-color: #204469;
   filter: drop-shadow(2px 2px 3px #0003);
   color: #fff;
   font-family: "Poppins",sans-serif;
@@ -1288,7 +1289,6 @@ table {
   margin: 0;
   padding: 0;
   width: 100%;
-  table-layout: fixed;
 }
 
 table caption {

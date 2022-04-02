@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="{% static './././node_modules/font-awesome/css/font-awesome.min.css' %}">
   <link rel="stylesheet" href="{% static '././node_modules/bootstrap-social/bootstrap-social.css' %}">
   <link rel="stylesheet" href="{% static './CSS/dashboard.css' %}">
-  <link rel="stylesheet" href="{% static './CSS/styles.css' %}">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <title>{{userdata.username}}</title>
 </head>
@@ -129,35 +128,51 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active">Configure</li>
             </ol>
-
             {% if data.isconfigured %}
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-6 col-lg-6 col-xl-6 col-12 d-flex flex-row align-items-baseline">
-                        <label class="font-weight-bold p-4 h6">URL: </label>
-                        <div class="form-control input-group flex-column">
-                            <p class="align-self-start">{{data.botdata.url}}</p>
-                            <span class="align-self-end"><i class="fa fa-clone"></i></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-6 col-12 d-flex flex-row align-items-baseline">
-                        <label class="font-weight-bold p-4 h6">Id: </label>
-                        <div class="form-control input-group flex-column">
-                            <p class="">{{data.botdata.userid}}</p>
-                            <span class="align-self-end"><i class="fa fa-clone"></i></span>
+                {% if not data.access %}
+                <div class="error-card">
+                    <div class="container p-2 border border-dark">
+                        <div id="dailyconfigureaccess" class="p-2">
+                            <p class="alert alert-success" id="daily_acess_code_error"></p>
+                            <div class="form-group d-flex align-items-center flex-column">
+                                <label for="daily_configure_access_code" class="primary-color font-16 font-weight-bold">Access Code</label><br><br>
+                                <input type="text" name="daily_configure_access_code" id="daily_configure_access_code" placeholder="Access Code" required class="form-control">
+                                <br>
+                                <button type="button" class="text-light btn bg-primary-color w-25 rounded-pill shadow-sm" id="daily_access_code_btn" onclick="return daily_access_code()">
+                                 Done
+                                </button>
+                            </div>
+                            
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <hr>
+                {% else %}
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6 col-xl-6 col-12 d-flex flex-row align-items-baseline">
+                                <label class="font-weight-bold p-4 h6">URL: </label>
+                                <div class="form-control input-group flex-column text-truncate  overflow-x-auto">
+                                    <p class="align-self-start">{{data.botdata.url}}</p>
+                                    <span class="align-self-end padding-left-inherit"><i class="fa fa-clone"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6 col-xl-6 col-12 d-flex flex-row align-items-baseline">
+                                <label class="font-weight-bold p-4 h6">Id: </label>
+                                <div class="form-control input-group flex-column">
+                                    <p class="">{{data.botdata.userid}}</p>
+                                    <span class="align-self-end"><i class="fa fa-clone"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <hr>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-
-            {% else %}
-
-            <div class="row">
+                {% endif %}   
+                {% else %}
+                <div class="row">
                     <div class="col-lg-7 mx-auto">
                         <p class="h3 text-center">Configure Your Kotak Account.</p>
                         <div class="bg-white rounded-lg shadow-sm p-5">
@@ -203,14 +218,6 @@
                                 <button type="button" class="subscribe text-light btn bg-primary-color btn-block shadow-sm" onclick="return configureComplete()"> Done
                                 </button>
                             </div>
-                            <div id="dailyconfigureaccess">
-                                <div class="form-group">
-                                    <label for="daily_configure_access_code" class="primary-color">Access Code</label>
-                                    <input type="text" name="daily_configure_access_code" id="daily_configure_access_code" placeholder="Access Code" required class="form-control">
-                                </div>
-                                <button type="button" class="text-light btn bg-primary-color btn-block rounded-pill shadow-sm"> Done
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -221,7 +228,7 @@
     <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
-          <small>Copyright © Strategify 2022</small>
+            <small>Copyright © Strategify 2022</small>
         </div>
       </div>
     </footer>
@@ -235,30 +242,29 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
-        
+
         function configuredetails(){
+            access_token = document.getElementById("access_token").value;
+            user_id = document.getElementById("user_id").value;
+            consumer_key = document.getElementById("configure_consumer_key").value;
+            password = document.getElementById("configure_password").value;
+            config_error = document.getElementById("configure-alert");
+            csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            if(access_token == ""){
+                document.getElementById("access_token").focus();
+                return false;
+            }else if(user_id == ""){
+                document.getElementById("user_id").focus();
+                return false;
+            }else if(consumer_key == ""){
+                document.getElementById("configure_consumer_key").focus();
+                return false;
+            }else if(password == ""){
+                document.getElementById("configure_password").focus();
+                return false;
+            }
 
-                access_token = document.getElementById("access_token").value;
-                user_id = document.getElementById("user_id").value;
-                consumer_key = document.getElementById("configure_consumer_key").value;
-                password = document.getElementById("configure_password").value;
-                config_error = document.getElementById("configure-alert");
-                csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-                if(access_token == ""){
-                    document.getElementById("access_token").focus();
-                    return false;
-                }else if(user_id == ""){
-                    document.getElementById("user_id").focus();
-                    return false;
-                }else if(consumer_key == ""){
-                    document.getElementById("configure_consumer_key").focus();
-                    return false;
-                }else if(password == ""){
-                    document.getElementById("configure_password").focus();
-                    return false;
-                }
-
-                $.ajax({
+            $.ajax({
                 type:"POST",
                 url:'{% url 'configurebotdetails' %}',
                 data:{
@@ -284,37 +290,34 @@
                     }
                 },
             })
-
-
             return false;
         }
 
         function configureaccess(){
-
             access_token = document.getElementById("access_token").value;
-                user_id = document.getElementById("user_id").value;
-                consumer_key = document.getElementById("configure_consumer_key").value;
-                password = document.getElementById("configure_password").value;
-                access_code = document.getElementById("access_code").value
-                config_error = document.getElementById("configure-alert");
-                csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-                if(access_token == ""){
-                    document.getElementById("access_token").focus();
-                    return false;
-                }else if(user_id == ""){
-                    document.getElementById("user_id").focus();
-                    return false;
-                }else if(consumer_key == ""){
-                    document.getElementById("configure_consumer_key").focus();
-                    return false;
-                }else if(password == ""){
-                    document.getElementById("configure_password").focus();
-                    return false;
-                }else if (access_code == ""){
-                    document.getElementById("access_code").focus();
-                    return false;
-                }
-                $.ajax({
+            user_id = document.getElementById("user_id").value;
+            consumer_key = document.getElementById("configure_consumer_key").value;
+            password = document.getElementById("configure_password").value;
+            access_code = document.getElementById("access_code").value
+            config_error = document.getElementById("configure-alert");
+            csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+            if(access_token == ""){
+                document.getElementById("access_token").focus();
+                return false;
+            }else if(user_id == ""){
+                document.getElementById("user_id").focus();
+                return false;
+            }else if(consumer_key == ""){
+                document.getElementById("configure_consumer_key").focus();
+                return false;
+            }else if(password == ""){
+                document.getElementById("configure_password").focus();
+                return false;
+            }else if (access_code == ""){
+                document.getElementById("access_code").focus();
+                return false;
+            }
+            $.ajax({
                 type:"POST",
                 url:'{% url 'savebotdetails' %}',
                 data:{
@@ -346,6 +349,58 @@
             })
             return false;
         }
+
+        function daily_access_code(){
+            daily_configure_access_code = document.getElementById("daily_configure_access_code").value;
+            daily_acess_code_error = document.getElementById("daily_acess_code_error");
+            csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+            if(daily_configure_access_code == ""){
+                document.getElementById("daily_configure_access_code").focus();
+                return false;
+            }
+
+/*
+             <span class="spinner-border spinner-border-sm" id="daily_access_progress" role="status" aria-hidden="true">*/
+
+            var btn = document.getElementById("daily_access_code_btn");
+            var newElement = document.createElement("span");
+            newElement.setAttribute('id', "daily_access_progress");
+            newElement.setAttribute('class', "spinner-border spinner-border-sm");
+            newElement.setAttribute('role', "status");
+            newElement.setAttribute('aria-hidden', "true");
+            btn.appendChild(newElement);
+
+            $.ajax({
+                type:"POST",
+                url:'{% url 'daily_acess_code' %}',
+                data:{
+                  'csrfmiddlewaretoken': csrfmiddlewaretoken,
+                  'access_code':daily_configure_access_code,
+                },
+                success :function(data){
+                    console.log(data);
+                    if(data.success){
+                        var element = document.getElementById("daily_access_progress");
+                        element.parentNode.removeChild(element);
+                        daily_acess_code_error.classList.remove("alert-danger");
+                        daily_acess_code_error.style.display = "block";
+                        daily_acess_code_error.innerHTML = data.success;
+                        daily_acess_code_error.classList.add("alert-success");
+                        window.location.reload();
+                    }else{
+                        var element = document.getElementById("daily_access_progress");
+                        element.parentNode.removeChild(element);
+                        daily_acess_code_error.classList.remove("alert-success");
+                        daily_acess_code_error.style.display = "block";
+                        daily_acess_code_error.innerHTML = data.error;
+                        daily_acess_code_error.classList.add("alert-danger");
+                    }
+                },
+            })
+            return false;
+        }
+
 
         function configureComplete(){
             location.reload();

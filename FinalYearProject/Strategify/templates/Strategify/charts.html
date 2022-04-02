@@ -146,7 +146,7 @@
           <!-- Example Bar Chart Card-->
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
+              <i class="fa fa-bar-chart"></i> Line Chart Example</div>
               <div class="card-body search-input">
                 <div class="row">
                   <div class="col-lg-4 col-xs-12 col-sm-12">
@@ -266,27 +266,8 @@
         </div>
       </div>
     </footer>
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fa fa-angle-up"></i>
-    </a>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-          <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="login.html">Logout</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+    <div id="snackbar">Some text some message..</div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
     <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
@@ -294,7 +275,7 @@
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="{% static '././JS/dashboard.js' %}"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="{% static 'node_modules/jquery/dist/jquery.min.js' %}"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
       csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
@@ -408,7 +389,10 @@
                 }
                }
                else{
-               console.log("Error Data: "+data.error);
+                var x = document.getElementById("snackbar");
+                x.innerHTML = data.error;
+                x.className = "show";
+                setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
                }
               }
             })

@@ -24,8 +24,6 @@ from .yfinance import *
 data = None
 
 
-
-
 def home(response):
     return render(response, 'Strategify/index.html', {})
 
@@ -41,10 +39,14 @@ def stockdata(request):
     response_data = {}
     try:
         chartsdata = getScripChartsData(request.POST.get('scripname'), request.POST.get('period'))
-        response_data['success'] = chartsdata.values.tolist()
+        if list(chartsdata.keys())[0] == "error":
+            response_data['error'] = str(chartsdata['error'])
+        else:
+            chartsdata = pd.DataFrame(chartsdata['success'])
+            response_data['success'] = chartsdata.values.tolist()
         return JsonResponse(response_data)
     except Exception as e:
-        response_data['success'] = str(e)
+        response_data['error'] = str(e)
         print(STOCK_DATA_ERROR, e)
         return JsonResponse(response_data)
 
@@ -123,13 +125,16 @@ def configure(request):
         try:
             botdata = Configure.objects.get(username=request.session['username'])
             kotak = Kotak(botdata.accesstoken,botdata.userid,botdata.consumerkey,botdata.appid,botdata.password)
-            #kotak.session_login(botdata.accesscode)
+            kotak.configure()
+            kotak.session_login(botdata.accesscode)
             kotak.set_webhookurl(botdata.url)
             access = True
         except Exception as e:
             access = False
-            error = str(e.reason)
-            print("Kotak Exception: ",e.status,e.reason)
+            if e.reason:
+                error = str(e.reason)
+                print("Kotak Exception: ", e.reason)
+            print("Kotak Exception: ",e)
 
     userdata = {
         'username': request.session['username'],
@@ -141,35 +146,47 @@ def configure(request):
         'error': error,
         'access':access,
     }
+    print("Kotak Account Configured Status Acess Status: ",access,configstatus)
     return render(request,'Strategify/configurebot.html',{'userdata':userdata,'data':data})
 
 
 def configurebotdetails(request):
     response_data = {}
     if request.method == "POST":
-        kotak = Kotak(request.POST.get("access_token"), request.POST.get("user_id"), request.POST.get("consumer_key"),"1",
-                      request.POST.get("password"))
         try:
-            # kotak.configure()
+            botdata = Configure.objects.get(username=request.session['username'])
+            kotak = Kotak(botdata.accesstoken,botdata.userid,botdata.consumerkey,botdata.appid,botdata.password)
+            kotak.configure()
+            kotak.session_login(request.POST.get('access_code'))
             response_data['success'] = CONFIGURED_SUCCESS
         except Exception as e:
-            response_data['error'] = str(e.reason)
-            print("Kotak Exception: ", e.status, e.reason)
+            if e.reason:
+                response_data['error'] = str(e.reason)
+            else:
+                response_data['error'] = str(e)
+            print("Kotak Exception: ", str(e))
     return JsonResponse(response_data)
 
 
-def configure_acess_code(request):
+def daily_acess_code(request):
     response_data = {}
     if request.method == "POST":
-        kotak = Kotak(request.POST.get("access_token"), request.POST.get("user_id"),
-                      request.POST.get("consumer_key"),
-                      "1", request.POST.get("password"))
         try:
-            # kotak.session_login(request.POST.get("access_code"))
+            botdata = Configure.objects.get(username=request.session['username'])
+            kotak = Kotak(botdata.accesstoken, botdata.userid, botdata.consumerkey, botdata.appid, botdata.password)
+            kotak.configure()
+            kotak.session_login(request.POST.get("access_code"))
+            Configure.objects.filter(username=request.session['username']).update(
+                accesscode = request.POST.get("access_code")
+                )
             response_data['success'] = SESSION_LOGGED_IN
         except Exception as e:
-            response_data['error'] = str(e.reason)
-            print("Kotak Exception: ", e.status, e.reason)
+            print("Kotak Exception: ", e)
+            if e.reason:
+                response_data['error'] = str(e.reason)
+            else:
+                response_data['error'] = str(e)
+            
     return JsonResponse(response_data)
 
 def savebotdetails(request):
@@ -179,7 +196,8 @@ def savebotdetails(request):
                       request.POST.get("consumer_key"),
                       "1", request.POST.get("password"))
         try:
-            # kotak.session_login(request.POST.get("access_code"))
+            kotak.configure()
+            kotak.session_login(request.POST.get("access_code"))
             response_data['success'] = SESSION_LOGGED_IN
             try:
                 randomURL = HTTPS + generateRandomURL()
@@ -201,8 +219,8 @@ def savebotdetails(request):
             except Exception as e:
                 response_data['error'] = str(e)
         except Exception as e:
-            response_data['error'] = str(e.reason)
-            print("Kotak Exception: ", e.status, e.reason)
+            response_data['error'] = str(e)
+            print("Kotak Exception: ", e)
     return JsonResponse(response_data)
 
 def generateotp(request):

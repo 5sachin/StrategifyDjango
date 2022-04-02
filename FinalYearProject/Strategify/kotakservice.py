@@ -94,13 +94,12 @@ class Kotak:
 		self.consumer_key = consumer_key
 		self.app_id = app_id
 		self.password = password
+		self.client = None
 
 	def configure(self):
 		self.client = ks_api.KSTradeApi(access_token=self.access_token, userid=self.userid,
-										consumer_key=self.consumer_key, ip="127.0.0.1", app_id=self.app_id)
-		print("Before Login")
+										consumer_key=self.consumer_key, ip="127.0.0.1", app_id="APP")
 		self.client.login(password=self.password)
-		print("After Login")
 
 	def session_login(self,acess_code):
 		self.client.session_2fa(access_code=acess_code)

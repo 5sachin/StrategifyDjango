@@ -30,6 +30,7 @@ urlpatterns = [
     path('configure',views.configure,name="configure"),
     path('configurebotdetails/',views.configurebotdetails,name="configurebotdetails"),
     path('savebotdetails/',views.savebotdetails,name="savebotdetails"),
+    path('daily_acess_code/',views.daily_acess_code,name="daily_acess_code"),
     path('opensampleStrategy/',views.opensampleStrategy,name="opensampleStrategy"),
     path('webhook/<URL>', kotakservice.webhook_call, name='webhook'),
 
