@@ -1,2 +1,2 @@
 # StrategifyDjango
-To create and backtest strategy of Stock Market
+To create, backtest and deploy your strategy of Stock Market
