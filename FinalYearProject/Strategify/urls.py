@@ -1,7 +1,7 @@
 from django.urls import *
 from . import views
 from . import kotakservice
-
+from . models import *
 
 urlpatterns = [
     path('', views.home,name="home"),
@@ -32,6 +32,6 @@ urlpatterns = [
     path('savebotdetails/',views.savebotdetails,name="savebotdetails"),
     path('daily_acess_code/',views.daily_acess_code,name="daily_acess_code"),
     path('opensampleStrategy/',views.opensampleStrategy,name="opensampleStrategy"),
-    path('webhook/<URL>', kotakservice.webhook_call, name='webhook'),
+    path('webhook/<URL>', views.webhook_call, name='webhook'),
 
 ]

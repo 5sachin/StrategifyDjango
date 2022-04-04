@@ -3,6 +3,8 @@ from datetime import timedelta
 from .constants import *
 import random
 import string
+import os
+import base64
 
 def subtarctdays(startdate,days):
     date_format = '%Y-%m-%d'
@@ -42,3 +44,17 @@ def generateRandomURL():
     length = 10
     URL = ''.join(random.choices(string.ascii_uppercase + string.digits, k=length))
     return URL
+
+
+def generateRandomUID():
+    UID = base64.b64encode(os.urandom(6)).decode('ascii')
+    print("UID: ",UID)
+    return UID
+
+
+def todayDate():
+    return datetime.today().strftime('%Y-%m-%d')
+
+
+def todayTime():
+    return datetime.now().strftime('%H:%M:%S')

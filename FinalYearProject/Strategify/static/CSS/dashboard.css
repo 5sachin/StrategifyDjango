@@ -962,3 +962,17 @@ footer.sticky-footer {
 #daily_acess_code_error{
   display: none;
 }
+
+.hr{
+  border-top: 3px solid rgba(0,0,0,.1);
+  margin-bottom: 0;
+}
+
+.order-table{
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.bg-danger2{
+  background-color: #ffd6cc;
+}

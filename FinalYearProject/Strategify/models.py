@@ -82,8 +82,6 @@ class ConfigureAdmin(admin.ModelAdmin):
     list_display = ('username', 'accesstoken', 'userid', 'consumerkey', 'password', 'appid','accesscode','url')
 
 
-
-
 class ScripList(models.Model):
     symbol = models.CharField(max_length=100, primary_key=True, blank=False)
     scrip = models.CharField(max_length=400, blank=False)
@@ -94,9 +92,26 @@ class ScripListAdmin(admin.ModelAdmin):
     list_display = ('symbol', 'scrip', 'instrumenttoken', 'index')
 
 
+class Orders(models.Model):
+    orderid = models.CharField(max_length=100,primary_key=True,blank=False)
+    username = models.ForeignKey(UserRegistration, max_length=100, blank=False, on_delete=models.CASCADE)
+    scrip = models.CharField(max_length=100, blank=False)
+    price = models.CharField(max_length=200, blank=False)
+    date = models.CharField(max_length=200, blank=False)
+    time = models.CharField(max_length=200, blank=False)
+    transaction_type = models.CharField(max_length=200, blank=False)
+    message = models.CharField(max_length=200,blank=False)
+    condition = models.CharField(max_length=200,blank=False)
+
+
+class OrdersAdmin(admin.ModelAdmin):
+    list_display = ('orderid', 'username', 'scrip', 'price','date','time','transaction_type','message','condition')
+
+
 admin.site.register(UserRegistration, UserRegistrationAdmin)
 admin.site.register(StrategyRegistration, StrategyRegistrationAdmin)
 admin.site.register(SampleStrategy, SampleStrategyAdmin)
 admin.site.register(Deploy, DeployAdmin)
 admin.site.register(Configure,ConfigureAdmin)
 admin.site.register(ScripList,ScripListAdmin)
+admin.site.register(Orders,OrdersAdmin)

@@ -166,7 +166,51 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <hr>
+                                <hr class="hr">
+                                <div class="table-responsive">
+                                <table class="table table-fixed">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Date</th>
+                                            <th scope="col">Time</th>
+                                            <th scope="col">Scrip</th>
+                                            <th scope="col">Price</td>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for i in data.orderdata %}
+                                            {% if i.condition == "error" %}
+                                                <tr class="bg-danger2">
+                                                    <th>{{i.date}}</th>
+                                                    <td>{{i.time}}</td>
+                                                    <td>{{i.scrip}}</td>
+                                                    <td>{{i.price}}</td>
+                                                    <td>{{i.transaction_type}}</td>
+                                                    <td>{{i.message}}</td>
+                                                </tr>
+                                            {% else %}
+                                                <tr>
+                                                    <th>{{i.date}}</th>
+                                                    <td>{{i.time}}</td>
+                                                    <td>{{i.scrip}}</td>
+                                                    <td>{{i.price}}</td>
+                                                    <td>{{i.transaction_type}}</td>
+                                                    <td>{{i.message}}</td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="table-responsive order-table">
+                                <table class="table">
+                                    
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -242,6 +286,8 @@
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
+
+    console.log({{error}});
 
         function configuredetails(){
             access_token = document.getElementById("access_token").value;
@@ -414,6 +460,7 @@
               config_error.classList.add("alert-success");
               return false;
         }
+        
 
     </script>
 

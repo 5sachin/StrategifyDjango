@@ -20,8 +20,12 @@ from .deploybacktestprofitlosscalculation import *
 from .utils import *
 from .kotakservice import *
 from .yfinance import *
+from .orders import *
 
 data = None
+kotak_bot = None
+KOTAK_REQUEST = None
+WEBHOOK_URL = None
 
 
 def home(response):
@@ -114,8 +118,10 @@ def generateOTP():
 
 
 def configure(request):
+    global kotak_bot,USERNAME, KOTAK_REQUEST
     error = ""
     access = None
+    KOTAK_REQUEST = request
     if not request.session['config_status']:
         configstatus = False
         botdata = None
@@ -127,24 +133,26 @@ def configure(request):
             kotak = Kotak(botdata.accesstoken,botdata.userid,botdata.consumerkey,botdata.appid,botdata.password)
             kotak.configure()
             kotak.session_login(botdata.accesscode)
-            kotak.set_webhookurl(botdata.url)
+            kotak_bot = kotak
             access = True
         except Exception as e:
             access = False
-            if e.reason:
-                error = str(e.reason)
-                print("Kotak Exception: ", e.reason)
+            # if e.reason:
+            #     error = str(e.reason)
             print("Kotak Exception: ",e)
 
     userdata = {
         'username': request.session['username'],
         'name': request.session['name'],
     }
+
+    orderdata = Orders.objects.filter(username=request.session['username']).order_by('-time')[:5]
     data = {
         'isconfigured': configstatus,
         'botdata': botdata,
         'error': error,
         'access':access,
+        'orderdata':orderdata,
     }
     print("Kotak Account Configured Status Acess Status: ",access)
     return render(request,'Strategify/configurebot.html',{'userdata':userdata,'data':data})
@@ -200,7 +208,7 @@ def savebotdetails(request):
             kotak.session_login(request.POST.get("access_code"))
             response_data['success'] = SESSION_LOGGED_IN
             try:
-                randomURL = HTTPS + generateRandomURL()
+                randomURL = generateRandomURL()
                 Configure.objects.create(
                     username=request.session['username'],
                     accesstoken=request.POST.get("access_token"),
@@ -223,6 +231,50 @@ def savebotdetails(request):
             print("Kotak Exception: ", e)
     return JsonResponse(response_data)
 
+
+@csrf_exempt
+@require_POST
+def webhook_call(request,URL):
+    global kotak_bot,KOTAK_REQUEST
+    userdata = UserRegistration.objects.get(username = KOTAK_REQUEST.session['username'])
+    botdata = Configure.objects.get(username = KOTAK_REQUEST.session['username'])
+    if botdata.url == URL:
+        webhook_message = json.loads(request.body)
+        if webhook_message['passphrase'] != "aj$Ta786":
+            return {
+            'code':'error',
+            'message': 'nice try buddy'
+            }
+
+        kotak_bot.trade_report()
+        price = webhook_message['strategy']['order_price']
+        quantity = 1
+        symbol = webhook_message['ticker']
+        side = webhook_message['strategy']['order_action']
+
+        print("Price: ",price," Symbol: ",symbol," Side: ",side)
+        # if side == "buy":
+        #     try:
+        #         kotak_bot.place_order("N",symbol,"BUY",quantity,0,0,0,"GFD","REGULAR","STRING")
+        #         saveOrder(generateRandomUID(),userdata,symbol,price,"BUY","Order Placed","success")
+        #         print("BUY Order Placed ! ", symbol, quantity, side)
+        #     except Exception as e:
+        #         print(e)
+        #         saveOrder(generateRandomUID(),userdata,symbol,price,"BUY",str(e.reason),"error")
+        #         print("BUY Exception when calling OrderApi->place_order: %s\n" % e)
+        # else:
+        #     try:
+        #         kotak_bot.place_order("N",symbol,"SELL",quantity,0,0,0,"GFD","REGULAR","STRING")
+        #         print("SELL Order Placed ! ",symbol, quantity, side)
+        #         saveOrder(generateRandomUID(),userdata,symbol,price,"SELL","Order Placed","success")
+        #     except Exception as e:
+        #         saveOrder(generateRandomUID(),userdata,symbol,price,"SELL",str(e.reason),"error")
+        #         print("SELL Exception when calling OrderApi->place_order: %s\n" % e)
+    
+    return HttpResponse(status=200)
+
+
+
 def generateotp(request):
     response_data = {}
     email = request.POST.get("email")
@@ -242,6 +294,7 @@ def generateotp(request):
 
 
 def signIn(request):
+    global WEBHOOK_URL
     response_data = {}
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -253,6 +306,7 @@ def signIn(request):
                     data = Configure.objects.get(username=user_data.username)
                     if data.username == user_data.username:
                         request.session['config_status'] = True
+                        WEBHOOK_URL = data.url
                 except ObjectDoesNotExist as e:
                     print("Config Status: ", str(e))
                     request.session['config_status'] = False

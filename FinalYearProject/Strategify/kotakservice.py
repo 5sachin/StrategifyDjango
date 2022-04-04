@@ -67,9 +67,6 @@
 #             print("Exception when calling OrderApi->place_order: %s\n" % e)
 #         return webhook_message
 #
-#
-# if _name_ == "_main_":
-#     app.run(host='0.0.0.0')
 
 
 
@@ -81,12 +78,11 @@ import config
 import json
 from ks_api_client import ks_api
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import *
 from django.views.decorators.http import require_POST
 
-
 URL = ""
-class Kotak:
+class Kotak():
 	global URL
 	def __init__(self, access_token, userid, consumer_key, app_id, password):
 		self.access_token = access_token
@@ -104,19 +100,30 @@ class Kotak:
 	def session_login(self,acess_code):
 		self.client.session_2fa(access_code=acess_code)
 
-	def set_webhookurl(self,url):
-		self.url = url
-		URL = url
-		print(self.url)
+
+	def place_order(self,order_type,instrument_token,transaction_type,quantity,price,disclosed_quantity,trigger_price,validity,variety,tag):
+		print("Client Info: ",self.client)
+		self.client.place_order(order_type=order_type,instrument_token=instrument_token,transaction_type=transaction_type,
+				quantity=quantity,price=price,disclosed_quantity=disclosed_quantity,
+				trigger_price=trigger_price,validity=validity,variety=variety,tag=tag)
+		print("BUY Order Placed ! ", instrument_token, quantity, transaction_type)
+
+	def trade_report(self):
+		print("Order Report: ")
+		report = self.client.order_report()
+		print(report)
+
+	def trade_report_order(self,orderid):
+		print("Order Report Id: ",orderid)
+		report = self.client.order_report(order_id = orderid)
+		print(report)
+
+	def get_quote(self,token):
+		try:
+			print(self.client.quote(instrument_token = token))
+		except Exception as e:
+			print("Get Quote Exception: ",str(e))
 
 
-@csrf_exempt
-@require_POST
-def webhook_call(request,URL):
-	print("URL: ",URL)
-	jsondata = request.body
-	data = json.loads(jsondata)
-	print("Data: ",data)
-	return HttpResponse(status=200)
 
 
