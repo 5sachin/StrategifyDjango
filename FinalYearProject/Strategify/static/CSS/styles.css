@@ -3209,3 +3209,12 @@ hr.rounded {
     justify-content: center;
     align-items: center;
 }
+
+#entryConditionRow span, #exitConditionRow span{
+  cursor: pointer;
+}
+
+#addExitRow, #addEntryRow{
+  cursor: pointer;
+  color: blue;
+}

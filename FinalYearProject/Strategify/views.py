@@ -246,30 +246,29 @@ def webhook_call(request,URL):
             'message': 'nice try buddy'
             }
 
-        kotak_bot.trade_report()
         price = webhook_message['strategy']['order_price']
         quantity = 1
         symbol = webhook_message['ticker']
         side = webhook_message['strategy']['order_action']
 
         print("Price: ",price," Symbol: ",symbol," Side: ",side)
-        # if side == "buy":
-        #     try:
-        #         kotak_bot.place_order("N",symbol,"BUY",quantity,0,0,0,"GFD","REGULAR","STRING")
-        #         saveOrder(generateRandomUID(),userdata,symbol,price,"BUY","Order Placed","success")
-        #         print("BUY Order Placed ! ", symbol, quantity, side)
-        #     except Exception as e:
-        #         print(e)
-        #         saveOrder(generateRandomUID(),userdata,symbol,price,"BUY",str(e.reason),"error")
-        #         print("BUY Exception when calling OrderApi->place_order: %s\n" % e)
-        # else:
-        #     try:
-        #         kotak_bot.place_order("N",symbol,"SELL",quantity,0,0,0,"GFD","REGULAR","STRING")
-        #         print("SELL Order Placed ! ",symbol, quantity, side)
-        #         saveOrder(generateRandomUID(),userdata,symbol,price,"SELL","Order Placed","success")
-        #     except Exception as e:
-        #         saveOrder(generateRandomUID(),userdata,symbol,price,"SELL",str(e.reason),"error")
-        #         print("SELL Exception when calling OrderApi->place_order: %s\n" % e)
+        if side == "buy":
+            try:
+                kotak_bot.place_order("N",symbol,"BUY",quantity,0,0,0,"GFD","REGULAR","STRING")
+                saveOrder(generateRandomUID(),userdata,symbol,price,"BUY","Order Placed","success")
+                print("BUY Order Placed ! ", symbol, quantity, side)
+            except Exception as e:
+                print(e)
+                saveOrder(generateRandomUID(),userdata,symbol,price,"BUY",str(e.reason),"error")
+                print("BUY Exception when calling OrderApi->place_order: %s\n" % e)
+        else:
+            try:
+                kotak_bot.place_order("N",symbol,"SELL",quantity,0,0,0,"GFD","REGULAR","STRING")
+                print("SELL Order Placed ! ",symbol, quantity, side)
+                saveOrder(generateRandomUID(),userdata,symbol,price,"SELL","Order Placed","success")
+            except Exception as e:
+                saveOrder(generateRandomUID(),userdata,symbol,price,"SELL",str(e.reason),"error")
+                print("SELL Exception when calling OrderApi->place_order: %s\n" % e)
     
     return HttpResponse(status=200)
 
@@ -414,10 +413,10 @@ def opensampleStrategy(request):
 
 def deletestrategy(request):
     response_data = {}
-    if request.method == "GET":
+    if request.method == "POST":
         try:
             StrategyRegistration.objects.get(
-                strategyid=str(request.session['username']) + str(request.GET.get('strategyname'))).delete()
+                strategyid=str(request.session['username']) + str(request.POST.get('strategyname'))).delete()
             print("Deleted Sucess")
             return HttpResponse(dashboard(request))
         except ObjectDoesNotExist as e:

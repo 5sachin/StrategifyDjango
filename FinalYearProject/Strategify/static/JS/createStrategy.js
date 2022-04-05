@@ -83,7 +83,6 @@ function openIndicatorDetails(element,id){
 }
 
 function saveIndicatordetails(id){
-    console.log(id);
     var z = document.getElementById('indicatorheadingModal').innerHTML;
     if(z == "Close"){
         var x = 0;
@@ -264,7 +263,6 @@ function openIndicator3Details(element,id){
 }
 
 function saveIndicatordetails3(id){
-    console.log(id);
     var z = document.getElementById('indicatorheadingModal').innerHTML;
     if(z == "Close"){
         var x = "0";
@@ -295,7 +293,6 @@ function lookup4(arg){
     let emptyArray = [];
     let dataArray = [];
     var string = "#exitsecindicatorBox"+no.toString();
-    console.log(string);
     indicatorSuggBox4 = indicatorWrapper2.querySelector(string);
     if(userData){
         emptyArray = indicatorsuggestions.filter((data)=>{
@@ -360,9 +357,7 @@ function saveIndicatordetails4(id){
 
     if(z == "Close"){
         var x = "0";
-        console.log("here1");
         document.getElementsByName("exitsecindicator"+id.toString())[0].value = z+","+x;
-        console.log("here2");
         indicatorSuggBox4.classList.remove("active");
         $('#indicatorCloseModal').modal('hide');
     }else{

@@ -165,7 +165,7 @@
                                             <li class="event" value="Strategy Name">
                                                 <div class="row">
                                                     <div class="col-8">
-                                                        <input type="text" name="strategyname" id="strategyname" placeholder="Strategy Name" class="form-control" onKeyUp="checkStrategyName()">
+                                                        <input type="text" name="strategyname" id="strategyname" placeholder="Strategy Name" class="form-control" onclick="checkStrategyName()" onKeyUp="checkStrategyName()">
                                                     </div>
                                                     <div class="col-4">
                                                         <h6><strong id="strategyNameMssg"></strong></h6>
@@ -228,12 +228,12 @@
                                                                     </ul>
                                                             </div>
                                                         </div>
-                                                        <div class="entryConditionRow ">
+                                                        <div class="entryConditionRow" id="entryConditionRow">
 
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                <a href="#" id="addEntryRow" class="addEntryRow">Add Another Field</a>
+                                                                <span id="addEntryRow" onclick="addEntryRow()" class="addEntryRow">Add Another Field</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -250,19 +250,18 @@
                                                                 <input type="text" name="targetper" id="targetper" placeholder="Target %" class="form-control targetper" required>
                                                             </div>
                                                         </div>
-                                                        <div class="exitConditionRow mt-3 indicator-search3">
+                                                        <div class="exitConditionRow mt-3 indicator-search3" id="exitConditionRow">
 
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                <a href="#" class="addExitRow">Add Exit Condition(Optional)</a>
+                                                                <span onclick="addExitRow()" id="addExitRow" class="addExitRow">Add Exit Condition(Optional)</span>
                                                             </div>
                                                         </div>
                                                         <div class="row mt-5">
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-12">
-                                                                <!-- <div class="collapse" id="advanceExitCondition"> -->
                                                                     <div class="row mt-4">
                                                                         <div class="col-lg-6 col-xl-6 col-md-12 col-sm-12 col-xs-12">
                                                                             <input onfocus="(this.type='date')" type="text" id="startDate"  name="startDate" placeholder="Start Date" class="form-control">
@@ -399,12 +398,11 @@
     <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="{% static './JS/script.js' %}"></script>
     <script src="{% static './JS/createStrategy.js' %}"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
     <script>
 
         let suggestions = {{userdata.scripdata|safe}};
-
-        /*let suggestions = ["RELIANCE.NS","TCS.NS","HDFC.NS","SBIN.NS","ONGC.NS","ADANIPORTS.NS","IOC.NS","DIVISLAB.NS","LT.NS","AXISBANK.NS","TATASTEEL.NS","INFY.NS","AJANTPHARM.NS","	APOLLOTYRE.NS","BRITANNIA.NS","CIPLA.NS","DLF.NS","IDEA.NS","JSWSTEEL.NS","MRF.NS","NTPC.NS","PNB.NS","TATACOMM.NS"];
-*/
         const searchWrapper = document.querySelector(".search-input");
         const inputBox = searchWrapper.querySelector("input");
         const suggBox = searchWrapper.querySelector(".autocom-box");
@@ -426,8 +424,10 @@
             }
 
             var entrycondition = "{{strategydata.entrycondition}}"
-            var x = 2;
+            var entryCounter = 2;
             entrycondition = entrycondition.split("/");
+
+
             for(let i = 0;i<entrycondition.length-1;i++){
                 var entry = entrycondition[i].split("-");
                 if(i==0){
@@ -435,70 +435,70 @@
                     document.getElementById("entrycomparator1").options.selectedIndex = entry[2];
                     document.getElementById("entrysecindicator1").value = entry[1];
                 }else{
-                    var wrapper1 = $(".entryConditionRow");
-                    $(wrapper1).append('<div class="row fadeIn" id="inputEntryFormRow">'+
-                                            '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
-                                                '<div class="indicator-search">'+
-                                                    '<input type="text" name="entryfirindicator'+x+'" placeholder="Indicator" class="form-control" autocomplete="off" id="entryfirindicator'+x+'" onkeyup="lookup(this);">'+
-                                                    '<ul class="indicatorsuggest-box" id="firindicatorBox'+x+'"></ul>'+
-                                                '</div>'+
-                                            '</div>'+
-                                            '<div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">'+
-                                                '<select class="form-select form-control" id="entrycomparator'+x+'" name="entrycomparator'+x+'" aria-label="Default select example">'+
-                                                    '<option selected value="0">Crosses Below</option>'+
-                                                    '<option value="1">Equal To</option>'+
-                                                    '<option value="2">Crosses Above</option>'+
-                                                '</select>'+
-                                            '</div>'+
-                                            '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
-                                                '<input type="text" name="entrysecindicator'+x+'" id="entrysecindicator'+x+'" placeholder="Indicator" class="form-control" onkeyup="lookup2(this)";>'+
-                                                '<ul class="indicatorsuggest-box2" id="secindicatorBox'+x+'">'+
-                                                '</ul>'+
-                                            '</div>'+
-                                        '<div class="col-1">'+
-                                            '<span class="w-50 h-50 deleteEntryRow" style="font-size:3rem">&times;</span>'+
-                                        '</div>'+
-                                    '</div>');
-                    document.getElementById("entryfirindicator"+x).value = entry[0];
-                    document.getElementById("entrycomparator"+x).options.selectedIndex = entry[2];
-                    document.getElementById("entrysecindicator"+x).value = entry[1];
-                    x += 1;
+                    var div = document.createElement('div');
+                    div.className = 'row fadeIn';
+                    div.id = 'inputEntryFormRow';
+                    div.innerHTML =  
+                                    `<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">`+
+                                        `<div class="indicator-search">`+
+                                            `<input type="text" name="entryfirindicator`+entryCounter+`" placeholder="Indicator" class="form-control" autocomplete="off" id="entryfirindicator`+entryCounter+`" onkeyup="lookup(this);" required>`+
+                                            `<ul class="indicatorsuggest-box" id="firindicatorBox`+entryCounter+`"></ul>`+
+                                        `</div>`+
+                                    `</div>`+
+                                    `<div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">`+
+                                        `<select class="form-select form-control" id="entrycomparator`+entryCounter+`" name="entrycomparator`+entryCounter+`" aria-label="Default select example">`+
+                                            `<option value="0">Crosses Below</option><option value="1">Equal To</option><option selected value="2">Crosses Above</option>`+
+                                        `</select>`+
+                                    `</div>`+
+                                    `<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">`+
+                                        `<input type="text" name="entrysecindicator`+entryCounter+`" id="entrysecindicator`+entryCounter+`" placeholder="Indicator" class="form-control" onkeyup="lookup2(this)" required >`+
+                                        `<ul class="indicatorsuggest-box2" id="secindicatorBox`+entryCounter+`"></ul></div><div class="col-1">`+
+                                        `<span class="w-50 h-50 deleteEntryRow" onclick="removeEntryRow(this)" style="font-size:3rem">&times;</span>`+
+                                    `</div>`
+
+                    document.getElementById('entryConditionRow').appendChild(div);
+                    document.getElementById("entryfirindicator"+entryCounter).value = entry[0];
+                    document.getElementById("entrycomparator"+entryCounter).options.selectedIndex = entry[2];
+                    document.getElementById("entrysecindicator"+entryCounter).value = entry[1];
+                    entryCounter += 1;
                 }
             }
 
+
             var exitcondition = "{{strategydata.exitcondition}}"
-            var y = 1;
+            var exitCounter = 1;
             exitcondition = exitcondition.split("/");
+
             for(let i = 0;i<exitcondition.length-1;i++){
-                console.log("Y"+y);
+                console.log('Exit Counter: '+exitCounter);
                 var exit = exitcondition[i].split("-");
-                var wrapper2 = $(".exitConditionRow");
+                var div = document.createElement('div');
+                div.className = 'row fadeIn';
+                div.id = 'inputExitFormRow';
+                div.innerHTML = 
+                                `<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">`+
+                                        `<input type="text" name="exitfirindicator`+exitCounter+`" placeholder="Indicator" class="form-control" autocomplete="off" id="exitfirindicator`+exitCounter+`" onkeyup="lookup3(this);" required>`+
+                                        `<ul class="indicatorsuggest-box3" id="exitfirindicatorBox`+exitCounter+`"></ul>`+
+                                `</div>`+
+                                `<div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">`+
+                                    `<select class="form-select form-control" id="exitcomparator`+exitCounter+`" name="exitcomparator`+exitCounter+`" aria-label="Default select example">`+
+                                                            `<option selected value="0">Crosses Below</option><option value="1">Equal To</option><option selected value="2">Crosses Above</option></select>`+
+                                `</div>`+
+                                `<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">`+
+                                    `<input type="text" name="exitsecindicator`+exitCounter+`" id="exitsecindicator`+exitCounter+`" placeholder="Indicator" class="form-control" onkeyup="lookup4(this)" required>`+
+                                    `<ul class="indicatorsuggest-box4" id="exitsecindicatorBox`+exitCounter+`"></ul></div><div class="col-1">`+
+                                    `<span class="w-50 h-50 deleteExitRow" onclick="removeExitRow(this)" style="font-size:3rem">&times;</span>`+
+                                `</div>`
 
-                $(wrapper2).append('<div class="row fadeIn" id="inputExitFormRow">'+
-                    '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
-                            '<input type="text" name="exitfirindicator'+y+'" placeholder="Indicator" class="form-control" autocomplete="off" id="exitfirindicator'+y+'" onkeyup="lookup3(this);">'+
-                            '<ul class="indicatorsuggest-box3" id="exitfirindicatorBox'+y+'"></ul>'+
-                        '</div>'+
-                    '<div class="col-lg-3 col-xl-3 col-md-12 col-sm-12 col-xs-12">'+
-                        '<select class="form-select form-control" id="exitcomparator'+y+'" name="exitcomparator'+y+'" aria-label="Default select example">'+
-                                                '<option selected value="0">Crosses Below</option><option value="1">Equal To</option><option value="2">Crosses Above</option></select>'+
-                    '</div>'+
-                    '<div class="col-lg-4 col-xl-4 col-md-12 col-sm-12 col-xs-12">'+
-                        '<input type="text" name="exitsecindicator'+y+'" id="exitsecindicator'+y+'" placeholder="Indicator" class="form-control" onkeyup="lookup4(this)";>'+
-                        '<ul class="indicatorsuggest-box4" id="exitsecindicatorBox'+y+'"></ul></div><div class="col-1">'+
-                        '<span class="w-50 h-50 deleteExitRow" style="font-size:3rem">&times;</span>'+
-                    '</div>'+
-                '</div>');
 
-                document.getElementById("exitfirindicator"+y).value = exit[0];
-                document.getElementById("exitcomparator"+y).options.selectedIndex = exit[2];
-                document.getElementById("exitsecindicator"+y).value = exit[1];
-                y += 1;       
+                document.getElementById('exitConditionRow').appendChild(div);
+                document.getElementById("exitfirindicator"+exitCounter).value = exit[0];
+                document.getElementById("exitcomparator"+exitCounter).options.selectedIndex = exit[2];
+                document.getElementById("exitsecindicator"+exitCounter).value = exit[1];
+                exitCounter += 1;       
             }
         }
             
-
-
 
         inputBox.onkeyup = (e)=>{
         let userData = e.target.value;
@@ -587,34 +587,32 @@
 
     }
 
-    function checkStrategyName(){
-        strategyname = document.getElementById("strategyname").value;
-        csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
-        if (strategyname == "") {
-            document.getElementById("strategyname").style.border = "none";
-            document.getElementById("strategyNameMssg").innerHTML = "";
-            return false;
-        }
-        $.ajax({
-            type:"POST",
-            url:'{% url 'checkstrategyname' %}',
-            data:{
-              'strategyname':strategyname,
-              'csrfmiddlewaretoken': csrfmiddlewaretoken,
-            },
-            success :function(data){
-                if(data.success){
-                    document.getElementById("strategyname").style.border ="4px solid red";
-                    document.getElementById("strategyNameMssg").innerHTML = "Not Availiable";
-                }else{
-                    document.getElementById("strategyname").style.border ="4px solid green";
-                    document.getElementById("strategyNameMssg").innerHTML = "Availiable";
-                }
-            }
-        })
-    }
+    
     csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
+    function checkStrategyName(){
+    
+        var url = '{% url 'checkstrategyname' %}';
+        let data = new FormData();
+        data.append("strategyname", document.getElementById('strategyname').value)  
+        data.append("csrfmiddlewaretoken", '{{csrf_token}}')
+
+        axios.post(url,data)
+          .then(function (response) {
+            console.log(response);
+            if(response.data.success){
+                document.getElementById("strategyname").style.border ="4px solid red";
+                document.getElementById("strategyNameMssg").innerHTML = "Not Availiable";
+            }else{
+                document.getElementById("strategyname").style.border ="4px solid green";
+                document.getElementById("strategyNameMssg").innerHTML = "Availiable";
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
+    }
 
     function deletestrategy(arg){
             /*$.ajax({
@@ -634,7 +632,20 @@
                     }
                 }
             })*/
-            window.location.href = "{% url 'deletestrategy' %}" + "?strategyname="+"{{strategydata.strategyname}}";
+
+            var url = '{% url 'deletestrategy' %}';
+            let data = new FormData();
+            data.append("strategyname", "{{strategydata.strategyname}}")  
+            data.append("csrfmiddlewaretoken", '{{csrf_token}}')
+
+            axios.post(url,data)
+              .then(function (response) {
+                console.log(response);
+                window.location = '{% url 'dashboard' %}';
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
             return false;
         }
 
