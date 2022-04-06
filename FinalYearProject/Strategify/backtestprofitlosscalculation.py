@@ -80,8 +80,6 @@ def ProfitLossCalculationWithoutExit(data, username, scrip, target, steploss, qu
     totalLoss = "{:.2f}".format(-totalLoss)
     LTP = "{:.2f}".format(float(LTP))
 
-    print("Here")
-
     if WinsCount != 0 and LossCount != 0:
         AvgGain = "{:.2f}".format(float(totalProfit) * int(quantity) / WinsCount)
         AvgLoss = "{:.2f}".format(float(totalLoss) * int(quantity) / LossCount)
@@ -124,7 +122,6 @@ def ProfitLossCalculationWithoutExit(data, username, scrip, target, steploss, qu
 
 
 def ProfitLossCalculationWithExit(data, username, scrip, target, steploss, quantity):
-    print(len(data))
     a = 0
     status = 0
     WinsCount = LossCount = 0  # TOTAL NO OF WINS AND LOSS
@@ -257,8 +254,6 @@ def ProfitLossCalculationWithExit(data, username, scrip, target, steploss, quant
     totalLoss = "{:.2f}".format(-totalLoss)
     LTP = "{:.2f}".format(float(LTP))
 
-    print("Here",WinsCount,LossCount,totalLoss,totalProfit)
-
     if WinsCount == 0:
         AvgGain = 0
         AvgLoss = "{:.2f}".format(float(totalLoss) * int(quantity) / LossCount)
@@ -272,7 +267,6 @@ def ProfitLossCalculationWithExit(data, username, scrip, target, steploss, quant
         AvgLoss = 0
         AvgGain = 0
 
-    print("Here")
 
     percentBar = (float(totalProfit) / (float(totalProfit) + float(totalLoss))) * 100
     alldata = {

@@ -1,6 +1,6 @@
 from .views import *
 
-def deployprofitLossCalculationWithoutExit(data, startegyname, scrip, target, steploss, quantity, algocycles, deploydate):
+def deployprofitLossCalculationWithoutExit(data, strategyname, scrip, target, steploss, quantity, algocycles, deploydate):
     a = 0
     status = 0                              # TOTAL NO OF WINS AND LOSS
     totalProfit = totalLoss = 0             # TOTAL PROFIT AND LOSS
@@ -15,7 +15,7 @@ def deployprofitLossCalculationWithoutExit(data, startegyname, scrip, target, st
             a = data['Close'][i]
             enter = 1
             waitenter = "ENTER"
-            alllist.append({'date': data.index[i], 'price': data['Close'][i], 'buysell': "buy", 'balance': balance, })
+            alllist.append({'date': data.index[i].strftime('%d%b%Y'), 'price': data['Close'][i], 'buysell': "buy", 'balance': balance, })
             print("Buy:    Date: ", data.index[i], " Price: ", a)
         else:
             if a > 0:
@@ -26,7 +26,7 @@ def deployprofitLossCalculationWithoutExit(data, startegyname, scrip, target, st
                           data['Close'][i] - a)
                     totalProfit += data['Close'][i] - a
                     alllist.append(
-                        {'date': data.index[i], 'price': data['Close'][i], 'buysell': "sell", 'balance': balance})
+                        {'date': data.index[i].strftime('%d%b%Y'), 'price': data['Close'][i], 'buysell': "sell", 'balance': balance})
                     a = enter = 0
                     cyclescount += 1
                 elif ((a - data['Close'][i]) / a) * 100 >= int(steploss):
@@ -36,7 +36,7 @@ def deployprofitLossCalculationWithoutExit(data, startegyname, scrip, target, st
                           data['Close'][i] - a)
                     totalLoss += data['Close'][i] - a
                     alllist.append(
-                        {'date': data.index[i], 'price': data['Close'][i], 'buysell': "sell", 'balance': balance, })
+                        {'date': data.index[i].strftime('%d%b%Y'), 'price': data['Close'][i], 'buysell': "sell", 'balance': balance, })
                     a = enter = 0
                     cyclescount += 1
         if cyclescount == int(algocycles):
@@ -49,7 +49,7 @@ def deployprofitLossCalculationWithoutExit(data, startegyname, scrip, target, st
         status = 1
 
     LTP = 0.0
-    if len(data['Close'])==0:
+    if len(data['Close'])!=0:
         LTP = data['Close'][-1]  # LAST TRADE PRICE
 
     balance = "{:.2f}".format(balance)
@@ -63,7 +63,11 @@ def deployprofitLossCalculationWithoutExit(data, startegyname, scrip, target, st
         'LTP': LTP,
         'target':target,
         'waitenter':waitenter,
-        'deploydate':deploydate
+        'deploydate':deploydate,
+        'graphdata': alllist,
+        'cyclescount':str(cyclescount),
+        'quantity':str(quantity),
+        'algocycles':str(algocycles),
     }
     return alldata
 
@@ -82,13 +86,14 @@ def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, stepl
             a = data['Close'][i]
             enter = 1
             alllist.append({
-                'date': data.index[i],
+                'date': data.index[i].strftime('%d%b%Y'),
                 'price': data['Close'][i],
                 'buysell': "buy",
                 'balance': balance,
             })
             waitenter = "ENTER"
             print("Buy:    Date: ", data.index[i], " Price: ", a)
+            print("TimeStamp Date: ",data.index[i].strftime('%d%b%Y'))
         elif data['Position'][i] == -1.0 and enter == 1:
             balance += data['Close'][i] - a
             if data['Close'][i] - a >= 0:
@@ -96,7 +101,7 @@ def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, stepl
                       data['Close'][i] - a)
                 totalProfit += data['Close'][i] - a
                 alllist.append({
-                    'date': data.index[i],
+                    'date': data.index[i].strftime('%d%b%Y'),
                     'price': data['Close'][i],
                     'buysell': "sell",
                     'balance': balance
@@ -109,7 +114,7 @@ def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, stepl
                       data['Close'][i] - a)
                 totalLoss += data['Close'][i] - a
                 alllist.append({
-                    'date': data.index[i],
+                    'date': data.index[i].strftime('%d%b%Y'),
                     'price': data['Close'][i],
                     'buysell': "sell",
                     'balance': balance
@@ -125,7 +130,7 @@ def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, stepl
                           data['Close'][i] - a)
                     totalProfit += data['Close'][i] - a
                     alllist.append({
-                        'date': data.index[i],
+                        'date': data.index[i].strftime('%d%b%Y'),
                         'price': data['Close'][i],
                         'buysell': "sell",
                         'balance': balance
@@ -139,7 +144,7 @@ def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, stepl
                           data['Close'][i] - a)
                     totalLoss += data['Close'][i] - a
                     alllist.append({
-                        'date': data.index[i],
+                        'date': data.index[i].strftime('%d%b%Y'),
                         'price': data['Close'][i],
                         'buysell': "sell",
                         'balance': balance
@@ -160,7 +165,7 @@ def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, stepl
         status = -1
 
     LTP = 0.0
-    if len(data['Close']):
+    if len(data['Close'])!=0:
         LTP = data['Close'][-1]  # LAST TRADE PRICE
 
     balance = "{:.2f}".format(balance)
@@ -176,5 +181,9 @@ def deployprofitLossCalculationWithExit(data, strategyname, scrip, target, stepl
         'target':target,
         'waitenter':waitenter,
         'deploydate': deploydate,
+        'graphdata': alllist,
+        'cyclescount':str(cyclescount),
+        'quantity':str(quantity),
+        'algocycles':str(algocycles)
     }
     return alldata

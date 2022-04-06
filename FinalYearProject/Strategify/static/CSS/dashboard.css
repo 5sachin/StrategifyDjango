@@ -976,3 +976,38 @@ footer.sticky-footer {
 .bg-danger2{
   background-color: #ffd6cc;
 }
+
+.hiddenRow {
+    padding: 0 !important;
+    background: #F8F8F8;
+}
+
+.font-700{
+  font-weight: 700;
+}
+
+.font-600{
+  font-weight: 600;
+}
+
+.font-size-22{
+  font-size: 2.2rem;
+}
+
+.font-size-14{
+  font-size: 1.4rem;
+}
+
+.hr-div-report{
+  border-top: 2px solid black;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.font-size-12{
+  font-size: 1.2rem;
+}
+
+.font-size-11{
+  font-size: 1.1rem;
+}

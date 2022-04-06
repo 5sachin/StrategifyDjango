@@ -502,7 +502,7 @@ def deploypage(request):
                 globals()[a[0]]("ENTRY", int(b[0]))
                 globals()[a[1]]("ENTRY", int(b[1]))
                 entrySignalGeneration(str(a[0]) + str(b[0]), str(a[1]) + str(b[1]),str(c))
-            if exitCondition:
+            if exitCondition[0] != "None":
                 for k in range(len(exitCondition)-1):
                     a = exitCondition[k].split("-")[0].split(",")
                     b = exitCondition[k].split("-")[1].split(",")
@@ -516,7 +516,8 @@ def deploypage(request):
 
 
             deploystrategyprevdaysremoval(i.deploytime)
-            if exitCondition:
+            if exitCondition[0] != "None":
+
                 val = deployprofitLossCalculationWithExit(data, deploystrategydata.strategyname, i.scripname,
                                                     deploystrategydata.target,
                                                     deploystrategydata.stoploss,
