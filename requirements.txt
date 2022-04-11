@@ -2,7 +2,6 @@ asgiref==3.5.0
 Django==4.0.3
 django-cors-headers==3.11.0
 gunicorn==20.1.0
-ks-api-client==1.0.26
 numpy==1.22.3
 pandas==1.4.1
 python-dateutil==2.8.2
