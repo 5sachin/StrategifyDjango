@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-7z00sldl&vzf0a6tje@z3fve+7hs_qt846r%as0$a(8#mv4*t-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*','strategify.herokuapp.com']
 LOGIN_REDIRECT_URL = '/'
 # Application definition
 
