@@ -1,1 +1,1 @@
-web: gunicorn Strategify.wsgi --log-file -
+web: gunicorn FinalYearProject.wsgi --log-file -
