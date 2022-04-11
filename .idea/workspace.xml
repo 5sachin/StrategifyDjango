@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fad8172-af2d-4027-b0e3-d42adf7c0941" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FinalYearProject/FinalYearProject/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/FinalYearProject/FinalYearProject/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/FinalYearProject/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/FinalYearProject/asgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/FinalYearProject/settings.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/FinalYearProject/urls.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/FinalYearProject/wsgi.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/db.sqlite3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/manage.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/procfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FinalYearProject/requirements.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,11 +210,6 @@
           <url>file://$PROJECT_DIR$/FinalYearProject/Strategify/views.py</url>
           <line>260</line>
           <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/FinalYearProject/FinalYearProject/urls.py</url>
-          <line>15</line>
-          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
