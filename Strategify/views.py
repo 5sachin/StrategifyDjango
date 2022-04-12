@@ -21,6 +21,7 @@ from .utils import *
 from .kotakservice import *
 from .yfinance import *
 from .orders import *
+from django.views.decorators.csrf import csrf_exempt
 
 data = None
 kotak_bot = None
