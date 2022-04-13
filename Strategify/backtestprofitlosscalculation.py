@@ -72,7 +72,7 @@ def ProfitLossCalculationWithoutExit(data, username, scrip, target, steploss, qu
     if len(data['Close']) > 0:
         LTP = data['Close'][-1]  # LAST TRADE PRICE
 
-    pd.DataFrame(alllist).to_csv('Strategify/static/GeneratedFile/' + '' + username + '' + scrip.replace('.NS', '') + '.csv')
+    pd.DataFrame(alllist).to_csv('static/GeneratedFile/' + '' + username + '' + scrip.replace('.NS', '') + '.csv')
     periodHigh = "{:.2f}".format(data['Close'].max())
     periodLow = "{:.2f}".format(data['Close'].min())
     balance = "{:.2f}".format(balance)
@@ -246,7 +246,7 @@ def ProfitLossCalculationWithExit(data, username, scrip, target, steploss, quant
     if len(data['Close']) > 0:
         LTP = data['Close'][-1]  # LAST TRADE PRICE
 
-    pd.DataFrame(alllist).to_csv('Strategify/static/GeneratedFile/' + '' + username + '' + scrip.replace('.NS', '') + '.csv')
+    pd.DataFrame(alllist).to_csv('static/GeneratedFile/' + '' + username + '' + scrip.replace('.NS', '') + '.csv')
     periodHigh = "{:.2f}".format(data['Close'].max())
     periodLow = "{:.2f}".format(data['Close'].min())
     balance = "{:.2f}".format(balance)

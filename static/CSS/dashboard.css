@@ -887,6 +887,15 @@ footer.sticky-footer {
   .selector{
     margin-top: 10px;
   }
+
+  .account-setting{
+    padding: 0;
+  }
+
+  .border-right-hr;{
+    border: none;
+  }
+
 }
 
 @media (max-width: 570px){
@@ -994,6 +1003,10 @@ footer.sticky-footer {
   font-size: 2.2rem;
 }
 
+.font-size-16{
+  font-size: 1.6rem;
+}
+
 .font-size-14{
   font-size: 1.4rem;
 }
@@ -1010,4 +1023,31 @@ footer.sticky-footer {
 
 .font-size-11{
   font-size: 1.1rem;
+}
+
+
+.profileimage{
+  border-radius: 50%;
+  width: 30vh;
+}
+
+.border-right-hr{
+  border-right: 1px solid rgba(0,0,0,.1);
+}
+
+.profile-nav-item a {
+  width: 100%;
+  padding: 1.2rem;
+  font-size: 1.4rem;
+  border: 1px solid rgba(0,0,0,.1);
+  text-decoration: none;
+  color: #204469;
+}
+
+.profile-nav-item a:hover {
+  background-color: rgba(0,0,0,.1);
+}
+
+.min-height-80{
+  min-height: 80vh;
 }

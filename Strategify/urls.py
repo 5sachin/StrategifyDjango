@@ -33,5 +33,7 @@ urlpatterns = [
     path('daily_acess_code/',views.daily_acess_code,name="daily_acess_code"),
     path('opensampleStrategy/',views.opensampleStrategy,name="opensampleStrategy"),
     path('webhook/<URL>', views.webhook_call, name='webhook'),
+    path('updateProfile',views.updateProfile,name="updateProfile"),
+    path('updatePassword',views.updatePassword,name="updatePassword"),
 
 ]

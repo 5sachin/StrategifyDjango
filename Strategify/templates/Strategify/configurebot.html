@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{% url 'charts' %}">
                         <i class="fa fa-fw fa-area-chart"></i>
                         <span class="nav-link-text">Charts</span>
                   </a>
@@ -35,31 +35,25 @@
                 <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Live Trades">
                     <a class="nav-link" href="{% url 'deploypage' %}">
                         <i class="fa fa-fw fa-table"></i>
-                        <span class="nav-link-text">Deployed</span>
+                        <span class="nav-link-text">Deployed Paper Trades</span>
                     </a>
                 </li>
-                <!-- <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Paper Trades">
-                    <a class="nav-link" href="#">
+                <li class="nav-item" data-toggle="tooltip" data-placement="right">
+                    <a class="nav-link" href="{% url 'configure' %}">
                         <i class="fa fa-fw fa-link"></i>
-                        <span class="nav-link-text">Paper Trades</span>
+                        <span class="nav-link-text">Configure Bot</span>
                     </a>
-                </li> -->
-                <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Example Pages">
+                </li>
+                <li class="nav-item" data-toggle="tooltip" data-placement="right">
                     <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
                         <i class="fa fa-fw fa-user"></i>
                         <span class="nav-link-text">{{userdata.name}}</span>
                     </a>
-                    <!-- <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+                    <ul class="sidenav-second-level collapse" id="collapseExamplePages">
                         <li>
-                            <a href="login.html">Profile</a>
+                            <a href="{% url 'profilepage' %}">Profile</a>
                         </li>
-                        <li>
-                            <a href="forgot-password.html">Logout</a>
-                        </li>
-                        <li>
-                            <a href="blank.html">Delete Account</a>
-                        </li>
-                    </ul> -->
+                    </ul>
                 </li>
             </ul>
             <ul class="navbar-nav sidenav-toggler">

@@ -327,18 +327,57 @@ def signIn(request):
         return JsonResponse(response_data)
 
 
-def contactus(response):
-    return render(response, 'Strategify/contactus.html', {})
+def contactus(request):
+    return render(request, 'Strategify/contactus.html', {})
 
 
-def profilepage(response):
-    return render(response, 'Strategify/profilePage.html', {})
-
-
-def allindices(request):
+def profilepage(request):
+    data = UserRegistration.objects.get(username = request.session['username'])
     userdata = {
         'username': request.session['username'],
         'name': request.session['username'],
+        'email':data.email,
+        'phone':data.phone,
+    }
+    return render(request, 'Strategify/profilePage.html', {'data': userdata})
+
+def updateProfile(request):
+    response_data = {}
+    if request.method == "POST":
+        try:
+            UserRegistration.objects.filter(username = request.session['username']).update(
+                name=request.POST.get('name'),
+                email = request.POST.get('email'),
+                phone = request.POST.get('phone')
+                )
+            response_data['success'] = "Updated Profile"
+        except Exception as e:
+            print("Update Profile Error: "+str(e))
+            response_data['error'] = "Error Occured"
+        return JsonResponse(response_data)
+
+def updatePassword(request):
+    response_data = {}
+    if request.method == "POST":
+        data = UserRegistration.objects.get(username=request.session['username']);
+        if request.POST.get("oldpass") == data.password:
+            try:
+                UserRegistration.objects.filter(username = request.session['username']).update(
+                    password = request.POST.get('password')
+                    )
+                response_data['success'] = "Updated Profile"
+            except Exception as e:
+                print("Update Password Error: "+str(e))
+                response_data['error'] = "Error Occured"
+        else:
+            response_data['error'] = "Old Password Not Matching"
+        return JsonResponse(response_data)
+
+def allindices(request):
+    data = UserRegistration.objects.get(username=request.session['username']);
+    userdata = {
+        'username': request.session['username'],
+        'name': data.name,
     }
     return render(request, 'Strategify/allindices.html', {'data': userdata})
 
@@ -735,7 +774,7 @@ def createStrategyForm(response):
             except Exception as e:
                 response_data['error'] = str(e)
             return render(response, 'Strategify/backtestHistory.html',
-                          {'response': response, 'data': alldata, 'strategyName': response.POST.get('strategyname'),
+                          {'name':response.session['username'],  'response': response, 'data': alldata, 'strategyName': response.POST.get('strategyname'),
                            'error': response_data})
     except Exception as e:
         print("Error", e)
