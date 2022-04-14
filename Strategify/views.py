@@ -219,7 +219,7 @@ def savebotdetails(request):
                     password=request.POST.get("password"),
                     appid="1",
                     accesscode=request.POST.get("access_code"),
-                    url=randomURL,
+                    url="http://127.0.0.1:8000/webhook/"+randomURL,
                 )
                 request.session['config_status'] = True
                 response_data['success'] = REGISTERED_SUCCESS
