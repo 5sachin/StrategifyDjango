@@ -475,6 +475,7 @@ body.sidenav-toggled .navbar-sidenav-tooltip.show {
   .card-columns {
     column-count: 2;
   }
+
 }
 
 @media (min-width: 1200px) {
@@ -888,10 +889,6 @@ footer.sticky-footer {
     margin-top: 10px;
   }
 
-  .account-setting{
-    padding: 0;
-  }
-
   .border-right-hr;{
     border: none;
   }
@@ -1050,4 +1047,16 @@ footer.sticky-footer {
 
 .min-height-80{
   min-height: 80vh;
+}
+
+@media (min-width: 1191px){
+
+  .account-setting{
+    padding: 3rem!important;
+  }
+
+  .password-settings{
+    padding: 3rem!important;
+  }
+
 }

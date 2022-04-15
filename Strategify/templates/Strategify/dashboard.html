@@ -234,7 +234,6 @@
             <div class="list-group list-group-flush small">
               <a class="list-group-item list-group-item-action" href="#">
                 <div class="media">
-                  <img class="d-flex mr-3 rounded-circle" alt="">
                   <div class="media-body">
                     You created a new Strategy
                     <strong>MA on Reliance</strong>.
@@ -244,7 +243,6 @@
               </a>
               <a class="list-group-item list-group-item-action" href="#">
                 <div class="media">
-                  <img class="d-flex mr-3 rounded-circle"  alt="">
                   <div class="media-body">
                     You updated a Strategy MA on Reliance
                     <div class="text-muted smaller">Today at 6:37 PM</div>
@@ -256,66 +254,6 @@
             <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <div class="mb-0 mt-4">
-            <i class="fa fa-newspaper-o"></i>  News Feed</div>
-          <hr class="mt-2">
-        </div>
-      </div>
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-table"></i> Today Market</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <div>
-                <label>Top Gainers</label>
-                <div class="float-right">
-                  <a href="" id="topgainersrefresh" onclick='return topgainersrefresh()'><i class="fa fa-refresh "></i></a>
-                </div>
-            </div>
-            <table class="table table-bordered" width="100%" cellspacing="0">
-              <thead class="bg-success1">
-                <tr>
-                  <th>SYMBOL</th>
-                  <th>OPEN</th>
-                  <th>HIGH</th>
-                  <th>CLOSE</th>
-                  <th>PREV. CLOSE</th>
-                  <th>VOLUME</th>
-                </tr>
-              </thead>
-              <tfoot>
-              <tbody id="topgainerstable" class="topgainerstable">
-
-              </tbody>
-            </table>
-            <div>
-              <label>Top Losers</label>
-              <div class="float-right">
-                <a href="" id="toplosersrefresh" onclick='return toplosersrefresh()'><i class="fa fa-refresh"></i></a>
-              </div>
-            </div>
-            <table class="table table-bordered" width="100%" cellspacing="0">
-              <thead class="bg-danger1">
-                <tr>
-                  <th>SYMBOL</th>
-                  <th>OPEN</th>
-                  <th>HIGH</th>
-                  <th>CLOSE</th>
-                  <th>PREV. CLOSE</th>
-                  <th>VOLUME</th>
-                </tr>
-              </thead>
-              <tfoot>
-              <tbody id="toploserstable" class="toploserstable">
-
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="card-footer small text-muted"><span><label id="topgainers-updatetime"></label></span></div>
       </div>
     </div>
     <footer class="sticky-footer">
@@ -381,123 +319,6 @@
                }
             }
         })
-
-    topgainersrefresh();
-    toplosersrefresh();
-
-    function topgainersrefresh(){
-      $.ajax({
-            type:"POST",
-            url:'{% url 'topgainers' %}',
-            data:{
-              'csrfmiddlewaretoken': csrfmiddlewaretoken,
-            },
-            success :function(data){
-            if(data.success){
-                document.getElementById("topgainers-updatetime").innerHTML = "Updated at "+data.success.time;
-
-                var topgainertable = document.querySelector(".topgainerstable");
-                topgainertable.innerHTML = "";
-                for(let i=0;i<5;i++){
-                  let tablerow = document.createElement('tr');
-
-                  let symbol = document.createElement('td');
-                  symbol.innerText = data.success.data[i].symbol;
-
-                  let open = document.createElement('td');
-                  open.innerText = data.success.data[i].openPrice;
-
-                  let high = document.createElement('td');
-                  high.innerText = data.success.data[i].highPrice;
-
-                  let close = document.createElement('td');
-                  close.innerText = data.success.data[i].ltp;
-
-                  let prevClose = document.createElement('td');
-                  prevClose.innerText = data.success.data[i].previousPrice;
-
-                  let volume = document.createElement('td');
-                  volume.innerText = data.success.data[i].tradedQuantity;
-
-                  tablerow.append(symbol,open,high,close,prevClose,volume);
-                  topgainertable.append(tablerow);
-                }
-               }
-               else{
-               console.log(data.error);
-               //document.getElementById("topgainers-updatetime").innerHTML = "Updated at "+data.success.time;
-
-                var topgainertable = document.querySelector(".topgainerstable");
-                topgainertable.innerHTML = "";
-                let tablerow = document.createElement('tr');
-                let error = document.createElement('td');
-                error.innerText = data.error;
-                error.setAttribute("colspan", "6");
-                tablerow.append(error);
-                topgainertable.append(tablerow);
-                console.log(error);
-                console.log(tablerow);
-                console.log(topgainertable);
-               }
-            }
-        })
-      return false;
-    }
-
-    function toplosersrefresh(){
-      $.ajax({
-            type:"POST",
-            url:'{% url 'toplosers' %}',
-            data:{
-              'csrfmiddlewaretoken': csrfmiddlewaretoken,
-            },
-            success :function(data){
-            if(data.success){
-
-                document.getElementById("topgainers-updatetime").innerHTML = "Updated at "+data.success.time;
-
-                let toplosertable = document.querySelector(".toploserstable");
-                toplosertable.innerText = "";
-                for(let i=0;i<5;i++){
-                  let tablerow = document.createElement('tr');
-
-                  let symbol = document.createElement('td');
-                  symbol.innerText = data.success.data[i].symbol;
-
-                  let open = document.createElement('td');
-                  open.innerText = data.success.data[i].openPrice;
-
-                  let high = document.createElement('td');
-                  high.innerText = data.success.data[i].highPrice;
-
-                  let close = document.createElement('td');
-                  close.innerText = data.success.data[i].ltp;
-
-                  let prevClose = document.createElement('td');
-                  prevClose.innerText = data.success.data[i].previousPrice;
-
-                  let volume = document.createElement('td');
-                  volume.innerText = data.success.data[i].tradedQuantity;
-
-                  tablerow.append(symbol,open,high,close,prevClose,volume);
-                  toplosertable.append(tablerow);
-                }
-               }
-               else{
-               console.log(data.error);
-                let toplosertable = document.querySelector(".toploserstable");
-                toplosertable.innerText = "";
-                let tablerow = document.createElement('tr');
-                let error = document.createElement('td');
-                error.innerText = data.error;
-                error.setAttribute("colspan", "6");
-                tablerow.append(error);
-                toplosertable.append(tablerow);
-               }
-            }
-        })
-      return false;
-    }
 
     function openStrategy(arg){
        window.location.href = "{% url 'openStrategy' %}" + "?strategyid="+"{{userdata.username}}"+arg;

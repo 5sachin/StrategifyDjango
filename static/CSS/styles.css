@@ -493,7 +493,7 @@ footer.sticky-footer {
 
 .ghost{
   border-radius: 20px;
-  border: 1px solid #FFF;
+  border: 1px solid #204469;
   font-size: 12px;
   font-weight: bold;
   padding: 12px 45px;
@@ -577,6 +577,10 @@ footer.sticky-footer {
 @media only screen and (max-width: 768px) {
     .overlay-panel {
         display: none;
+    }
+
+    nav{
+      background-color: #204469;
     }
 }
 
