@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,11 +87,9 @@
   </nav>
   <div class="content-wrapper">
     <div class="container-fluid">
-      <!-- Breadcrumbs-->
       <ol class="breadcrumb">
         <li class="breadcrumb-item active">Dashboard</li>
       </ol>
-      <!-- Icon Cards-->
       <div class="row" id="indexData">
        
       </div>
@@ -98,90 +98,82 @@
           <a href="{% url 'allindices' %}" class="float-right allindices-btn">View All</a>
         </div>
       </div>
-      <!-- Area Chart Example-->
-      <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-file"></i>&nbsp; My Strategies
-          <div class="float-right">
-            <i class="fa fa-plus"></i>    <a href="{% url 'createstrategy' %}" class="text-dark font-weight-bold">Create Strategy</a>
-          </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="mb-0 mt-4 font-size-12 font-600">My Strtategies </div>
+          <hr class="mt-2">
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-1 mb-3 previous-pointer">
-              <span><i class="btn previous fa fa-fw fa-arrow-left" id="slideLeft"></i></span>
+      </div>
+      <div class="row">
+        <div class="col-1 mb-3 previous-pointer">
+          <span><i class="btn previous fa fa-fw fa-arrow-left" id="slideLeft"></i></span>
+        </div>
+        <div class="col-xl-10 mb-3 col-sm-12 col-xs-12 ">
+          <div class="mystrategy" id="mystrategy">
+            <div class="col-xl-3 col-sm-8 mb-3 animate__animated animate__zoomIn strategyCard">
+              <div class="card o-hidden h-100">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between">
+                    <div class="d-flex flex-row align-items-center">
+                      <div class="ms-2 c-details">
+                        <h5><b>Create New Strategy</b></h5>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-2">
+                    <h6 class="heading">Create and backtest.</h6>
+                  </div>
+                  <div class="mt-5">
+                  </div>
+                </div>
+                <a href="{% url 'createstrategy' %}" class="card-footer clearfix small z-1" href="#">
+                  <span class="float-left font-12">Create Here</span>
+                  <span class="float-right">
+                    <i class="fa fa-plus"></i>
+                  </span>
+                </a>
+              </div>
             </div>
-              <div class="col-xl-10 mb-3 col-sm-12 col-xs-12 ">
-                <div class="mystrategy" id="mystrategy">
-                  <div class="col-xl-3 col-sm-8 mb-3 animate__animated animate__zoomIn strategyCard">
-                        <div class="card o-hidden h-100">
-                          <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                              <div class="d-flex flex-row align-items-center">
-                                <div class="ms-2 c-details">
-                                  <h5><b>Create New Strategy</b></h5>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="mt-2">
-                              <h6 class="heading">Create and backtest.</h6>
-                            </div>
-                            <div class="mt-5">
-                            </div>
-                          </div>
-                          <a href="{% url 'createstrategy' %}" class="card-footer clearfix small z-1" href="#">
-                            <span class="float-left font-12">Create Here</span>
-                            <span class="float-right">
-                              <i class="fa fa-plus"></i>
-                            </span>
-                          </a>
+            {% for e in strategydata %}
+              <div class="col-xl-3 col-sm-8 mb-3 animate__animated animate__zoomIn strategyCard">
+                <div class="card o-hidden h-100" onclick="return openStrategy('{{e.strategyname}}')">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div class="d-flex flex-row align-items-center delete-strategy-row">
+                        <div class="ms-2 c-details">
+                          <h5 class="heading" id="strategy-heading">{{e.strategyname}}</h5>
                         </div>
                       </div>
-                    {% for e in strategydata %}
-                      <div class="col-xl-3 col-sm-8 mb-3 animate__animated animate__zoomIn strategyCard">
-                        <div class="card o-hidden h-100" onclick="return openStrategy('{{e.strategyname}}')">
-                          <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                              <div class="d-flex flex-row align-items-center delete-strategy-row">
-                                <div class="ms-2 c-details">
-                                  <h5 class="heading" id="strategy-heading">{{e.strategyname}}</h5>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="mt-2 d-flex justify-content-between">
-                              <div class="d-flex flex-row align-items-center">
-                                <h6 class="heading ms-2">{{e.scripname}}</h6>
-                              </div>
-                            </div>
-                            <div class="mt-5">
-                              <div class="mt-2"> <span class="text1">Last Modified: {{e.createDate}}</span> </div>
-                            </div>
-                          </div>
-                          <a class="card-footer clearfix small z-1" href="#">
-                            <span class="float-left">View Details</span>
-                            <span class="float-right">
-                              <i class="fa fa-angle-right"></i>
-                            </span>
-                          </a>
-                        </div>
+                    </div>
+                    <div class="mt-2 d-flex justify-content-between">
+                      <div class="d-flex flex-row align-items-center">
+                        <h6 class="heading ms-2">{{e.scripname}}</h6>
                       </div>
-                    {% endfor %}
+                    </div>
+                    <div class="mt-5">
+                      <div class="mt-2"> <span class="text1">Last Modified: {{e.createDate}}</span> </div>
+                    </div>
+                  </div>
+                  <a class="card-footer clearfix small z-1" href="#">
+                    <span class="float-left">View Details</span>
+                    <span class="float-right">
+                      <i class="fa fa-angle-right"></i>
+                    </span>
+                  </a>
                 </div>
               </div>
-            <div class="col-1 mb-3 next-pointer">
-              <span><i class="btn next fa fa-fw fa-arrow-right" id="slideRight"></i></span>
-            </div>
+            {% endfor %}
           </div>
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        <div class="col-1 mb-3 next-pointer">
+          <span><i class="btn next fa fa-fw fa-arrow-right" id="slideRight"></i></span>
+        </div>
       </div>
       <div class="row">
         <div class="col-lg-8">
-          <div class="card mb-3">
-            <div class="card-header">
-              <i class="fa fa-file"></i> Sample Strategies</div>
-            <div class="card-body">
-              <div class="row">
+          <div class="mb-0 mt-4 font-size-12 font-600">Sample Strategies </div>
+          <hr class="mt-2">
+          <div class="row">
                 <div class="col-12 my-auto">
                   <div class="row">
                     <div class="col-1 mb-3 previous-pointer">
@@ -190,47 +182,47 @@
                     <div class="col-xl-10 mb-3 col-sm-12 col-xs-12 ">
                       <div class="mystrategy" id="mystrategy">
                         {% if sampleStrategy %}
-                        {% for e in sampleStrategy %}
-                          <div class="col-xl-3 col-sm-8 mb-3 animate__animated animate__zoomIn strategyCard">
-                            <div class="card o-hidden h-100" onclick="return opensampleStrategy('{{e.strategyname}}')">
-                              <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                  <div class="d-flex flex-row align-items-center">
-                                    <div class="ms-2 c-details">
-                                      <h5 class="heading" id="strategy-heading">{{e.strategyname}}</h5>
+                          {% for e in sampleStrategy %}
+                            <div class="col-xl-3 col-sm-8 mb-3 animate__animated animate__zoomIn strategyCard">
+                              <div class="card o-hidden h-100" onclick="return opensampleStrategy('{{e.strategyname}}')">
+                                <div class="card-body">
+                                  <div class="d-flex justify-content-between">
+                                    <div class="d-flex flex-row align-items-center">
+                                      <div class="ms-2 c-details">
+                                        <h5 class="heading" id="strategy-heading">{{e.strategyname}}</h5>
+                                      </div>
                                     </div>
                                   </div>
+                                  <div class="mt-2">
+                                    <h6 class="heading">{{e.scripname}}</h6>
+                                  </div>
                                 </div>
-                                <div class="mt-2">
-                                  <h6 class="heading">{{e.scripname}}</h6>
-                                </div>
+                                <a class="card-footer clearfix small z-1" href="#">
+                                  <span class="float-left">View Details</span>
+                                  <span class="float-right">
+                                    <i class="fa fa-angle-right"></i>
+                                  </span>
+                                </a>
                               </div>
-                              <a class="card-footer clearfix small z-1" href="#">
-                                <span class="float-left">View Details</span>
-                                <span class="float-right">
-                                  <i class="fa fa-angle-right"></i>
-                                </span>
-                              </a>
                             </div>
-                          </div>
-                        {% endfor %}
+                          {% endfor %}
                         {% endif %}
                       </div>
                     </div>
-
                     <div class="col-1 mb-3 next-pointer">
                       <a href="#" class="btn next fa fa-fw fa-arrow-right" id="slideRight"></a>
                     </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
         </div>
         <div class="col-lg-4">
+          <div class="mb-0 mt-4 font-size-12 font-600">Recent Activities </div>
+          <hr class="mt-2">
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-bell-o"></i>  Recent Activity</div>
+              <i class="fa fa-bell-o"></i>  Recent Activity
+            </div>
             <div class="list-group list-group-flush small">
               <a class="list-group-item list-group-item-action" href="#">
                 <div class="media">
@@ -263,19 +255,14 @@
         </div>
       </div>
     </footer>
-    <a class="scroll-to-top rounded" href="#page-top">
-      <i class="fa fa-angle-up"></i>
-    </a>
   </div>
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS. -->
-    <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
-    <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
-    <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static '././JS/dashboard.js' %}"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-    <script>
+  <script src="{% static 'node_modules/jquery/dist/jquery.slim.min.js' %}"></script>
+  <script src="{% static 'node_modules/popper.js/dist/umd/popper.min.js' %}"></script>
+  <script src="{% static 'node_modules/bootstrap/dist/js/bootstrap.min.js' %}"></script>
+  <script src="{% static '././JS/dashboard.js' %}"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="{% static 'node_modules/jquery/dist/jquery.min.js' %}"></script>
+  <script>
     csrfmiddlewaretoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     $.ajax({
