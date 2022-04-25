@@ -73,7 +73,7 @@
 
 
 
-# from ks_api_client import ks_api
+from ks_api_client import ks_api
 
 URL = ""
 class Kotak():
@@ -87,8 +87,8 @@ class Kotak():
 		self.client = None
 
 	def configure(self):
-		# self.client = ks_api.KSTradeApi(access_token=self.access_token, userid=self.userid,
-		#										consumer_key=self.consumer_key, ip="127.0.0.1", app_id="APP")
+		self.client = ks_api.KSTradeApi(access_token=self.access_token, userid=self.userid,
+												consumer_key=self.consumer_key, ip="127.0.0.1", app_id="APP")
 		self.client.login(password=self.password)
 
 	def session_login(self,acess_code):
